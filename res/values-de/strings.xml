@@ -15,4 +15,6 @@
     <string name="add_text_to">an</string>
     <string name="add_text_from">von</string>
     <string name="add_text_someone">jemand</string>
+    <string name="add_text_until">bis</string>
+    <string name="date_format">dd.MM.yyyy</string>
 </resources>

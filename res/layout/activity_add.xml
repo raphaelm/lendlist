@@ -55,8 +55,8 @@
                 android:id="@+id/etThing"
                 android:layout_width="match_parent"
                 android:layout_height="0dip"
-                android:layout_weight="1"
                 android:layout_marginTop="10dp"
+                android:layout_weight="1"
                 android:ems="10"
                 android:hint="@string/add_text_something" />
 
@@ -76,7 +76,27 @@
                 android:layout_marginTop="10dp"
                 android:layout_weight="1"
                 android:ems="10"
-                android:hint="@string/add_text_someone" />
+                android:hint="@string/add_text_someone"
+                android:singleLine="true" />
+
+            <TextView
+                android:id="@+id/tvUntil"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="@string/add_text_until"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <EditText
+                android:id="@+id/etUntil"
+                android:layout_width="match_parent"
+                android:layout_height="0dip"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:ems="10"
+                android:inputType="none"
+                android:singleLine="true" />
 
         </LinearLayout>
     </ScrollView>

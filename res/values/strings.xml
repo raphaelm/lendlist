@@ -16,5 +16,7 @@
     <string name="add_text_to">to</string>
     <string name="add_text_from">from</string>
     <string name="add_text_someone">someone</string>
+    <string name="add_text_until">until</string>
+    <string name="date_format">yyyy-MM-dd</string>
 
 </resources>

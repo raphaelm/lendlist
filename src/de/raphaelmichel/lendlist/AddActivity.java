@@ -1,18 +1,33 @@
 package de.raphaelmichel.lendlist;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
+import android.app.Dialog;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
+import android.view.View.OnTouchListener;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.app.DatePickerDialog;
 
-import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
-public class AddActivity extends SherlockActivity {
+public class AddActivity extends SherlockFragmentActivity {
 
 	private String direction = "borrowed";
+	private DialogFragment dpDialog;
+	private EditText etUntil;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -29,19 +44,20 @@ public class AddActivity extends SherlockActivity {
 		final TextView tvLent = (TextView) findViewById(R.id.tvLent);
 		final TextView tvTo = (TextView) findViewById(R.id.tvTo);
 		((TextView) findViewById(R.id.tvIJust)).setTypeface(handwrittenFace);
+		((TextView) findViewById(R.id.tvUntil)).setTypeface(handwrittenFace);
 		tvBorrowed.setTypeface(handwrittenFace);
 		tvLent.setTypeface(handwrittenFace);
 		tvTo.setTypeface(handwrittenFace);
 
-		if(getIntent().getStringExtra("direction") != null){
-			if(getIntent().getStringExtra("direction").equals("lent")){
+		if (getIntent().getStringExtra("direction") != null) {
+			if (getIntent().getStringExtra("direction").equals("lent")) {
 				tvLent.setBackgroundResource(R.drawable.textmarker_bitmap);
 				tvBorrowed.setBackgroundResource(0);
 				tvTo.setText(R.string.add_text_to);
 				direction = "lent";
 			}
 		}
-		
+
 		tvBorrowed.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -64,6 +80,58 @@ public class AddActivity extends SherlockActivity {
 				}
 			}
 		});
+
+		etUntil = (EditText) findViewById(R.id.etUntil);
+
+		etUntil.setOnTouchListener(new OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if (event.getAction() == MotionEvent.ACTION_UP) {
+					dpDialog = new DatePickerFragment();
+					dpDialog.show(getSupportFragmentManager(), "datePicker");
+				}
+				return true;
+			}
+		});
+
+		etUntil.setOnFocusChangeListener(new OnFocusChangeListener() {
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				if (hasFocus) {
+					if (dpDialog == null) {
+						dpDialog = new DatePickerFragment();
+						dpDialog.show(getSupportFragmentManager(), "datePicker");
+					}
+				} else {
+					if (dpDialog != null) {
+						if (dpDialog.isVisible())
+							dpDialog.dismiss();
+						dpDialog = null;
+					}
+				}
+			}
+		});
+	}
+
+	public class DatePickerFragment extends DialogFragment implements
+			DatePickerDialog.OnDateSetListener {
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+			// Use the current date as the default date in the picker
+			final Calendar c = Calendar.getInstance();
+			int year = c.get(Calendar.YEAR);
+			int month = c.get(Calendar.MONTH);
+			int day = c.get(Calendar.DAY_OF_MONTH);
+
+			// Create a new instance of DatePickerDialog and return it
+			return new DatePickerDialog(getActivity(), this, year, month, day);
+		}
+
+		public void onDateSet(DatePicker view, int year, int month, int day) {
+			etUntil.setText(new SimpleDateFormat(
+					getString(R.string.date_format)).format(new Date(year-1900,
+					month, day)));
+		}
 	}
 
 	@Override
