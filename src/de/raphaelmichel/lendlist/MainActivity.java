@@ -33,7 +33,7 @@ public class MainActivity extends SherlockFragmentActivity {
 
 		FRAGMENTS = new String[][] {
 				new String[] { getString(R.string.borrowed), "borrowed" },
-				new String[] { getString(R.string.lend), "lend" } };
+				new String[] { getString(R.string.lent), "lent" } };
 
 		mViewPager = (ViewPager) findViewById(R.id.viewpager);
 		fragmentAdapter = new MainFragmentAdapter(getSupportFragmentManager());
@@ -67,7 +67,7 @@ public class MainActivity extends SherlockFragmentActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.action_add) {
 			Intent i = new Intent(this, AddActivity.class);
-			i.putExtra("query", FRAGMENTS[mViewPager.getCurrentItem()][1]);
+			i.putExtra("direction", FRAGMENTS[mViewPager.getCurrentItem()][1]);
 			startActivityForResult(i, REQUEST_CODE_ADD);
 		}
 		return super.onOptionsItemSelected(item);

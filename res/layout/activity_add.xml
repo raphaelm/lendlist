@@ -32,20 +32,21 @@
 
                 <TextView
                     android:id="@+id/tvBorrowed"
-                    android:layout_width="wrap_content"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="@string/add_text_borrowed"
+                    android:background="@drawable/textmarker_bitmap"
                     android:textAppearance="?android:attr/textAppearanceLarge" />
 
                 <TextView
-                    android:id="@+id/tvLend"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/tvLent"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="@string/add_text_lend"
+                    android:text="@string/add_text_lent"
                     android:textAppearance="?android:attr/textAppearanceLarge" />
 
             </LinearLayout>
