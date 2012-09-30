@@ -87,6 +87,12 @@ public class MainActivityFragment extends SherlockFragment {
 
 	}
 
+	@Override
+	public void onResume() {
+		super.onResume();
+		refresh();
+	}
+
 	public void refresh() {
 		refresh(getView());
 	}
