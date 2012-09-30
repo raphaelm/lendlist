@@ -1,4 +1,4 @@
-package de.raphaelmichel.lendlist;
+package de.raphaelmichel.lendlist.frontend;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,6 +8,10 @@ import android.view.ViewGroup;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
+
+import de.raphaelmichel.lendlist.R;
+import de.raphaelmichel.lendlist.R.layout;
+import de.raphaelmichel.lendlist.R.menu;
 
 public class MainActivityFragment extends SherlockFragment {
 

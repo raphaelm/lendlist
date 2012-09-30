@@ -1,4 +1,4 @@
-package de.raphaelmichel.lendlist;
+package de.raphaelmichel.lendlist.frontend;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -21,6 +21,13 @@ import android.app.DatePickerDialog;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+
+import de.raphaelmichel.lendlist.R;
+import de.raphaelmichel.lendlist.R.drawable;
+import de.raphaelmichel.lendlist.R.id;
+import de.raphaelmichel.lendlist.R.layout;
+import de.raphaelmichel.lendlist.R.menu;
+import de.raphaelmichel.lendlist.R.string;
 
 public class AddActivity extends SherlockFragmentActivity {
 
