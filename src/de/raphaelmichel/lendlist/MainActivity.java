@@ -1,36 +1,46 @@
 package de.raphaelmichel.lendlist;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.View;
-import android.view.ViewGroup;
+
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
 
 public class MainActivity extends SherlockFragmentActivity {
+
+	private String FRAGMENTS[][];
+
+	private ViewPager mViewPager;
+	private MainFragmentAdapter fragmentAdapter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		ViewPager mViewPager = (ViewPager) findViewById(R.id.viewpager);
-		TitleAdapter titleAdapter = new TitleAdapter(
-				getSupportFragmentManager());
-		mViewPager.setAdapter(titleAdapter);
-		mViewPager.setCurrentItem(0);
-	}
-
-	public class TitleAdapter extends FragmentPagerAdapter {
-		private String FRAGMENTS[][] = new String[][] {
+		FRAGMENTS = new String[][] {
 				new String[] { getString(R.string.borrowed), "borrowed" },
 				new String[] { getString(R.string.lend), "lend" } };
 
-		public TitleAdapter(FragmentManager fm) {
+		mViewPager = (ViewPager) findViewById(R.id.viewpager);
+		fragmentAdapter = new MainFragmentAdapter(getSupportFragmentManager());
+		mViewPager.setAdapter(fragmentAdapter);
+		mViewPager.setCurrentItem(0);
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getSupportMenuInflater().inflate(R.menu.activity_main, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	public class MainFragmentAdapter extends FragmentPagerAdapter {
+
+		public MainFragmentAdapter(FragmentManager fm) {
 			super(fm);
 		}
 
@@ -48,11 +58,5 @@ public class MainActivity extends SherlockFragmentActivity {
 		public int getCount() {
 			return FRAGMENTS.length;
 		}
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getSupportMenuInflater().inflate(R.menu.activity_main, menu);
-		return true;
 	}
 }
