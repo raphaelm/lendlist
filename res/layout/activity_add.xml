@@ -33,11 +33,11 @@
                 <TextView
                     android:id="@+id/tvBorrowed"
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:background="@drawable/textmarker_bitmap"
                     android:gravity="center"
                     android:text="@string/add_text_borrowed"
-                    android:background="@drawable/textmarker_bitmap"
                     android:textAppearance="?android:attr/textAppearanceLarge" />
 
                 <TextView
