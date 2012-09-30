@@ -1,19 +1,15 @@
 package de.raphaelmichel.lendlist.storage;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import de.raphaelmichel.lendlist.R;
-import de.raphaelmichel.lendlist.objects.Item;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import de.raphaelmichel.lendlist.objects.Item;
 
 public class DataSource {
 	private SQLiteDatabase database;
@@ -79,10 +75,10 @@ public class DataSource {
 		Item item = new Item();
 		item.setId(cursor.getLong(0));
 		item.setDirection(cursor.getString(1));
-		item.setThing(cursor.getString(3));
-		item.setPerson(cursor.getString(4));
-		item.setContact_id(cursor.getLong(5));
-		item.setUntil(new Date(cursor.getLong(6)));
+		item.setThing(cursor.getString(2));
+		item.setPerson(cursor.getString(3));
+		item.setContact_id(cursor.getLong(4));
+		item.setUntil(new Date(cursor.getLong(5)));
 		return item;
 	}
 }
