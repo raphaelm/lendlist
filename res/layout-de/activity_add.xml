@@ -95,6 +95,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dip"
                 android:layout_marginTop="10dp"
+                android:hint="@string/add_until_hint"
                 android:layout_weight="1"
                 android:ems="10"
                 android:inputType="none"
