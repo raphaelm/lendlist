@@ -8,13 +8,13 @@
     <ScrollView
         android:id="@+id/scrollView1"
         android:layout_width="match_parent"
-        android:padding="10dp"
         android:layout_height="wrap_content" >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:padding="10dp" >
 
             <TextView
                 android:id="@+id/tvIJust"
@@ -27,8 +27,8 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_marginTop="10dp"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp" >
 
                 <TextView
                     android:id="@+id/tvBorrowed"
@@ -48,7 +48,6 @@
                     android:gravity="center"
                     android:text="@string/add_text_lent"
                     android:textAppearance="?android:attr/textAppearanceLarge" />
-
             </LinearLayout>
 
             <EditText
@@ -90,15 +89,14 @@
 
             <EditText
                 android:id="@+id/etUntil"
-                android:hint="@string/add_until_hint"
                 android:layout_width="match_parent"
                 android:layout_height="0dip"
                 android:layout_marginTop="10dp"
                 android:layout_weight="1"
                 android:ems="10"
+                android:hint="@string/add_until_hint"
                 android:inputType="none"
                 android:singleLine="true" />
-
         </LinearLayout>
     </ScrollView>
 
