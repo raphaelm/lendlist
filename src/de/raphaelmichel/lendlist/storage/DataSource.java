@@ -25,8 +25,12 @@ public class DataSource {
 		ctx = context;
 	}
 
-	public void open() throws SQLException {
+	public void openWritable() throws SQLException {
 		database = dbHelper.getWritableDatabase();
+	}
+
+	public void open() throws SQLException {
+		database = dbHelper.getReadableDatabase();
 	}
 
 	public void close() {
