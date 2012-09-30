@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -16,18 +17,13 @@ import android.view.View.OnTouchListener;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.app.DatePickerDialog;
+import android.support.v4.app.NavUtils;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
 import de.raphaelmichel.lendlist.R;
-import de.raphaelmichel.lendlist.R.drawable;
-import de.raphaelmichel.lendlist.R.id;
-import de.raphaelmichel.lendlist.R.layout;
-import de.raphaelmichel.lendlist.R.menu;
-import de.raphaelmichel.lendlist.R.string;
 
 public class AddActivity extends SherlockFragmentActivity {
 
@@ -49,14 +45,14 @@ public class AddActivity extends SherlockFragmentActivity {
 		savedInstanceState.putString("direction", direction);
 	}
 
-	public static String getS(Bundle b, String k){
+	public static String getS(Bundle b, String k) {
 		String s = b.getString(k);
-		if(s == null)
+		if (s == null)
 			return "";
 		else
 			return s;
 	}
-	
+
 	@Override
 	public void onRestoreInstanceState(Bundle savedInstanceState) {
 		super.onRestoreInstanceState(savedInstanceState);
@@ -194,6 +190,8 @@ public class AddActivity extends SherlockFragmentActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
+			NavUtils.navigateUpFromSameTask(this);
+			return true;
 		case R.id.action_cancel:
 			finish();
 			return true;
