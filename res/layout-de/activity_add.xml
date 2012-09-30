@@ -25,6 +25,18 @@
                 android:text="@string/add_text_ijust"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
+            <EditText
+                android:id="@+id/etThing"
+                android:layout_width="match_parent"
+                android:layout_height="0dip"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="@string/add_text_something" >
+
+                <requestFocus />
+            </EditText>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_marginTop="10dp"
@@ -50,15 +62,6 @@
                     android:textAppearance="?android:attr/textAppearanceLarge" />
 
             </LinearLayout>
-
-            <EditText
-                android:id="@+id/etThing"
-                android:layout_width="match_parent"
-                android:layout_height="0dip"
-                android:layout_weight="1"
-                android:layout_marginTop="10dp"
-                android:ems="10"
-                android:hint="@string/add_text_something" />
 
             <TextView
                 android:id="@+id/tvTo"
