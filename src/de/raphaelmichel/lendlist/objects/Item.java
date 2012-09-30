@@ -9,6 +9,7 @@ public class Item {
 	private String person;
 	private long contact_id;
 	private Date until;
+	private Date date;
 
 	public long getId() {
 		return id;
@@ -56,6 +57,14 @@ public class Item {
 
 	public void setUntil(Date until) {
 		this.until = until;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
 	}
 
 	@Override

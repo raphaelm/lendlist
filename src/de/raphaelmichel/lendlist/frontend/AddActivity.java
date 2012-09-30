@@ -201,6 +201,7 @@ public class AddActivity extends SherlockFragmentActivity {
 		} catch (ParseException e) {
 			item.setUntil(null);
 		}
+		item.setDate(new Date());
 		data.openWritable();
 		data.addItem(item);
 		data.close();

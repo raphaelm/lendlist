@@ -8,15 +8,16 @@ import android.util.Log;
 public class Database extends SQLiteOpenHelper {
 
 	private static final String DATABASE_NAME = "objects.db";
-	private static final int DATABASE_VERSION = 1; // REPLACE ONUPGRADE IF YOU
+	private static final int DATABASE_VERSION = 3; // REPLACE ONUPGRADE IF YOU
 													// CHANGE THIS
 
 	private static final String DATABASE_CREATE = "create table "
 			+ "objects ( id integer primary key autoincrement,"
 			+ " direction text," + " thing text," + " person text,"
-			+ " contact_id integer," + " until integer" + ");";
+			+ " contact_id integer," + " until integer" + "," + " date integer"
+			+ ");";
 	public static final String[] COLUMNS = { "id", "direction", "thing",
-			"person", "contact_id", "until" };
+			"person", "contact_id", "until", "date" };
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {

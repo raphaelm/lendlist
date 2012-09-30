@@ -19,5 +19,7 @@
     <string name="add_text_until">until</string>
     <string name="date_format">yyyy-MM-dd</string>
     <string name="add_until_hint">Set date (optional)</string>
+    <string name="since">since %s</string>
+    <string name="until">until %s</string>
 
 </resources>

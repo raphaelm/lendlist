@@ -120,10 +120,28 @@ public class MainActivityFragment extends SherlockFragment {
 			TextView tvPerson = (TextView) view.findViewById(R.id.tvPerson);
 			tvPerson.setText(item.getPerson());
 
-			TextView tvUntil = (TextView) view.findViewById(R.id.tvUntil);
-			if (item.getThing() != null)
-				tvUntil.setText(new SimpleDateFormat(
-						getString(R.string.date_format)).format(item.getUntil()));
+			if (direction.equals("lent")) {
+				TextView tvUntil = (TextView) view.findViewById(R.id.tvUntil);
+				if (item.getDate() != null)
+					tvUntil.setText(getString(R.string.since,
+							new SimpleDateFormat(
+									getString(R.string.date_format))
+									.format(item.getDate())));
+			} else {
+				TextView tvUntil = (TextView) view.findViewById(R.id.tvUntil);
+				if (item.getUntil() != null)
+					tvUntil.setText(getString(R.string.until,
+							new SimpleDateFormat(
+									getString(R.string.date_format))
+									.format(item.getUntil())));
+				else {
+					if (item.getDate() != null)
+						tvUntil.setText(getString(R.string.since,
+								new SimpleDateFormat(
+										getString(R.string.date_format))
+										.format(item.getDate())));
+				}
+			}
 
 			return view;
 		}

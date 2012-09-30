@@ -76,7 +76,7 @@ public class MainActivity extends SherlockFragmentActivity {
 	}
 
 	public class MainFragmentAdapter extends FragmentPagerAdapter {
-
+		
 		public MainFragmentAdapter(FragmentManager fm) {
 			super(fm);
 		}
