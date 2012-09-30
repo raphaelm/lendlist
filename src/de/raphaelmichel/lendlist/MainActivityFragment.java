@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
 
 public class MainActivityFragment extends SherlockFragment {
 
@@ -19,6 +21,13 @@ public class MainActivityFragment extends SherlockFragment {
 		f.setArguments(args);
 
 		return f;
+	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		// TODO Auto-generated method stub
+		inflater.inflate(R.menu.fragment_main, menu);
+		super.onCreateOptionsMenu(menu, inflater);
 	}
 
 	@Override
