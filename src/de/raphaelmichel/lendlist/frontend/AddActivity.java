@@ -1,5 +1,6 @@
 package de.raphaelmichel.lendlist.frontend;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -24,6 +25,8 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
 import de.raphaelmichel.lendlist.R;
+import de.raphaelmichel.lendlist.objects.Item;
+import de.raphaelmichel.lendlist.storage.DataSource;
 
 public class AddActivity extends SherlockFragmentActivity {
 
@@ -186,6 +189,23 @@ public class AddActivity extends SherlockFragmentActivity {
 		return super.onCreateOptionsMenu(menu);
 	}
 
+	public void save() {
+		DataSource data = new DataSource(this);
+		Item item = new Item();
+		item.setDirection(direction);
+		item.setThing(etThing.getText().toString());
+		item.setPerson(etPerson.getText().toString());
+		try {
+			item.setUntil(new SimpleDateFormat(getString(R.string.date_format))
+					.parse(etUntil.getText().toString()));
+		} catch (ParseException e) {
+			item.setUntil(null);
+		}
+		data.openWritable();
+		data.addItem(item);
+		data.close();
+	}
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -193,6 +213,10 @@ public class AddActivity extends SherlockFragmentActivity {
 			NavUtils.navigateUpFromSameTask(this);
 			return true;
 		case R.id.action_cancel:
+			finish();
+			return true;
+		case R.id.action_accept:
+			save();
 			finish();
 			return true;
 		}

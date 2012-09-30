@@ -82,13 +82,7 @@ public class DataSource {
 		item.setThing(cursor.getString(3));
 		item.setPerson(cursor.getString(4));
 		item.setContact_id(cursor.getLong(5));
-		try {
-			item.setUntil(new SimpleDateFormat(
-					ctx.getString(R.string.date_format)).parse(cursor.getString(6)));
-		} catch (ParseException e) {
-			item.setUntil(null);
-			e.printStackTrace();
-		}
+		item.setUntil(new Date(cursor.getLong(6)));
 		return item;
 	}
 }
