@@ -8,7 +8,6 @@ import android.app.Dialog;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -28,6 +27,44 @@ public class AddActivity extends SherlockFragmentActivity {
 	private String direction = "borrowed";
 	private DialogFragment dpDialog;
 	private EditText etUntil;
+	private EditText etThing;
+	private EditText etPerson;
+	private TextView tvBorrowed;
+	private TextView tvLent;
+	private TextView tvTo;
+
+	@Override
+	public void onSaveInstanceState(Bundle savedInstanceState) {
+		super.onSaveInstanceState(savedInstanceState);
+		savedInstanceState.putString("thing", etThing.getText().toString());
+		savedInstanceState.putString("person", etPerson.getText().toString());
+		savedInstanceState.putString("until", etUntil.getText().toString());
+		savedInstanceState.putString("direction", direction);
+	}
+
+	public static String getS(Bundle b, String k){
+		String s = b.getString(k);
+		if(s == null)
+			return "";
+		else
+			return s;
+	}
+	
+	@Override
+	public void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+		etThing.setText(getS(savedInstanceState, "thing"));
+		etPerson.setText(getS(savedInstanceState, "person"));
+		etUntil.setText(getS(savedInstanceState, "until"));
+		if (savedInstanceState.getString("direction") != null) {
+			if (getIntent().getStringExtra("direction").equals("lent")) {
+				tvLent.setBackgroundResource(R.drawable.textmarker_bitmap);
+				tvBorrowed.setBackgroundResource(0);
+				tvTo.setText(R.string.add_text_to);
+				direction = "lent";
+			}
+		}
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -35,14 +72,16 @@ public class AddActivity extends SherlockFragmentActivity {
 		setContentView(R.layout.activity_add);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-		// Custom Font
+		etThing = (EditText) findViewById(R.id.etThing);
+		etPerson = (EditText) findViewById(R.id.etPerson);
 
+		tvBorrowed = (TextView) findViewById(R.id.tvBorrowed);
+		tvLent = (TextView) findViewById(R.id.tvLent);
+		tvTo = (TextView) findViewById(R.id.tvTo);
+
+		// Custom Font
 		Typeface handwrittenFace = Typeface.createFromAsset(getAssets(),
 				"fonts/belligerent.ttf");
-
-		final TextView tvBorrowed = (TextView) findViewById(R.id.tvBorrowed);
-		final TextView tvLent = (TextView) findViewById(R.id.tvLent);
-		final TextView tvTo = (TextView) findViewById(R.id.tvTo);
 		((TextView) findViewById(R.id.tvIJust)).setTypeface(handwrittenFace);
 		((TextView) findViewById(R.id.tvUntil)).setTypeface(handwrittenFace);
 		tvBorrowed.setTypeface(handwrittenFace);
@@ -69,6 +108,7 @@ public class AddActivity extends SherlockFragmentActivity {
 				}
 			}
 		});
+
 		tvLent.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -111,6 +151,9 @@ public class AddActivity extends SherlockFragmentActivity {
 				}
 			}
 		});
+
+		if (savedInstanceState != null)
+			onRestoreInstanceState(savedInstanceState);
 	}
 
 	public class DatePickerFragment extends DialogFragment implements
@@ -129,8 +172,8 @@ public class AddActivity extends SherlockFragmentActivity {
 
 		public void onDateSet(DatePicker view, int year, int month, int day) {
 			etUntil.setText(new SimpleDateFormat(
-					getString(R.string.date_format)).format(new Date(year-1900,
-					month, day)));
+					getString(R.string.date_format)).format(new Date(
+					year - 1900, month, day)));
 		}
 	}
 
