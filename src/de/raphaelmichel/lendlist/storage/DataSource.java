@@ -39,7 +39,8 @@ public class DataSource {
 		values.put("thing", item.getThing());
 		values.put("person", item.getPerson());
 		values.put("contact_id", item.getContact_id());
-		values.put("until", (item.getUntil() != null ? item.getUntil().getTime() : 0));
+		values.put("until", (item.getUntil() != null ? item.getUntil()
+				.getTime() : 0));
 		database.insert("objects", null, values);
 	}
 
@@ -49,8 +50,9 @@ public class DataSource {
 		values.put("thing", item.getThing());
 		values.put("person", item.getPerson());
 		values.put("contact_id", item.getContact_id());
-		values.put("until", (item.getUntil() != null ? item.getUntil().getTime() : 0));
-		String[] selA = { item.getId()+"" };
+		values.put("until", (item.getUntil() != null ? item.getUntil()
+				.getTime() : 0));
+		String[] selA = { item.getId() + "" };
 		database.update("objects", values, "id = ?", selA);
 	}
 

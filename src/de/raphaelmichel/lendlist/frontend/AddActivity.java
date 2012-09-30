@@ -10,6 +10,7 @@ import android.app.Dialog;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.NavUtils;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -18,7 +19,6 @@ import android.view.View.OnTouchListener;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.support.v4.app.NavUtils;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;

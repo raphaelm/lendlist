@@ -15,10 +15,6 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
 import de.raphaelmichel.lendlist.R;
-import de.raphaelmichel.lendlist.R.id;
-import de.raphaelmichel.lendlist.R.layout;
-import de.raphaelmichel.lendlist.R.menu;
-import de.raphaelmichel.lendlist.R.string;
 
 public class MainActivity extends SherlockFragmentActivity {
 

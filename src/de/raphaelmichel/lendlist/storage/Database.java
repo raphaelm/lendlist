@@ -9,17 +9,14 @@ public class Database extends SQLiteOpenHelper {
 
 	private static final String DATABASE_NAME = "objects.db";
 	private static final int DATABASE_VERSION = 1; // REPLACE ONUPGRADE IF YOU
-													  // CHANGE THIS
+													// CHANGE THIS
 
 	private static final String DATABASE_CREATE = "create table "
 			+ "objects ( id integer primary key autoincrement,"
-			+ " direction text,"
-			+ " thing text,"
-			+ " person text," 
-			+ " contact_id integer,"
-			+ " until integer"
-			+ ");";
-	public static final String[] COLUMNS = { "id", "direction", "thing", "person", "contact_id", "until" };
+			+ " direction text," + " thing text," + " person text,"
+			+ " contact_id integer," + " until integer" + ");";
+	public static final String[] COLUMNS = { "id", "direction", "thing",
+			"person", "contact_id", "until" };
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
