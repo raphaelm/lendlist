@@ -7,7 +7,7 @@
     <string name="borrowed">Ausgeliehen</string>
     <string name="lent">Verliehen</string>
     <string name="add">Hinzufügen</string>
-    <string name="accept">Akzeptieren</string>
+    <string name="accept">OK</string>
     <string name="cancel">Abbrechen</string>
     <string name="add_text_ijust">Ich habe gerade</string>
     <string name="add_text_borrowed">ausgeliehen</string>
@@ -37,5 +37,9 @@
     <string name="persons">Personen</string>
     <string name="delete_confirm">Soll der Eintrag wrklich gelöscht werden?</string>
     <string name="delete_success">Gelöscht.</string>
+    <string name="save_success">Gespeichert.</string>
+    <string name="person_choosecontacts">Aus Kontakten auswählen</string>
+    <string name="person_entertext">Name eingeben</string>
+    <string name="person_method">Person ändern</string>
 
 </resources>

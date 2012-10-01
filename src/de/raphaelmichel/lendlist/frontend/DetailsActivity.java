@@ -22,15 +22,15 @@ import android.view.View.OnFocusChangeListener;
 import android.view.View.OnTouchListener;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.QuickContactBadge;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.WazaBe.HoloEverywhere.sherlock.SActivity;
+import com.WazaBe.HoloEverywhere.widget.EditText;
 import com.WazaBe.HoloEverywhere.widget.Spinner;
 import com.WazaBe.HoloEverywhere.widget.Toast;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
@@ -38,7 +38,7 @@ import de.raphaelmichel.lendlist.R;
 import de.raphaelmichel.lendlist.objects.Item;
 import de.raphaelmichel.lendlist.storage.DataSource;
 
-public class DetailsActivity extends SherlockFragmentActivity {
+public class DetailsActivity extends SActivity {
 
 	private Item item;
 
@@ -168,8 +168,67 @@ public class DetailsActivity extends SherlockFragmentActivity {
 				spDirection.setSelection(0);
 
 			btReturned.setChecked(item.isReturned());
-			
+
+			ibPersonEdit.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					edit_person();
+				}
+			});
+
 		}
+	}
+
+	public void edit_person() {
+		final CharSequence[] items = {
+				getString(R.string.person_choosecontacts),
+				getString(R.string.person_entertext) };
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle(R.string.person_method);
+		builder.setItems(items, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int n) {
+				if (n == 0) {
+					// Choose from Contacts
+				} else if (n == 1) {
+					// Enter Text
+					final EditText myView = new EditText(DetailsActivity.this);
+					myView.setText(item.getPerson());
+					myView.setTextColor(getResources().getColor(
+							R.color.bright_foreground_holo_dark)); // TODO: This is way too dirty.
+					AlertDialog.Builder promptB = new AlertDialog.Builder(
+							DetailsActivity.this);
+					promptB.setCancelable(true)
+							.setTitle(R.string.person_heading)
+							.setPositiveButton(R.string.accept,
+									new DialogInterface.OnClickListener() {
+										public void onClick(
+												DialogInterface dialog, int id) {
+											item.setPerson(myView.getText()
+													.toString());
+											item.setContact_id(0);
+											qcbPerson.setVisibility(View.GONE);
+											tvPerson.setText(myView.getText().toString());
+											dialog.dismiss();
+										}
+									})
+							.setNegativeButton(R.string.cancel,
+									new DialogInterface.OnClickListener() {
+										public void onClick(
+												DialogInterface dialog, int id) {
+											dialog.cancel();
+										}
+									}).setView(myView);
+
+					AlertDialog prompt = promptB.create();
+					prompt.setView(myView, 10, 10, 10, 10);
+					prompt.show();
+
+				}
+			}
+		});
+		AlertDialog alert = builder.create();
+		alert.show();
 	}
 
 	public class DatePickerFragment extends DialogFragment implements

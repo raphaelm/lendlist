@@ -7,7 +7,7 @@
     <string name="borrowed">Theirs</string>
     <string name="lent">Mine</string>
     <string name="add">Add</string>
-    <string name="accept">Accept</string>
+    <string name="accept">OK</string>
     <string name="cancel">Cancel</string>
     <string name="add_text_ijust">I just</string>
     <string name="add_text_borrowed">borrowed</string>
@@ -37,5 +37,9 @@
     <string name="persons">Persons</string>
     <string name="delete_confirm">Do you really want to delete this?</string>
     <string name="delete_success">Deleted.</string>
+    <string name="save_success">Saved.</string>
+    <string name="person_choosecontacts">Choose from contacts</string>
+    <string name="person_entertext">Enter a name</string>
+    <string name="person_method">Edit person</string>
 
 </resources>
