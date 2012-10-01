@@ -1,5 +1,4 @@
 * Bearbeiten
-* Löschen
 * Multi-Auswahl mit Löschen und Zurückgeben
 * Zurückgeben
 * Ausgabefilter (zurückgegebene)
@@ -14,4 +13,4 @@
 	* SD Karte
 	* Dropbox? 
 * Opac App Anbindung
-
+* AlertDialog und DatePicker aus HoloEverywhere nehmen
