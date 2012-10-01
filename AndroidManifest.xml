@@ -27,6 +27,13 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="de.raphaelmichel.lendlist.frontend.MainActivity" />
         </activity>
+        <activity
+            android:name=".frontend.DetailsActivity"
+            android:label="@string/title_activity_details" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="de.raphaelmichel.lendlist.frontend.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

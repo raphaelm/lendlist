@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,8 @@ import de.raphaelmichel.lendlist.objects.Item;
 import de.raphaelmichel.lendlist.storage.DataSource;
 
 public class MainActivityFragment extends SherlockFragment {
+
+	private static int REQUEST_CODE_DETAILS = 2;
 
 	private String direction;
 	private List<Item> items;
@@ -74,10 +77,9 @@ public class MainActivityFragment extends SherlockFragment {
 			lvItems.setOnItemClickListener(new OnItemClickListener() {
 				public void onItemClick(AdapterView<?> parent, View view,
 						int position, long id) {
-					// Intent intent = new Intent(getActivity(),
-					// SearchResultDetailsActivity.class);
-					// intent.putExtra("item_id", items.get(position).getMNr());
-					// startActivity(intent);
+					Intent i = new Intent(getActivity(), DetailsActivity.class);
+					i.putExtra("id", items.get(position).getId());
+					startActivityForResult(i, REQUEST_CODE_DETAILS);
 				}
 			});
 			lvItems.setClickable(true);

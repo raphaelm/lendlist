@@ -17,9 +17,19 @@
     <string name="add_text_from">von</string>
     <string name="add_text_someone">jemand</string>
     <string name="add_text_until">bis</string>
+    <string name="edit_text_borrowed">von</string>
+    <string name="edit_text_lent">verliehen an</string>
     <string name="date_format">dd.MM.yyyy</string>
     <string name="add_until_hint">Datum setzen (optional)</string>
     <string name="since">seit %s</string>
     <string name="until">bis %s</string>
+    <string name="delete">Löschen</string>
+    <string name="title_activity_details">Eintrag bearbeiten</string>
+    <string name="person">Person</string>
+    <string name="date">Datum</string>
+    <string name="date_return">Rückgabedatum</string>
+    <string name="date_start">Ausleihdatum</string>
+    <string name="date_heading">Zeitraum</string>
+    <string name="edit_returned">Zurückgegeben</string>
 
 </resources>

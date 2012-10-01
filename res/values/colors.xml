@@ -1,3 +1,7 @@
 <resources>
+
     <color name="itemlist_meta">#666666</color>
+    <color name="emphasis">#31b6e7</color>
+    <color name="bg_gray">#cecbce</color>
+
 </resources>

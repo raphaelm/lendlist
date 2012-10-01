@@ -17,10 +17,19 @@
     <string name="add_text_from">from</string>
     <string name="add_text_someone">someone</string>
     <string name="add_text_until">until</string>
+    <string name="edit_text_borrowed">borrowed from</string>
+    <string name="edit_text_lent">lent to</string>
     <string name="date_format">yyyy-MM-dd</string>
     <string name="add_until_hint">Set date (optional)</string>
     <string name="since">since %s</string>
     <string name="until">until %s</string>
     <string name="delete">Delete</string>
+    <string name="title_activity_details">Edit item</string>
+    <string name="person">Person</string>
+    <string name="date">Date</string>
+    <string name="date_return">Return date</string>
+    <string name="date_start">Date of lending</string>
+    <string name="date_heading">Period</string>
+    <string name="edit_returned">Mark returned</string>
 
 </resources>

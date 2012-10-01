@@ -67,16 +67,18 @@ public class MainActivity extends SherlockFragmentActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == R.id.action_add) {
+		switch (item.getItemId()) {
+		case R.id.action_add:
 			Intent i = new Intent(this, AddActivity.class);
 			i.putExtra("direction", FRAGMENTS[mViewPager.getCurrentItem()][1]);
 			startActivityForResult(i, REQUEST_CODE_ADD);
+			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
 
 	public class MainFragmentAdapter extends FragmentPagerAdapter {
-		
+
 		public MainFragmentAdapter(FragmentManager fm) {
 			super(fm);
 		}
