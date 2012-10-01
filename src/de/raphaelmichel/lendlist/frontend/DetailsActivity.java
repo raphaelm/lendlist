@@ -1,5 +1,7 @@
 package de.raphaelmichel.lendlist.frontend;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -10,27 +12,36 @@ import java.util.List;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.ContentUris;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.provider.ContactsContract.Contacts;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.NavUtils;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.view.View.OnTouchListener;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.QuickContactBadge;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import com.WazaBe.HoloEverywhere.sherlock.SActivity;
-import com.WazaBe.HoloEverywhere.widget.EditText;
 import com.WazaBe.HoloEverywhere.widget.Spinner;
 import com.WazaBe.HoloEverywhere.widget.Toast;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
@@ -38,7 +49,9 @@ import de.raphaelmichel.lendlist.R;
 import de.raphaelmichel.lendlist.objects.Item;
 import de.raphaelmichel.lendlist.storage.DataSource;
 
-public class DetailsActivity extends SActivity {
+public class DetailsActivity extends SherlockFragmentActivity {
+
+	private static final int REQUEST_CODE_CONTACT = 3;
 
 	private Item item;
 
@@ -175,7 +188,94 @@ public class DetailsActivity extends SActivity {
 					edit_person();
 				}
 			});
+			Log.i("contact",
+					ContactsContract.Contacts.getLookupUri(
+							item.getContact_id(), item.getContact_lookup())
+							.toString());
 
+			if (item.getContact_id() > 0) {
+				qcbPerson.setVisibility(View.VISIBLE);
+				Uri contactUri = ContactsContract.Contacts.getLookupUri(
+						item.getContact_id(), item.getContact_lookup());
+				qcbPerson.assignContactUri(contactUri);
+
+				qcbPerson.setImageBitmap(getPhoto(contactUri));
+			} else {
+				qcbPerson.setVisibility(View.GONE);
+			}
+
+		}
+	}
+
+	public Bitmap getPhoto(Uri uri) {
+
+	    long contactId;
+
+	    try {
+	        Uri contactLookupUri = uri;
+	        Cursor c = getContentResolver().query(contactLookupUri,
+	                new String[] { ContactsContract.Contacts._ID }, null, null,
+	                null);
+	        try {
+	            if (c == null || c.moveToFirst() == false) {
+	                return null;
+	            }
+	            contactId = c.getLong(0);
+	        } finally {
+	            c.close();
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return null;
+	    }
+
+	    Uri contactUri = ContentUris.withAppendedId(
+	            ContactsContract.Contacts.CONTENT_URI, contactId);
+	    InputStream input = ContactsContract.Contacts
+	            .openContactPhotoInputStream(getContentResolver(),
+	                    contactUri);
+
+	    if (input != null) {
+	        return BitmapFactory.decodeStream(input);
+	    } else {
+	        return null;
+	    }
+	}
+
+	@Override
+	public void onActivityResult(int reqCode, int resultCode, Intent data) {
+		super.onActivityResult(reqCode, resultCode, data);
+
+		switch (reqCode) {
+		case REQUEST_CODE_CONTACT:
+			if (resultCode == RESULT_OK) {
+				Uri contactData = data.getData();
+				Cursor c = managedQuery(contactData, null, null, null, null);
+				if (c.moveToFirst()) {
+					String name = c
+							.getString(c
+									.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+					String lookup = c
+							.getString(c
+									.getColumnIndex(ContactsContract.Contacts.LOOKUP_KEY));
+					long id = c.getLong(c
+							.getColumnIndex(ContactsContract.Contacts._ID));
+
+					Uri contactUri = ContactsContract.Contacts.getLookupUri(id,
+							lookup);
+
+					item.setPerson(name);
+					item.setContact_id(id);
+					item.setContact_lookup(lookup);
+					tvPerson.setText(name);
+					qcbPerson.setVisibility(View.VISIBLE);
+					qcbPerson.assignContactUri(contactUri);
+
+					qcbPerson.setImageBitmap(getPhoto(contactUri));
+				}
+			}
+			break;
 		}
 	}
 
@@ -190,12 +290,20 @@ public class DetailsActivity extends SActivity {
 			public void onClick(DialogInterface dialog, int n) {
 				if (n == 0) {
 					// Choose from Contacts
+					dialog.dismiss();
+					Intent intent = new Intent(Intent.ACTION_PICK,
+							ContactsContract.Contacts.CONTENT_URI);
+					startActivityForResult(intent, REQUEST_CODE_CONTACT);
 				} else if (n == 1) {
 					// Enter Text
+					dialog.dismiss();
 					final EditText myView = new EditText(DetailsActivity.this);
 					myView.setText(item.getPerson());
 					myView.setTextColor(getResources().getColor(
-							R.color.bright_foreground_holo_dark)); // TODO: This is way too dirty.
+							R.color.bright_foreground_holo_dark)); // TODO: This
+																	// is way
+																	// too
+																	// dirty.
 					AlertDialog.Builder promptB = new AlertDialog.Builder(
 							DetailsActivity.this);
 					promptB.setCancelable(true)
@@ -208,7 +316,8 @@ public class DetailsActivity extends SActivity {
 													.toString());
 											item.setContact_id(0);
 											qcbPerson.setVisibility(View.GONE);
-											tvPerson.setText(myView.getText().toString());
+											tvPerson.setText(myView.getText()
+													.toString());
 											dialog.dismiss();
 										}
 									})

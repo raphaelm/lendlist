@@ -37,6 +37,7 @@ public class DataSource {
 		values.put("thing", item.getThing());
 		values.put("person", item.getPerson());
 		values.put("contact_id", item.getContact_id());
+		values.put("contact_lookup", item.getContact_lookup());
 		values.put("until", (item.getUntil() != null ? item.getUntil()
 				.getTime() : 0));
 		values.put("date", (item.getDate() != null ? item.getDate().getTime()
@@ -51,6 +52,7 @@ public class DataSource {
 		values.put("thing", item.getThing());
 		values.put("person", item.getPerson());
 		values.put("contact_id", item.getContact_id());
+		values.put("contact_lookup", item.getContact_lookup());
 		values.put("until", (item.getUntil() != null ? item.getUntil()
 				.getTime() : 0));
 		values.put("date", (item.getDate() != null ? item.getDate().getTime()
@@ -108,6 +110,7 @@ public class DataSource {
 		item.setUntil(cursor.getLong(5) > 0 ? new Date(cursor.getLong(5)) : null);
 		item.setDate(cursor.getLong(6) > 0 ? new Date(cursor.getLong(6)) : null);
 		item.setReturned(cursor.getLong(7) == 1);
+		item.setContact_lookup(cursor.getString(8));
 		return item;
 	}
 }

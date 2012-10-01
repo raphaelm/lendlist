@@ -8,6 +8,7 @@ public class Item {
 	private String thing;
 	private String person;
 	private long contact_id;
+	private String contact_lookup;
 	private Date until;
 	private Date date = new Date();
 	private boolean returned = false;
@@ -50,6 +51,14 @@ public class Item {
 
 	public void setContact_id(long contact_id) {
 		this.contact_id = contact_id;
+	}
+
+	public String getContact_lookup() {
+		return contact_lookup;
+	}
+
+	public void setContact_lookup(String contact_lookup) {
+		this.contact_lookup = contact_lookup;
 	}
 
 	public Date getUntil() {
