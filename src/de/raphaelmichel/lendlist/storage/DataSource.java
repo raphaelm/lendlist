@@ -14,11 +14,9 @@ import de.raphaelmichel.lendlist.objects.Item;
 public class DataSource {
 	private SQLiteDatabase database;
 	private Database dbHelper;
-	private Context ctx;
 
 	public DataSource(Context context) {
 		dbHelper = new Database(context);
-		ctx = context;
 	}
 
 	public void openWritable() throws SQLException {

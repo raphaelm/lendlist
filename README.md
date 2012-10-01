@@ -7,6 +7,8 @@ Dependencies
 ------------
 * ActionBarSherlock
 * HoloEverywhere
+
+
 Both are included via git submodules.
 
 License

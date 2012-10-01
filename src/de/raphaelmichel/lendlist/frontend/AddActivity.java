@@ -176,6 +176,7 @@ public class AddActivity extends SherlockFragmentActivity {
 			return new DatePickerDialog(getActivity(), this, year, month, day);
 		}
 
+		@SuppressWarnings("deprecation")
 		public void onDateSet(DatePicker view, int year, int month, int day) {
 			etUntil.setText(new SimpleDateFormat(
 					getString(R.string.date_format)).format(new Date(
