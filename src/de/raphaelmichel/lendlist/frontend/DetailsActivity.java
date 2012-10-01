@@ -239,7 +239,7 @@ public class DetailsActivity extends SherlockFragmentActivity {
 	    if (input != null) {
 	        return BitmapFactory.decodeStream(input);
 	    } else {
-	        return null;
+	        return BitmapFactory.decodeResource(getResources(), R.drawable.ic_contact_picture);
 	    }
 	}
 
@@ -421,6 +421,8 @@ public class DetailsActivity extends SherlockFragmentActivity {
 		data.updateItem(item);
 		data.close();
 
+		Toast.makeText(DetailsActivity.this, R.string.save_success,
+				Toast.LENGTH_SHORT).show();
 	}
 
 	public void delete() {
