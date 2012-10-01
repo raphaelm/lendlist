@@ -25,11 +25,11 @@
     <string name="until">until %s</string>
     <string name="delete">Delete</string>
     <string name="title_activity_details">Edit item</string>
-    <string name="person">Person</string>
+    <string name="person_heading">PERSON</string>
     <string name="date">Date</string>
     <string name="date_return">Return date</string>
     <string name="date_start">Date of lending</string>
-    <string name="date_heading">Period</string>
+    <string name="date_heading">PERSIOD</string>
     <string name="edit_returned">Mark returned</string>
 
 </resources>

@@ -25,11 +25,11 @@
     <string name="until">bis %s</string>
     <string name="delete">Löschen</string>
     <string name="title_activity_details">Eintrag bearbeiten</string>
-    <string name="person">Person</string>
+    <string name="person_heading">PERSON</string>
     <string name="date">Datum</string>
     <string name="date_return">Rückgabedatum</string>
     <string name="date_start">Ausleihdatum</string>
-    <string name="date_heading">Zeitraum</string>
+    <string name="date_heading">ZEITRAUM</string>
     <string name="edit_returned">Zurückgegeben</string>
 
 </resources>
