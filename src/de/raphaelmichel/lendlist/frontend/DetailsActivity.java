@@ -24,9 +24,9 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.QuickContactBadge;
-import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.WazaBe.HoloEverywhere.widget.Spinner;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;

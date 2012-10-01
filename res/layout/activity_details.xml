@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp" >
 
-            <Spinner
+            <com.WazaBe.HoloEverywhere.widget.Spinner
                 android:id="@+id/spDirection"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
