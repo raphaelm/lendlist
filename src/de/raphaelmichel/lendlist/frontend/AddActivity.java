@@ -7,8 +7,12 @@ import java.util.Date;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.NavUtils;
 import android.view.MotionEvent;
@@ -18,6 +22,7 @@ import android.view.View.OnFocusChangeListener;
 import android.view.View.OnTouchListener;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -30,6 +35,8 @@ import de.raphaelmichel.lendlist.storage.DataSource;
 
 public class AddActivity extends SherlockFragmentActivity {
 
+	private static final int REQUEST_CODE_CONTACT = 3;
+
 	private String direction = "borrowed";
 	private DialogFragment dpDialog;
 	private EditText etUntil;
@@ -38,6 +45,9 @@ public class AddActivity extends SherlockFragmentActivity {
 	private TextView tvBorrowed;
 	private TextView tvLent;
 	private TextView tvTo;
+	private ImageButton ibContact;
+
+	private Item item = new Item();
 
 	@Override
 	public void onSaveInstanceState(Bundle savedInstanceState) {
@@ -54,6 +64,37 @@ public class AddActivity extends SherlockFragmentActivity {
 			return "";
 		else
 			return s;
+	}
+
+	@Override
+	public void onActivityResult(int reqCode, int resultCode, Intent data) {
+		super.onActivityResult(reqCode, resultCode, data);
+
+		switch (reqCode) {
+		case REQUEST_CODE_CONTACT:
+			if (resultCode == RESULT_OK) {
+				Uri contactData = data.getData();
+				Cursor c = managedQuery(contactData, null, null, null, null);
+				if (c.moveToFirst()) {
+					String name = c
+							.getString(c
+									.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+					String lookup = c
+							.getString(c
+									.getColumnIndex(ContactsContract.Contacts.LOOKUP_KEY));
+					long id = c.getLong(c
+							.getColumnIndex(ContactsContract.Contacts._ID));
+
+					item.setPerson(name);
+					item.setContact_id(id);
+					item.setContact_lookup(lookup);
+					etPerson.setText(name);
+					etPerson.setEnabled(false);
+					ibContact.setImageResource(R.drawable.ic_action_cancel);
+				}
+			}
+			break;
+		}
 	}
 
 	@Override
@@ -158,6 +199,24 @@ public class AddActivity extends SherlockFragmentActivity {
 			}
 		});
 
+		ibContact = (ImageButton) findViewById(R.id.ibContact);
+		ibContact.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (item.getContact_id() > 0) {
+					item.setContact_id(0);
+					item.setContact_lookup(null);
+					etPerson.setText("");
+					etPerson.setEnabled(true);
+					ibContact.setImageResource(R.drawable.ic_action_contact);
+				} else {
+					Intent intent = new Intent(Intent.ACTION_PICK,
+							ContactsContract.Contacts.CONTENT_URI);
+					startActivityForResult(intent, REQUEST_CODE_CONTACT);
+				}
+			}
+		});
+
 		if (savedInstanceState != null)
 			onRestoreInstanceState(savedInstanceState);
 	}
@@ -202,7 +261,7 @@ public class AddActivity extends SherlockFragmentActivity {
 
 	public void save() {
 		DataSource data = new DataSource(this);
-		Item item = new Item();
+
 		item.setDirection(direction);
 		item.setThing(etThing.getText().toString());
 		item.setPerson(etPerson.getText().toString());
@@ -213,7 +272,7 @@ public class AddActivity extends SherlockFragmentActivity {
 			item.setUntil(null);
 		}
 		item.setDate(new Date());
-		
+
 		data.openWritable();
 		data.addItem(item);
 		data.close();
