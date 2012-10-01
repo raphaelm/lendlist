@@ -33,5 +33,6 @@
     <string name="edit_returned">Zurückgegeben</string>
     <string name="error_head">Upps!</string>
     <string name="error_unkown_item">Dieser Eintrag existiert garnicht</string>
+    <string name="persons">Personen</string>
 
 </resources>

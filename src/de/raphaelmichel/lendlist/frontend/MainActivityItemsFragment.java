@@ -23,15 +23,15 @@ import de.raphaelmichel.lendlist.R;
 import de.raphaelmichel.lendlist.objects.Item;
 import de.raphaelmichel.lendlist.storage.DataSource;
 
-public class MainActivityFragment extends SherlockFragment {
+public class MainActivityItemsFragment extends SherlockFragment {
 
 	private static int REQUEST_CODE_DETAILS = 2;
 
 	private String direction;
 	private List<Item> items;
 
-	static MainActivityFragment newInstance(String direction) {
-		MainActivityFragment f = new MainActivityFragment();
+	static MainActivityItemsFragment newInstance(String direction) {
+		MainActivityItemsFragment f = new MainActivityItemsFragment();
 
 		Bundle args = new Bundle();
 		args.putString("direction", direction);

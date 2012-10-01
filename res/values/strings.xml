@@ -33,5 +33,6 @@
     <string name="edit_returned">Mark returned</string>
     <string name="error_head">Oooops!</string>
     <string name="error_unkown_item">This item does not exist.</string>
+    <string name="persons">Persons</string>
 
 </resources>

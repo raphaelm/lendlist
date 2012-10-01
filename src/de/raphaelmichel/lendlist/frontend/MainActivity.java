@@ -20,7 +20,14 @@ public class MainActivity extends SherlockFragmentActivity {
 
 	private static int REQUEST_CODE_ADD = 1;
 
-	private String FRAGMENTS[][];
+	private static int FRAGMENT_TYPE_ITEMS = 0;
+	private static int FRAGMENT_TYPE_PERSONS = 1;
+	private static String[] DIRECTIONS = { "borrowed", "lent" };
+
+	private static int[][] FRAGMENTS = new int[][] {
+			new int[] { R.string.borrowed, 0, FRAGMENT_TYPE_ITEMS },
+			new int[] { R.string.lent, 1, FRAGMENT_TYPE_ITEMS },
+			new int[] { R.string.persons, 0, FRAGMENT_TYPE_PERSONS } };
 
 	private ViewPager mViewPager;
 	private MainFragmentAdapter fragmentAdapter;
@@ -32,10 +39,6 @@ public class MainActivity extends SherlockFragmentActivity {
 		setContentView(R.layout.activity_main);
 
 		sp = PreferenceManager.getDefaultSharedPreferences(this);
-
-		FRAGMENTS = new String[][] {
-				new String[] { getString(R.string.borrowed), "borrowed" },
-				new String[] { getString(R.string.lent), "lent" } };
 
 		mViewPager = (ViewPager) findViewById(R.id.viewpager);
 		fragmentAdapter = new MainFragmentAdapter(getSupportFragmentManager());
@@ -70,7 +73,8 @@ public class MainActivity extends SherlockFragmentActivity {
 		switch (item.getItemId()) {
 		case R.id.action_add:
 			Intent i = new Intent(this, AddActivity.class);
-			i.putExtra("direction", FRAGMENTS[mViewPager.getCurrentItem()][1]);
+			i.putExtra("direction",
+					DIRECTIONS[FRAGMENTS[mViewPager.getCurrentItem()][1]]);
 			startActivityForResult(i, REQUEST_CODE_ADD);
 			return true;
 		}
@@ -85,12 +89,17 @@ public class MainActivity extends SherlockFragmentActivity {
 
 		@Override
 		public CharSequence getPageTitle(int position) {
-			return FRAGMENTS[position][0];
+			return getString(FRAGMENTS[position][0]);
 		}
 
 		@Override
 		public Fragment getItem(int position) {
-			return MainActivityFragment.newInstance(FRAGMENTS[position][1]);
+			if (FRAGMENTS[position][2] == FRAGMENT_TYPE_ITEMS)
+				return MainActivityItemsFragment
+						.newInstance(DIRECTIONS[FRAGMENTS[position][1]]);
+			else if (FRAGMENTS[position][2] == FRAGMENT_TYPE_PERSONS)
+				return MainActivityPersonsFragment.newInstance();
+			return null;
 		}
 
 		@Override
