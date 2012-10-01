@@ -25,13 +25,13 @@
             android:layout_marginTop="10dp" >
 
             <Spinner
-                android:id="@+id/spinner1"
+                android:id="@+id/spDirection"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1" />
 
             <Button
-                android:id="@+id/button1"
+                android:id="@+id/btReturned"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -68,13 +68,12 @@
                 android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:padding="5dp"
-                android:text="TextView" />
+                android:text="" />
 
             <ImageButton
                 android:id="@+id/ibPersonEdit"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:contentDescription="Edit"
                 android:src="@drawable/ic_action_edit" />
         </LinearLayout>
 
