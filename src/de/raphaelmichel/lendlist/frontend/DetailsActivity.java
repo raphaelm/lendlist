@@ -227,7 +227,31 @@ public class DetailsActivity extends SherlockFragmentActivity {
 	}
 
 	public void save() {
-		Log.i("selected", "" + spDirection.getSelectedItem());
+		item.setThing(etThing.getText().toString());
+
+		try {
+			item.setUntil(new SimpleDateFormat(getString(R.string.date_format))
+					.parse(etUntil.getText().toString()));
+		} catch (ParseException e) {
+			item.setUntil(null);
+		}
+		try {
+			item.setDate(new SimpleDateFormat(getString(R.string.date_format))
+					.parse(etDate.getText().toString()));
+		} catch (ParseException e) {
+			item.setDate(null);
+		}
+		if (spDirection.getSelectedItemPosition() == 0) {
+			item.setDirection("borrowed");
+		} else {
+			item.setDirection("lent");
+		}
+		
+		DataSource data = new DataSource(this);
+		data.openWritable();
+		data.updateItem(item);
+		data.close();
+		
 	}
 
 	public void delete() {
