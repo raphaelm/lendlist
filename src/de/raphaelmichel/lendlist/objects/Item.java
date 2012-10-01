@@ -9,7 +9,8 @@ public class Item {
 	private String person;
 	private long contact_id;
 	private Date until;
-	private Date date;
+	private Date date = new Date();
+	private boolean returned = false;
 
 	public long getId() {
 		return id;
@@ -65,6 +66,14 @@ public class Item {
 
 	public void setDate(Date date) {
 		this.date = date;
+	}
+
+	public boolean isReturned() {
+		return returned;
+	}
+
+	public void setReturned(boolean returned) {
+		this.returned = returned;
 	}
 
 	@Override

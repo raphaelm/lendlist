@@ -30,12 +30,15 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1" />
 
-            <Button
+            <ToggleButton
                 android:id="@+id/btReturned"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="@string/edit_returned" />
+                android:text="@string/edit_returned"
+                android:textOff="@string/edit_returned"
+                android:textOn="@string/edit_not_returned" />
+
         </LinearLayout>
 
         <TextView

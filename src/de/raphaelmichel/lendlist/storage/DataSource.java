@@ -41,6 +41,7 @@ public class DataSource {
 				.getTime() : 0));
 		values.put("date", (item.getDate() != null ? item.getDate().getTime()
 				: 0));
+		values.put("returned", item.isReturned());
 		database.insert("objects", null, values);
 	}
 
@@ -54,6 +55,7 @@ public class DataSource {
 				.getTime() : 0));
 		values.put("date", (item.getDate() != null ? item.getDate().getTime()
 				: 0));
+		values.put("returned", item.isReturned());
 		String[] selA = { item.getId() + "" };
 		database.update("objects", values, "id = ?", selA);
 	}
@@ -103,8 +105,9 @@ public class DataSource {
 		item.setThing(cursor.getString(2));
 		item.setPerson(cursor.getString(3));
 		item.setContact_id(cursor.getLong(4));
-		item.setUntil(new Date(cursor.getLong(5)));
-		item.setDate(new Date(cursor.getLong(6)));
+		item.setUntil(cursor.getLong(5) > 0 ? new Date(cursor.getLong(5)) : null);
+		item.setDate(cursor.getLong(6) > 0 ? new Date(cursor.getLong(6)) : null);
+		item.setReturned(cursor.getLong(7) == 1);
 		return item;
 	}
 }

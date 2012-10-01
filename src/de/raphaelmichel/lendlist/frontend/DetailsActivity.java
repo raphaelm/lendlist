@@ -16,18 +16,17 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.NavUtils;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.view.View.OnTouchListener;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.QuickContactBadge;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.WazaBe.HoloEverywhere.widget.Spinner;
 import com.WazaBe.HoloEverywhere.widget.Toast;
@@ -47,7 +46,7 @@ public class DetailsActivity extends SherlockFragmentActivity {
 	private EditText etDate;
 	private EditText etUntil;
 	private Spinner spDirection;
-	private Button btReturned;
+	private ToggleButton btReturned;
 	private QuickContactBadge qcbPerson;
 	private TextView tvPerson;
 	private ImageButton ibPersonEdit;
@@ -78,7 +77,7 @@ public class DetailsActivity extends SherlockFragmentActivity {
 			etDate = (EditText) findViewById(R.id.etDate);
 			etUntil = (EditText) findViewById(R.id.etUntil);
 			spDirection = (Spinner) findViewById(R.id.spDirection);
-			btReturned = (Button) findViewById(R.id.btReturned);
+			btReturned = (ToggleButton) findViewById(R.id.btReturned);
 			qcbPerson = (QuickContactBadge) findViewById(R.id.qcbPerson);
 			tvPerson = (TextView) findViewById(R.id.tvPerson);
 			ibPersonEdit = (ImageButton) findViewById(R.id.ibPersonEdit);
@@ -168,6 +167,8 @@ public class DetailsActivity extends SherlockFragmentActivity {
 			else
 				spDirection.setSelection(0);
 
+			btReturned.setChecked(item.isReturned());
+			
 		}
 	}
 
@@ -246,12 +247,12 @@ public class DetailsActivity extends SherlockFragmentActivity {
 		} else {
 			item.setDirection("lent");
 		}
-		
+		item.setReturned(btReturned.isChecked());
 		DataSource data = new DataSource(this);
 		data.openWritable();
 		data.updateItem(item);
 		data.close();
-		
+
 	}
 
 	public void delete() {

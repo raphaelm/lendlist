@@ -213,6 +213,7 @@ public class AddActivity extends SherlockFragmentActivity {
 			item.setUntil(null);
 		}
 		item.setDate(new Date());
+		
 		data.openWritable();
 		data.addItem(item);
 		data.close();

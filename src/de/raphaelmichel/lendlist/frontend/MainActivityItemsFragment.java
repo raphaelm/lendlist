@@ -71,9 +71,6 @@ public class MainActivityItemsFragment extends SherlockFragment {
 		items = data.getAllItems(direction);
 		data.close();
 
-		if (items.size() == 0) {
-			// setContentView(R.layout.starred_empty);
-		} else {
 			lvItems.setOnItemClickListener(new OnItemClickListener() {
 				public void onItemClick(AdapterView<?> parent, View view,
 						int position, long id) {
@@ -85,7 +82,6 @@ public class MainActivityItemsFragment extends SherlockFragment {
 			lvItems.setClickable(true);
 			lvItems.setAdapter(new ItemListAdapter());
 			lvItems.setTextFilterEnabled(false);
-		}
 
 	}
 
@@ -103,7 +99,7 @@ public class MainActivityItemsFragment extends SherlockFragment {
 		@Override
 		public View getView(int position, View contentView, ViewGroup viewGroup) {
 			View view = null;
-
+			
 			if (items.get(position) == null) {
 				LayoutInflater layoutInflater = (LayoutInflater) getContext()
 						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
