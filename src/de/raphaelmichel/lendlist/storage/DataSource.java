@@ -58,6 +58,11 @@ public class DataSource {
 		database.update("objects", values, "id = ?", selA);
 	}
 
+	public void deleteItem(long id) {
+		String[] selA = { "" + id };
+		database.delete("objects", "id = ?", selA);
+	}
+
 	public List<Item> getAllItems(String direction) {
 		List<Item> items = new ArrayList<Item>();
 		String[] selA = { direction };

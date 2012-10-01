@@ -7,8 +7,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -27,6 +30,7 @@ import android.widget.QuickContactBadge;
 import android.widget.TextView;
 
 import com.WazaBe.HoloEverywhere.widget.Spinner;
+import com.WazaBe.HoloEverywhere.widget.Toast;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -154,7 +158,7 @@ public class DetailsActivity extends SherlockFragmentActivity {
 			list.add(getString(R.string.edit_text_borrowed));
 			list.add(getString(R.string.edit_text_lent));
 			ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
-					android.R.layout.simple_spinner_item, list);
+					R.layout.simple_spinner_item, list);
 			dataAdapter
 					.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 			spDirection.setAdapter(dataAdapter);
@@ -226,11 +230,40 @@ public class DetailsActivity extends SherlockFragmentActivity {
 		Log.i("selected", "" + spDirection.getSelectedItem());
 	}
 
+	public void delete() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage(R.string.delete_confirm);
+		builder.setPositiveButton(R.string.delete, new OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+				DataSource data = new DataSource(DetailsActivity.this);
+				data.openWritable();
+				data.deleteItem(item.getId());
+				data.close();
+				setResult(-1);
+				Toast.makeText(DetailsActivity.this, R.string.delete_success,
+						Toast.LENGTH_SHORT).show();
+				finish();
+			}
+		});
+		builder.setNegativeButton(android.R.string.no, new OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+			}
+		});
+		builder.show();
+	}
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
 			NavUtils.navigateUpFromSameTask(this);
+			return true;
+		case R.id.action_delete:
+			delete();
 			return true;
 		case R.id.action_accept:
 			save();

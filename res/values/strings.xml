@@ -34,5 +34,7 @@
     <string name="error_head">Oooops!</string>
     <string name="error_unkown_item">This item does not exist.</string>
     <string name="persons">Persons</string>
+    <string name="delete_confirm">Do you really want to delete this?</string>
+    <string name="delete_success">Deleted.</string>
 
 </resources>
