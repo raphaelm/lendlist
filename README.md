@@ -1,13 +1,13 @@
 lendlist
 =======
-Never again forget what you borrowed from or to someone.
+Never again forget what you borrowed from someone and keep track of what your friends borrowed from you.
 
 
 Dependencies
 ------------
 * ActionBarSherlock
 * HoloEverywhere
-  https://github.com/ChristopheVersieux/HoloEverywhere
+Both are included via git submodules.
 
 License
 -------
