@@ -166,8 +166,18 @@ public class AddActivity extends SherlockFragmentActivity {
 			DatePickerDialog.OnDateSetListener {
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
-			// Use the current date as the default date in the picker
 			final Calendar c = Calendar.getInstance();
+			if (etUntil.getText().length() > 0) {
+				Date d;
+				try {
+					d = new SimpleDateFormat(getString(R.string.date_format))
+							.parse(etUntil.getText().toString());
+					c.setTime(d);
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+			}
+
 			int year = c.get(Calendar.YEAR);
 			int month = c.get(Calendar.MONTH);
 			int day = c.get(Calendar.DAY_OF_MONTH);
