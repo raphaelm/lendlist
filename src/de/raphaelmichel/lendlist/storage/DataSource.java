@@ -39,8 +39,8 @@ public class DataSource {
 		values.put("contact_id", item.getContact_id());
 		values.put("until", (item.getUntil() != null ? item.getUntil()
 				.getTime() : 0));
-		values.put("date", (item.getDate() != null ? item.getDate()
-				.getTime() : 0));
+		values.put("date", (item.getDate() != null ? item.getDate().getTime()
+				: 0));
 		database.insert("objects", null, values);
 	}
 
@@ -52,8 +52,8 @@ public class DataSource {
 		values.put("contact_id", item.getContact_id());
 		values.put("until", (item.getUntil() != null ? item.getUntil()
 				.getTime() : 0));
-		values.put("date", (item.getDate() != null ? item.getDate()
-				.getTime() : 0));
+		values.put("date", (item.getDate() != null ? item.getDate().getTime()
+				: 0));
 		String[] selA = { item.getId() + "" };
 		database.update("objects", values, "id = ?", selA);
 	}
@@ -73,6 +73,22 @@ public class DataSource {
 		// Make sure to close the cursor
 		cursor.close();
 		return items;
+	}
+
+	public Item getItem(long id) {
+		String[] selA = { "" + id };
+		Cursor cursor = database.query("objects", Database.COLUMNS, "id = ?",
+				selA, null, null, null);
+
+		Item item = null;
+
+		cursor.moveToFirst();
+		if (!cursor.isAfterLast()) {
+			item = cursorToItem(cursor);
+		}
+		// Make sure to close the cursor
+		cursor.close();
+		return item;
 	}
 
 	private Item cursorToItem(Cursor cursor) {
