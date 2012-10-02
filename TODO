@@ -1,15 +1,17 @@
 * Multi-Auswahl mit Löschen und Zurückgeben
-* Zurückgeben
 * Ausgabefilter (zurückgegebene)
 * Sortieren
 * Datum als "noch X Tage"/…
 * Auflistung nach Personen
+	-> Anklicken
 * Foto
-* Telefonbuch-Anbindung
-	* vCard
-	* direkt Mail senden
+* "Willkommensnachricht" bei leerer Liste
+* Rückgabedatum wieder entfernen
 * Backup
 	* SD Karte
 	* Dropbox? 
 * Opac App Anbindung
 * AlertDialog und DatePicker aus HoloEverywhere nehmen
+* Touch Feedback bei "Edit" und "Delete" ImageViews in der Detailansicht
+* Settings
+* About

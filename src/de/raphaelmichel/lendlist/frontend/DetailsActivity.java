@@ -33,6 +33,7 @@ import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.QuickContactBadge;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -60,7 +61,8 @@ public class DetailsActivity extends SherlockFragmentActivity {
 	private ToggleButton btReturned;
 	private QuickContactBadge qcbPerson;
 	private TextView tvPerson;
-	private ImageButton ibPersonEdit;
+	private ImageView ibPersonEdit;
+	private ImageView ibRemoveUntil;
 
 	private DialogFragment dpDialog;
 
@@ -91,7 +93,8 @@ public class DetailsActivity extends SherlockFragmentActivity {
 			btReturned = (ToggleButton) findViewById(R.id.btReturned);
 			qcbPerson = (QuickContactBadge) findViewById(R.id.qcbPerson);
 			tvPerson = (TextView) findViewById(R.id.tvPerson);
-			ibPersonEdit = (ImageButton) findViewById(R.id.ibPersonEdit);
+			ibPersonEdit = (ImageView) findViewById(R.id.ibPersonEdit);
+			ibRemoveUntil = (ImageView) findViewById(R.id.ibRemoveUntil);
 
 			etThing.setText(item.getThing());
 			if (item.getDate() != null)
@@ -186,10 +189,7 @@ public class DetailsActivity extends SherlockFragmentActivity {
 					edit_person();
 				}
 			});
-			Log.i("contact",
-					ContactsContract.Contacts.getLookupUri(
-							item.getContact_id(), item.getContact_lookup())
-							.toString());
+
 
 			if (item.getContact_id() > 0) {
 				qcbPerson.setVisibility(View.VISIBLE);
@@ -201,6 +201,13 @@ public class DetailsActivity extends SherlockFragmentActivity {
 			} else {
 				qcbPerson.setVisibility(View.GONE);
 			}
+			
+			ibRemoveUntil.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					etUntil.setText("");
+				}
+			});
 
 		}
 	}
