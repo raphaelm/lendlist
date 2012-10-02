@@ -91,7 +91,7 @@ public class DataSource {
 		String[] proj = {"person", "contact_id", "contact_lookup", "COUNT(thing)"};
 		
 		Cursor cursor = database.query("objects", proj, null, null,
-				"person, contact_lookup", null, null);
+				"person", null, null);
 
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast()) {
