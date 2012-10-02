@@ -96,7 +96,7 @@ public class MainActivity extends SherlockFragmentActivity {
 		@Override
 		public Fragment getItem(int position) {
 			if (FRAGMENTS[position][2] == FRAGMENT_TYPE_ITEMS)
-				return MainActivityItemsFragment
+				return ItemsFragment
 						.newInstance(DIRECTIONS[FRAGMENTS[position][1]]);
 			else if (FRAGMENTS[position][2] == FRAGMENT_TYPE_PERSONS)
 				return MainActivityPersonsFragment.newInstance();

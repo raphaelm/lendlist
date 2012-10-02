@@ -23,18 +23,29 @@ import de.raphaelmichel.lendlist.R;
 import de.raphaelmichel.lendlist.objects.Item;
 import de.raphaelmichel.lendlist.storage.DataSource;
 
-public class MainActivityItemsFragment extends SherlockFragment {
+public class ItemsFragment extends SherlockFragment {
 
 	private static int REQUEST_CODE_DETAILS = 2;
 
 	private String direction;
+	private String filter;
 	private List<Item> items;
 
-	static MainActivityItemsFragment newInstance(String direction) {
-		MainActivityItemsFragment f = new MainActivityItemsFragment();
+	static ItemsFragment newInstance(String direction) {
+		ItemsFragment f = new ItemsFragment();
 
 		Bundle args = new Bundle();
 		args.putString("direction", direction);
+		f.setArguments(args);
+
+		return f;
+	}
+
+	protected static ItemsFragment newInstanceFiltered(String filter) {
+		ItemsFragment f = new ItemsFragment();
+
+		Bundle args = new Bundle();
+		args.putString("filter", filter);
 		f.setArguments(args);
 
 		return f;
@@ -51,6 +62,8 @@ public class MainActivityItemsFragment extends SherlockFragment {
 		super.onCreate(savedInstanceState);
 		direction = getArguments() != null ? getArguments().getString(
 				"direction") : null;
+		filter = getArguments() != null ? getArguments().getString(
+				"filter") : null;
 	}
 
 	@Override
@@ -68,20 +81,20 @@ public class MainActivityItemsFragment extends SherlockFragment {
 
 		DataSource data = new DataSource(getActivity());
 		data.open();
-		items = data.getAllItems(direction);
+		items = data.getAllItems(direction, filter);
 		data.close();
 
-			lvItems.setOnItemClickListener(new OnItemClickListener() {
-				public void onItemClick(AdapterView<?> parent, View view,
-						int position, long id) {
-					Intent i = new Intent(getActivity(), DetailsActivity.class);
-					i.putExtra("id", items.get(position).getId());
-					startActivityForResult(i, REQUEST_CODE_DETAILS);
-				}
-			});
-			lvItems.setClickable(true);
-			lvItems.setAdapter(new ItemListAdapter());
-			lvItems.setTextFilterEnabled(false);
+		lvItems.setOnItemClickListener(new OnItemClickListener() {
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				Intent i = new Intent(getActivity(), DetailsActivity.class);
+				i.putExtra("id", items.get(position).getId());
+				startActivityForResult(i, REQUEST_CODE_DETAILS);
+			}
+		});
+		lvItems.setClickable(true);
+		lvItems.setAdapter(new ItemListAdapter());
+		lvItems.setTextFilterEnabled(false);
 
 	}
 
@@ -99,7 +112,7 @@ public class MainActivityItemsFragment extends SherlockFragment {
 		@Override
 		public View getView(int position, View contentView, ViewGroup viewGroup) {
 			View view = null;
-			
+
 			if (items.get(position) == null) {
 				LayoutInflater layoutInflater = (LayoutInflater) getContext()
 						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

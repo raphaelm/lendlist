@@ -68,11 +68,23 @@ public class DataSource {
 		database.delete("objects", "id = ?", selA);
 	}
 
-	public List<Item> getAllItems(String direction) {
+	public List<Item> getAllItems(String direction, String filter) {
 		List<Item> items = new ArrayList<Item>();
 		String[] selA = { direction };
-		Cursor cursor = database.query("objects", Database.COLUMNS,
-				"direction = ?", selA, null, null, null);
+		Cursor cursor = null;
+		
+		if (filter == null) {
+			cursor = database.query("objects", Database.COLUMNS,
+					"direction = ?", selA, null, null, null);
+		} else {
+			if (direction == null) {
+				cursor = database.query("objects", Database.COLUMNS,
+						filter, selA, null, null, null);
+			} else {
+				cursor = database.query("objects", Database.COLUMNS,
+						"direction = ? AND " + filter, selA, null, null, null);
+			}
+		}
 
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast()) {
@@ -88,10 +100,11 @@ public class DataSource {
 	public List<Person> getPersonList() {
 		List<Person> items = new ArrayList<Person>();
 
-		String[] proj = {"person", "contact_id", "contact_lookup", "COUNT(thing)"};
-		
-		Cursor cursor = database.query("objects", proj, null, null,
-				"person", null, null);
+		String[] proj = { "person", "contact_id", "contact_lookup",
+				"COUNT(thing)" };
+
+		Cursor cursor = database.query("objects", proj, null, null, "person",
+				null, null);
 
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast()) {
