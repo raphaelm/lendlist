@@ -68,24 +68,17 @@ public class DataSource {
 		database.delete("objects", "id = ?", selA);
 	}
 
-	public List<Item> getAllItems(String direction, String filter,
-			String[] filterArgs) {
+	public List<Item> getAllItems(String filter, String[] filterArgs) {
 		// direction is ignored if filter is != null!
 		List<Item> items = new ArrayList<Item>();
-		String[] selA = { direction };
 		Cursor cursor = null;
 
 		if (filter == null) {
-			if (direction == null) {
-				cursor = database.query("objects", Database.COLUMNS, null,
-						null, null, null, null);
-			} else {
-				cursor = database.query("objects", Database.COLUMNS,
-						"direction = ?", selA, null, null, null);
-			}
-		} else {
-			cursor = database.query("objects", Database.COLUMNS, filter, filterArgs,
+			cursor = database.query("objects", Database.COLUMNS, null, null,
 					null, null, null);
+		} else {
+			cursor = database.query("objects", Database.COLUMNS, filter,
+					filterArgs, null, null, null);
 		}
 
 		cursor.moveToFirst();

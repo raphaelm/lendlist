@@ -95,10 +95,12 @@ public class MainActivity extends SherlockFragmentActivity {
 
 		@Override
 		public Fragment getItem(int position) {
-			if (FRAGMENTS[position][2] == FRAGMENT_TYPE_ITEMS)
-				return ItemsFragment
-						.newInstance(DIRECTIONS[FRAGMENTS[position][1]]);
-			else if (FRAGMENTS[position][2] == FRAGMENT_TYPE_PERSONS)
+			if (FRAGMENTS[position][2] == FRAGMENT_TYPE_ITEMS) {
+				String filter = "direction = ?";
+				String[] filterArgs = { DIRECTIONS[FRAGMENTS[position][1]] };
+
+				return ItemsFragment.newInstanceFiltered(filter, filterArgs);
+			} else if (FRAGMENTS[position][2] == FRAGMENT_TYPE_PERSONS)
 				return MainActivityPersonsFragment.newInstance();
 			return null;
 		}

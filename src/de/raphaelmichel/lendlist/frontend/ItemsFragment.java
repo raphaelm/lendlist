@@ -27,27 +27,20 @@ public class ItemsFragment extends SherlockFragment {
 
 	private static int REQUEST_CODE_DETAILS = 2;
 
-	protected String direction;
 	protected String filter;
 	protected String[] filterArgs;
 	protected List<Item> items;
 
 	static ItemsFragment newInstance(String direction) {
-		ItemsFragment f = new ItemsFragment();
-
-		Bundle args = new Bundle();
-		args.putString("direction", direction);
-		f.setArguments(args);
-
-		return f;
+		return newInstanceFiltered("direction = ?", new String[] { direction });
 	}
 
-	protected static ItemsFragment newInstanceFiltered(String filter) {
+	protected static ItemsFragment newInstanceFiltered(String filter,
+			String[] filterArgs) {
 		ItemsFragment f = new ItemsFragment();
 
-		Bundle args = new Bundle();
-		args.putString("filter", filter);
-		f.setArguments(args);
+		f.filter = filter;
+		f.filterArgs = filterArgs;
 
 		return f;
 	}
@@ -61,10 +54,6 @@ public class ItemsFragment extends SherlockFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		direction = getArguments() != null ? getArguments().getString(
-				"direction") : null;
-		filter = getArguments() != null ? getArguments().getString(
-				"filter") : null;
 	}
 
 	@Override
@@ -78,15 +67,11 @@ public class ItemsFragment extends SherlockFragment {
 	}
 
 	private void refresh(View v) {
-		if(filter == null && direction == null) {
-			// This will be replaced.
-			return;
-		}
 		ListView lvItems = (ListView) v.findViewById(R.id.lvItems);
 
 		DataSource data = new DataSource(getActivity());
 		data.open();
-		items = data.getAllItems(direction, filter, filterArgs);
+		items = data.getAllItems(filter, filterArgs);
 		data.close();
 
 		lvItems.setOnItemClickListener(new OnItemClickListener() {
@@ -142,27 +127,17 @@ public class ItemsFragment extends SherlockFragment {
 			TextView tvPerson = (TextView) view.findViewById(R.id.tvPerson);
 			tvPerson.setText(item.getPerson());
 
-			if (direction != null && direction.equals("lent")) {
-				TextView tvUntil = (TextView) view.findViewById(R.id.tvUntil);
+			TextView tvUntil = (TextView) view.findViewById(R.id.tvUntil);
+			if (item.getUntil() != null)
+				tvUntil.setText(getString(R.string.until,
+						new SimpleDateFormat(getString(R.string.date_format))
+								.format(item.getUntil())));
+			else {
 				if (item.getDate() != null)
 					tvUntil.setText(getString(R.string.since,
 							new SimpleDateFormat(
 									getString(R.string.date_format))
 									.format(item.getDate())));
-			} else {
-				TextView tvUntil = (TextView) view.findViewById(R.id.tvUntil);
-				if (item.getUntil() != null)
-					tvUntil.setText(getString(R.string.until,
-							new SimpleDateFormat(
-									getString(R.string.date_format))
-									.format(item.getUntil())));
-				else {
-					if (item.getDate() != null)
-						tvUntil.setText(getString(R.string.since,
-								new SimpleDateFormat(
-										getString(R.string.date_format))
-										.format(item.getDate())));
-				}
 			}
 
 			return view;

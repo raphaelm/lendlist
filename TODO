@@ -3,7 +3,7 @@
 * Sortieren
 * Datum als "noch X Tage"/…
 * Auflistung nach Personen
-	-> Anklicken
+	-> Unterscheidung geliehen und verliehen
 * Foto
 * "Willkommensnachricht" bei leerer Liste
 * Rückgabedatum wieder entfernen
@@ -14,4 +14,5 @@
 * AlertDialog und DatePicker aus HoloEverywhere nehmen
 * Touch Feedback bei "Edit" und "Delete" ImageViews in der Detailansicht
 * Settings
+* Datenbank- und Kontakte-Zeug asynchron machen?
 * About
