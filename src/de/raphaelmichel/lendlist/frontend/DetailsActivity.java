@@ -1,6 +1,5 @@
 package de.raphaelmichel.lendlist.frontend;
 
-import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -23,7 +22,6 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.provider.ContactsContract.Contacts;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.NavUtils;
 import android.util.Log;
@@ -208,39 +206,37 @@ public class DetailsActivity extends SherlockFragmentActivity {
 	}
 
 	public Bitmap getPhoto(Uri uri) {
+		long contactId;
+		try {
+			Uri contactLookupUri = uri;
+			Cursor c = getContentResolver().query(contactLookupUri,
+					new String[] { ContactsContract.Contacts._ID }, null, null,
+					null);
+			try {
+				if (c == null || c.moveToFirst() == false) {
+					return null;
+				}
+				contactId = c.getLong(0);
+			} finally {
+				c.close();
+			}
 
-	    long contactId;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 
-	    try {
-	        Uri contactLookupUri = uri;
-	        Cursor c = getContentResolver().query(contactLookupUri,
-	                new String[] { ContactsContract.Contacts._ID }, null, null,
-	                null);
-	        try {
-	            if (c == null || c.moveToFirst() == false) {
-	                return null;
-	            }
-	            contactId = c.getLong(0);
-	        } finally {
-	            c.close();
-	        }
+		Uri contactUri = ContentUris.withAppendedId(
+				ContactsContract.Contacts.CONTENT_URI, contactId);
+		InputStream input = ContactsContract.Contacts
+				.openContactPhotoInputStream(getContentResolver(), contactUri);
 
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	        return null;
-	    }
-
-	    Uri contactUri = ContentUris.withAppendedId(
-	            ContactsContract.Contacts.CONTENT_URI, contactId);
-	    InputStream input = ContactsContract.Contacts
-	            .openContactPhotoInputStream(getContentResolver(),
-	                    contactUri);
-
-	    if (input != null) {
-	        return BitmapFactory.decodeStream(input);
-	    } else {
-	        return BitmapFactory.decodeResource(getResources(), R.drawable.ic_contact_picture);
-	    }
+		if (input != null) {
+			return BitmapFactory.decodeStream(input);
+		} else {
+			return BitmapFactory.decodeResource(getResources(),
+					R.drawable.ic_contact_picture);
+		}
 	}
 
 	@Override
