@@ -42,5 +42,7 @@
     <string name="person_entertext">Enter a name</string>
     <string name="person_method">Edit person</string>
     <string name="title_activity_person_lookup">Person</string>
+    <string name="returned_hide">Hide returned</string>
+    <string name="returned_show">Show returned</string>
 
 </resources>

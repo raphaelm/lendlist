@@ -1,5 +1,4 @@
 * Multi-Auswahl mit Löschen und Zurückgeben
-* Ausgabefilter (zurückgegebene)
 * Sortieren
 * Datum als "noch X Tage"/…
 * Auflistung nach Personen
@@ -16,3 +15,4 @@
 * Settings
 * Datenbank- und Kontakte-Zeug asynchron machen?
 * About
+* Overflow-Menü prüfen
