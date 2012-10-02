@@ -27,9 +27,10 @@ public class ItemsFragment extends SherlockFragment {
 
 	private static int REQUEST_CODE_DETAILS = 2;
 
-	private String direction;
-	private String filter;
-	private List<Item> items;
+	protected String direction;
+	protected String filter;
+	protected String[] filterArgs;
+	protected List<Item> items;
 
 	static ItemsFragment newInstance(String direction) {
 		ItemsFragment f = new ItemsFragment();
@@ -77,11 +78,15 @@ public class ItemsFragment extends SherlockFragment {
 	}
 
 	private void refresh(View v) {
+		if(filter == null && direction == null) {
+			// This will be replaced.
+			return;
+		}
 		ListView lvItems = (ListView) v.findViewById(R.id.lvItems);
 
 		DataSource data = new DataSource(getActivity());
 		data.open();
-		items = data.getAllItems(direction, filter);
+		items = data.getAllItems(direction, filter, filterArgs);
 		data.close();
 
 		lvItems.setOnItemClickListener(new OnItemClickListener() {
@@ -137,7 +142,7 @@ public class ItemsFragment extends SherlockFragment {
 			TextView tvPerson = (TextView) view.findViewById(R.id.tvPerson);
 			tvPerson.setText(item.getPerson());
 
-			if (direction.equals("lent")) {
+			if (direction != null && direction.equals("lent")) {
 				TextView tvUntil = (TextView) view.findViewById(R.id.tvUntil);
 				if (item.getDate() != null)
 					tvUntil.setText(getString(R.string.since,

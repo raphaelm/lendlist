@@ -1,15 +1,12 @@
 package de.raphaelmichel.lendlist.frontend;
 
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import android.content.ContentUris;
 import android.content.Context;
-import android.database.Cursor;
+import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -27,6 +24,7 @@ import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 
+import de.raphaelmichel.lendlist.ContactsHelper;
 import de.raphaelmichel.lendlist.R;
 import de.raphaelmichel.lendlist.objects.Person;
 import de.raphaelmichel.lendlist.storage.DataSource;
@@ -73,9 +71,15 @@ public class MainActivityPersonsFragment extends SherlockFragment {
 		lvItems.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				// Intent i = new Intent(getActivity(), DetailsActivity.class);
-				// i.putExtra("id", items.get(position).getId());
-				// startActivityForResult(i, REQUEST_CODE_DETAILS);
+				Person person = persons.get(position);
+				Intent i = new Intent(getActivity(), PersonLookupActivity.class);
+				i.putExtra("name", person.getName());
+				if (person.getId() > 0) {
+					Uri contactUri = ContactsContract.Contacts.getLookupUri(
+							person.getId(), person.getLookup());
+					i.putExtra("uri", contactUri.toString());
+				}
+				startActivity(i);
 			}
 		});
 		lvItems.setClickable(true);
@@ -92,42 +96,6 @@ public class MainActivityPersonsFragment extends SherlockFragment {
 
 	public void refresh() {
 		refresh(getView());
-	}
-
-	public Bitmap getPhoto(Uri uri) {
-		long contactId;
-		try {
-			Uri contactLookupUri = uri;
-			Cursor c = getActivity().getContentResolver().query(
-					contactLookupUri,
-					new String[] { ContactsContract.Contacts._ID }, null, null,
-					null);
-			try {
-				if (c == null || c.moveToFirst() == false) {
-					return null;
-				}
-				contactId = c.getLong(0);
-			} finally {
-				c.close();
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-
-		Uri contactUri = ContentUris.withAppendedId(
-				ContactsContract.Contacts.CONTENT_URI, contactId);
-		InputStream input = ContactsContract.Contacts
-				.openContactPhotoInputStream(
-						getActivity().getContentResolver(), contactUri);
-
-		if (input != null) {
-			return BitmapFactory.decodeStream(input);
-		} else {
-			return BitmapFactory.decodeResource(getResources(),
-					R.drawable.ic_contact_picture);
-		}
 	}
 
 	private class ItemListAdapter extends ArrayAdapter<Person> {
@@ -171,7 +139,8 @@ public class MainActivityPersonsFragment extends SherlockFragment {
 				if (bitmapcache.containsKey(contactUri)) {
 					ivPhoto.setImageBitmap(bitmapcache.get(contactUri));
 				} else {
-					Bitmap bm = getPhoto(contactUri);
+					Bitmap bm = ContactsHelper.getPhoto(contactUri,
+							getActivity());
 					// Bitmap thumb = Bitmap.createScaledBitmap(bm, 96, 96,
 					// false);
 					bitmapcache.put(contactUri, bm);

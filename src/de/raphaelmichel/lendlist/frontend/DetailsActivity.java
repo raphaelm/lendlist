@@ -1,6 +1,5 @@
 package de.raphaelmichel.lendlist.frontend;
 
-import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -11,20 +10,16 @@ import java.util.List;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.content.ContentUris;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.NavUtils;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
@@ -32,7 +27,6 @@ import android.view.View.OnTouchListener;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.QuickContactBadge;
 import android.widget.TextView;
@@ -44,6 +38,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
+import de.raphaelmichel.lendlist.ContactsHelper;
 import de.raphaelmichel.lendlist.R;
 import de.raphaelmichel.lendlist.objects.Item;
 import de.raphaelmichel.lendlist.storage.DataSource;
@@ -190,18 +185,18 @@ public class DetailsActivity extends SherlockFragmentActivity {
 				}
 			});
 
-
 			if (item.getContact_id() > 0) {
 				qcbPerson.setVisibility(View.VISIBLE);
 				Uri contactUri = ContactsContract.Contacts.getLookupUri(
 						item.getContact_id(), item.getContact_lookup());
 				qcbPerson.assignContactUri(contactUri);
 
-				qcbPerson.setImageBitmap(getPhoto(contactUri));
+				qcbPerson.setImageBitmap(ContactsHelper.getPhoto(contactUri,
+						this));
 			} else {
 				qcbPerson.setVisibility(View.GONE);
 			}
-			
+
 			ibRemoveUntil.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
@@ -209,40 +204,6 @@ public class DetailsActivity extends SherlockFragmentActivity {
 				}
 			});
 
-		}
-	}
-
-	public Bitmap getPhoto(Uri uri) {
-		long contactId;
-		try {
-			Uri contactLookupUri = uri;
-			Cursor c = getContentResolver().query(contactLookupUri,
-					new String[] { ContactsContract.Contacts._ID }, null, null,
-					null);
-			try {
-				if (c == null || c.moveToFirst() == false) {
-					return null;
-				}
-				contactId = c.getLong(0);
-			} finally {
-				c.close();
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-
-		Uri contactUri = ContentUris.withAppendedId(
-				ContactsContract.Contacts.CONTENT_URI, contactId);
-		InputStream input = ContactsContract.Contacts
-				.openContactPhotoInputStream(getContentResolver(), contactUri);
-
-		if (input != null) {
-			return BitmapFactory.decodeStream(input);
-		} else {
-			return BitmapFactory.decodeResource(getResources(),
-					R.drawable.ic_contact_picture);
 		}
 	}
 
@@ -275,7 +236,8 @@ public class DetailsActivity extends SherlockFragmentActivity {
 					qcbPerson.setVisibility(View.VISIBLE);
 					qcbPerson.assignContactUri(contactUri);
 
-					qcbPerson.setImageBitmap(getPhoto(contactUri));
+					qcbPerson.setImageBitmap(ContactsHelper.getPhoto(
+							contactUri, this));
 				}
 			}
 			break;
