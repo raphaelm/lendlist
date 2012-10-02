@@ -191,7 +191,9 @@ public class MainActivityPersonsFragment extends SherlockFragment {
 
 	@Override
 	public void onDestroy() {
-		unbindDrawables(getView().findViewById(R.id.llMain));
+		if (getView() != null) {
+			unbindDrawables(getView().findViewById(R.id.llMain));
+		}
 		super.onDestroy();
 		System.gc();
 	}
