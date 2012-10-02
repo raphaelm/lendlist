@@ -49,6 +49,8 @@ public class DetailsActivity extends SherlockFragmentActivity {
 
 	private Item item;
 
+	private boolean changed = false;
+
 	private EditText etThing;
 	private EditText etDate;
 	private EditText etUntil;
@@ -201,6 +203,27 @@ public class DetailsActivity extends SherlockFragmentActivity {
 				@Override
 				public void onClick(View v) {
 					etUntil.setText("");
+					changed = true;
+				}
+			});
+
+			tvPerson.setOnClickListener(new View.OnClickListener() { // TODO:
+																		// Provide
+																		// touch
+																		// feedback!!!
+				@Override
+				public void onClick(View v) {
+					save(); // TODO: Is this what the user wants us to do?
+					Intent i = new Intent(DetailsActivity.this,
+							PersonLookupActivity.class);
+					i.putExtra("name", item.getPerson());
+					if (item.getContact_id() > 0) {
+						Uri contactUri = ContactsContract.Contacts
+								.getLookupUri(item.getContact_id(),
+										item.getContact_lookup());
+						i.putExtra("uri", contactUri.toString());
+					}
+					startActivity(i);
 				}
 			});
 
@@ -238,6 +261,7 @@ public class DetailsActivity extends SherlockFragmentActivity {
 
 					qcbPerson.setImageBitmap(ContactsHelper.getPhoto(
 							contactUri, this));
+					changed = true;
 				}
 			}
 			break;
@@ -283,6 +307,7 @@ public class DetailsActivity extends SherlockFragmentActivity {
 											qcbPerson.setVisibility(View.GONE);
 											tvPerson.setText(myView.getText()
 													.toString());
+											changed = true;
 											dialog.dismiss();
 										}
 									})
@@ -332,6 +357,7 @@ public class DetailsActivity extends SherlockFragmentActivity {
 		public void onDateSet(DatePicker view, int year, int month, int day) {
 			etDate.setText(new SimpleDateFormat(getString(R.string.date_format))
 					.format(new Date(year - 1900, month, day)));
+			changed = true;
 		}
 
 		protected Date getDate() throws ParseException {
@@ -346,6 +372,7 @@ public class DetailsActivity extends SherlockFragmentActivity {
 			etUntil.setText(new SimpleDateFormat(
 					getString(R.string.date_format)).format(new Date(
 					year - 1900, month, day)));
+			changed = true;
 		}
 
 		protected Date getDate() throws ParseException {
@@ -361,7 +388,11 @@ public class DetailsActivity extends SherlockFragmentActivity {
 	}
 
 	public void save() {
-		item.setThing(etThing.getText().toString());
+		String thing = etThing.getText().toString();
+		if (!thing.equals(item.getThing())) {
+			changed = true;
+			item.setThing(etThing.getText().toString());
+		}
 
 		try {
 			item.setUntil(new SimpleDateFormat(getString(R.string.date_format))
@@ -375,19 +406,30 @@ public class DetailsActivity extends SherlockFragmentActivity {
 		} catch (ParseException e) {
 			item.setDate(null);
 		}
-		if (spDirection.getSelectedItemPosition() == 0) {
-			item.setDirection("borrowed");
-		} else {
+
+		if ((spDirection.getSelectedItemPosition() == 1 && item.getDirection()
+				.equals("borrowed"))) {
+			changed = true;
 			item.setDirection("lent");
+		} else if (spDirection.getSelectedItemPosition() == 0
+				&& item.getDirection().equals("lent")) {
+			changed = true;
+			item.setDirection("borrowed");
 		}
-		item.setReturned(btReturned.isChecked());
+
+		if (btReturned.isChecked() != item.isReturned()) {
+			item.setReturned(btReturned.isChecked());
+			changed = true;
+		}
+
 		DataSource data = new DataSource(this);
 		data.openWritable();
 		data.updateItem(item);
 		data.close();
 
-		Toast.makeText(DetailsActivity.this, R.string.save_success,
-				Toast.LENGTH_SHORT).show();
+		if (changed)
+			Toast.makeText(DetailsActivity.this, R.string.save_success,
+					Toast.LENGTH_SHORT).show();
 	}
 
 	public void delete() {

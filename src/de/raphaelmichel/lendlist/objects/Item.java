@@ -96,7 +96,17 @@ public class Item {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + (int) (contact_id ^ (contact_id >>> 32));
+		result = prime * result
+				+ ((contact_lookup == null) ? 0 : contact_lookup.hashCode());
+		result = prime * result + ((date == null) ? 0 : date.hashCode());
+		result = prime * result
+				+ ((direction == null) ? 0 : direction.hashCode());
 		result = prime * result + (int) (id ^ (id >>> 32));
+		result = prime * result + ((person == null) ? 0 : person.hashCode());
+		result = prime * result + (returned ? 1231 : 1237);
+		result = prime * result + ((thing == null) ? 0 : thing.hashCode());
+		result = prime * result + ((until == null) ? 0 : until.hashCode());
 		return result;
 	}
 
@@ -109,8 +119,43 @@ public class Item {
 		if (getClass() != obj.getClass())
 			return false;
 		Item other = (Item) obj;
+		if (contact_id != other.contact_id)
+			return false;
+		if (contact_lookup == null) {
+			if (other.contact_lookup != null)
+				return false;
+		} else if (!contact_lookup.equals(other.contact_lookup))
+			return false;
+		if (date == null) {
+			if (other.date != null)
+				return false;
+		} else if (!date.equals(other.date))
+			return false;
+		if (direction == null) {
+			if (other.direction != null)
+				return false;
+		} else if (!direction.equals(other.direction))
+			return false;
 		if (id != other.id)
+			return false;
+		if (person == null) {
+			if (other.person != null)
+				return false;
+		} else if (!person.equals(other.person))
+			return false;
+		if (returned != other.returned)
+			return false;
+		if (thing == null) {
+			if (other.thing != null)
+				return false;
+		} else if (!thing.equals(other.thing))
+			return false;
+		if (until == null) {
+			if (other.until != null)
+				return false;
+		} else if (!until.equals(other.until))
 			return false;
 		return true;
 	}
+
 }
