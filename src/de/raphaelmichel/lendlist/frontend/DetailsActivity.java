@@ -420,6 +420,7 @@ public class DetailsActivity extends SherlockFragmentActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
+			save();
 			NavUtils.navigateUpFromSameTask(this);
 			return true;
 		case R.id.action_delete:
