@@ -10,6 +10,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import de.raphaelmichel.lendlist.objects.Item;
+import de.raphaelmichel.lendlist.objects.Person;
 
 public class DataSource {
 	private SQLiteDatabase database;
@@ -84,6 +85,29 @@ public class DataSource {
 		return items;
 	}
 
+	public List<Person> getPersonList() {
+		List<Person> items = new ArrayList<Person>();
+
+		String[] proj = {"person", "contact_id", "contact_lookup", "COUNT(thing)"};
+		
+		Cursor cursor = database.query("objects", proj, null, null,
+				"person, contact_lookup", null, null);
+
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast()) {
+			Person p = new Person();
+			p.setName(cursor.getString(0));
+			p.setId(cursor.getLong(1));
+			p.setLookup(cursor.getString(2));
+			p.setCount(cursor.getInt(3));
+			items.add(p);
+			cursor.moveToNext();
+		}
+		// Make sure to close the cursor
+		cursor.close();
+		return items;
+	}
+
 	public Item getItem(long id) {
 		String[] selA = { "" + id };
 		Cursor cursor = database.query("objects", Database.COLUMNS, "id = ?",
@@ -107,7 +131,8 @@ public class DataSource {
 		item.setThing(cursor.getString(2));
 		item.setPerson(cursor.getString(3));
 		item.setContact_id(cursor.getLong(4));
-		item.setUntil(cursor.getLong(5) > 0 ? new Date(cursor.getLong(5)) : null);
+		item.setUntil(cursor.getLong(5) > 0 ? new Date(cursor.getLong(5))
+				: null);
 		item.setDate(cursor.getLong(6) > 0 ? new Date(cursor.getLong(6)) : null);
 		item.setReturned(cursor.getLong(7) == 1);
 		item.setContact_lookup(cursor.getString(8));

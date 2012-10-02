@@ -44,6 +44,7 @@ public class MainActivity extends SherlockFragmentActivity {
 		fragmentAdapter = new MainFragmentAdapter(getSupportFragmentManager());
 		mViewPager.setAdapter(fragmentAdapter);
 		mViewPager.setCurrentItem(sp.getInt("main_tab", 0));
+		mViewPager.setOffscreenPageLimit(2);
 		mViewPager.setOnPageChangeListener(new SavePageListener());
 	}
 
