@@ -146,11 +146,34 @@ public class LendlistContentProvider extends ContentProvider {
 		}
 	}
 
+	private int updateInDatabase(String table, ContentValues values,
+			String selection, String[] selectionArgs) {
+		return database.getWritableDatabase().update(table, values, selection,
+				selectionArgs);
+	}
+
 	@Override
 	public int update(Uri uri, ContentValues values, String selection,
 			String[] selectionArgs) {
-		// TODO Auto-generated method stub
-		return 0;
+		int rowsAffected;
+		switch (getTypeMime(uri)) {
+		case OBJECT_DIR:
+			rowsAffected = updateInDatabase(Database.OBJECT_TABLE, values,
+					selection, selectionArgs);
+			break;
+		case OBJECT_ITEM:
+			rowsAffected = updateInDatabase(Database.OBJECT_TABLE, values,
+					Database.OBJECT_WHERE_ID, selectionForUri(uri));
+			break;
+		default:
+			rowsAffected = 0;
+			break;
+		}
+
+		if (rowsAffected > 0) {
+			notifyUri(uri);
+		}
+		return rowsAffected;
 	}
 
 	private void notifyUri(Uri uri) {
