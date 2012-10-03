@@ -41,5 +41,8 @@
     <string name="person_choosecontacts">Aus Kontakten auswählen</string>
     <string name="person_entertext">Name eingeben</string>
     <string name="person_method">Person ändern</string>
+    <string name="title_activity_person_lookup">Person</string>
+    <string name="returned_hide">Aktuelle zeigen</string>
+    <string name="returned_show">Alle zeigen</string>
 
 </resources>

@@ -1,7 +1,5 @@
 package de.raphaelmichel.lendlist.frontend;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -12,21 +10,16 @@ import java.util.List;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.content.ContentUris;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.provider.ContactsContract.Contacts;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.NavUtils;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
@@ -34,7 +27,7 @@ import android.view.View.OnTouchListener;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.QuickContactBadge;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -45,6 +38,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
+import de.raphaelmichel.lendlist.ContactsHelper;
 import de.raphaelmichel.lendlist.R;
 import de.raphaelmichel.lendlist.objects.Item;
 import de.raphaelmichel.lendlist.storage.DataSource;
@@ -55,6 +49,8 @@ public class DetailsActivity extends SherlockFragmentActivity {
 
 	private Item item;
 
+	private boolean changed = false;
+
 	private EditText etThing;
 	private EditText etDate;
 	private EditText etUntil;
@@ -62,7 +58,8 @@ public class DetailsActivity extends SherlockFragmentActivity {
 	private ToggleButton btReturned;
 	private QuickContactBadge qcbPerson;
 	private TextView tvPerson;
-	private ImageButton ibPersonEdit;
+	private ImageView ibPersonEdit;
+	private ImageView ibRemoveUntil;
 
 	private DialogFragment dpDialog;
 
@@ -93,7 +90,8 @@ public class DetailsActivity extends SherlockFragmentActivity {
 			btReturned = (ToggleButton) findViewById(R.id.btReturned);
 			qcbPerson = (QuickContactBadge) findViewById(R.id.qcbPerson);
 			tvPerson = (TextView) findViewById(R.id.tvPerson);
-			ibPersonEdit = (ImageButton) findViewById(R.id.ibPersonEdit);
+			ibPersonEdit = (ImageView) findViewById(R.id.ibPersonEdit);
+			ibRemoveUntil = (ImageView) findViewById(R.id.ibRemoveUntil);
 
 			etThing.setText(item.getThing());
 			if (item.getDate() != null)
@@ -188,10 +186,6 @@ public class DetailsActivity extends SherlockFragmentActivity {
 					edit_person();
 				}
 			});
-			Log.i("contact",
-					ContactsContract.Contacts.getLookupUri(
-							item.getContact_id(), item.getContact_lookup())
-							.toString());
 
 			if (item.getContact_id() > 0) {
 				qcbPerson.setVisibility(View.VISIBLE);
@@ -199,48 +193,41 @@ public class DetailsActivity extends SherlockFragmentActivity {
 						item.getContact_id(), item.getContact_lookup());
 				qcbPerson.assignContactUri(contactUri);
 
-				qcbPerson.setImageBitmap(getPhoto(contactUri));
+				qcbPerson.setImageBitmap(ContactsHelper.getPhoto(contactUri,
+						this));
 			} else {
 				qcbPerson.setVisibility(View.GONE);
 			}
 
+			ibRemoveUntil.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					etUntil.setText("");
+					changed = true;
+				}
+			});
+
+			tvPerson.setOnClickListener(new View.OnClickListener() { // TODO:
+																		// Provide
+																		// touch
+																		// feedback!!!
+				@Override
+				public void onClick(View v) {
+					save(); // TODO: Is this what the user wants us to do?
+					Intent i = new Intent(DetailsActivity.this,
+							PersonLookupActivity.class);
+					i.putExtra("name", item.getPerson());
+					if (item.getContact_id() > 0) {
+						Uri contactUri = ContactsContract.Contacts
+								.getLookupUri(item.getContact_id(),
+										item.getContact_lookup());
+						i.putExtra("uri", contactUri.toString());
+					}
+					startActivity(i);
+				}
+			});
+
 		}
-	}
-
-	public Bitmap getPhoto(Uri uri) {
-
-	    long contactId;
-
-	    try {
-	        Uri contactLookupUri = uri;
-	        Cursor c = getContentResolver().query(contactLookupUri,
-	                new String[] { ContactsContract.Contacts._ID }, null, null,
-	                null);
-	        try {
-	            if (c == null || c.moveToFirst() == false) {
-	                return null;
-	            }
-	            contactId = c.getLong(0);
-	        } finally {
-	            c.close();
-	        }
-
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	        return null;
-	    }
-
-	    Uri contactUri = ContentUris.withAppendedId(
-	            ContactsContract.Contacts.CONTENT_URI, contactId);
-	    InputStream input = ContactsContract.Contacts
-	            .openContactPhotoInputStream(getContentResolver(),
-	                    contactUri);
-
-	    if (input != null) {
-	        return BitmapFactory.decodeStream(input);
-	    } else {
-	        return BitmapFactory.decodeResource(getResources(), R.drawable.ic_contact_picture);
-	    }
 	}
 
 	@Override
@@ -272,7 +259,9 @@ public class DetailsActivity extends SherlockFragmentActivity {
 					qcbPerson.setVisibility(View.VISIBLE);
 					qcbPerson.assignContactUri(contactUri);
 
-					qcbPerson.setImageBitmap(getPhoto(contactUri));
+					qcbPerson.setImageBitmap(ContactsHelper.getPhoto(
+							contactUri, this));
+					changed = true;
 				}
 			}
 			break;
@@ -318,6 +307,7 @@ public class DetailsActivity extends SherlockFragmentActivity {
 											qcbPerson.setVisibility(View.GONE);
 											tvPerson.setText(myView.getText()
 													.toString());
+											changed = true;
 											dialog.dismiss();
 										}
 									})
@@ -367,6 +357,7 @@ public class DetailsActivity extends SherlockFragmentActivity {
 		public void onDateSet(DatePicker view, int year, int month, int day) {
 			etDate.setText(new SimpleDateFormat(getString(R.string.date_format))
 					.format(new Date(year - 1900, month, day)));
+			changed = true;
 		}
 
 		protected Date getDate() throws ParseException {
@@ -381,6 +372,7 @@ public class DetailsActivity extends SherlockFragmentActivity {
 			etUntil.setText(new SimpleDateFormat(
 					getString(R.string.date_format)).format(new Date(
 					year - 1900, month, day)));
+			changed = true;
 		}
 
 		protected Date getDate() throws ParseException {
@@ -396,7 +388,11 @@ public class DetailsActivity extends SherlockFragmentActivity {
 	}
 
 	public void save() {
-		item.setThing(etThing.getText().toString());
+		String thing = etThing.getText().toString();
+		if (!thing.equals(item.getThing())) {
+			changed = true;
+			item.setThing(etThing.getText().toString());
+		}
 
 		try {
 			item.setUntil(new SimpleDateFormat(getString(R.string.date_format))
@@ -410,19 +406,30 @@ public class DetailsActivity extends SherlockFragmentActivity {
 		} catch (ParseException e) {
 			item.setDate(null);
 		}
-		if (spDirection.getSelectedItemPosition() == 0) {
-			item.setDirection("borrowed");
-		} else {
+
+		if ((spDirection.getSelectedItemPosition() == 1 && item.getDirection()
+				.equals("borrowed"))) {
+			changed = true;
 			item.setDirection("lent");
+		} else if (spDirection.getSelectedItemPosition() == 0
+				&& item.getDirection().equals("lent")) {
+			changed = true;
+			item.setDirection("borrowed");
 		}
-		item.setReturned(btReturned.isChecked());
+
+		if (btReturned.isChecked() != item.isReturned()) {
+			item.setReturned(btReturned.isChecked());
+			changed = true;
+		}
+
 		DataSource data = new DataSource(this);
 		data.openWritable();
 		data.updateItem(item);
 		data.close();
 
-		Toast.makeText(DetailsActivity.this, R.string.save_success,
-				Toast.LENGTH_SHORT).show();
+		if (changed)
+			Toast.makeText(DetailsActivity.this, R.string.save_success,
+					Toast.LENGTH_SHORT).show();
 	}
 
 	public void delete() {
@@ -455,6 +462,7 @@ public class DetailsActivity extends SherlockFragmentActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
+			save();
 			NavUtils.navigateUpFromSameTask(this);
 			return true;
 		case R.id.action_delete:

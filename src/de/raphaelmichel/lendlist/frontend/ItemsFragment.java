@@ -6,6 +6,7 @@ import java.util.List;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,19 +24,24 @@ import de.raphaelmichel.lendlist.R;
 import de.raphaelmichel.lendlist.objects.Item;
 import de.raphaelmichel.lendlist.storage.DataSource;
 
-public class MainActivityItemsFragment extends SherlockFragment {
+public class ItemsFragment extends SherlockFragment {
 
 	private static int REQUEST_CODE_DETAILS = 2;
 
-	private String direction;
-	private List<Item> items;
+	protected String filter;
+	protected String[] filterArgs;
+	protected List<Item> items;
 
-	static MainActivityItemsFragment newInstance(String direction) {
-		MainActivityItemsFragment f = new MainActivityItemsFragment();
+	static ItemsFragment newInstance(String direction) {
+		return newInstanceFiltered("direction = ?", new String[] { direction });
+	}
 
-		Bundle args = new Bundle();
-		args.putString("direction", direction);
-		f.setArguments(args);
+	protected static ItemsFragment newInstanceFiltered(String filter,
+			String[] filterArgs) {
+		ItemsFragment f = new ItemsFragment();
+
+		f.filter = filter;
+		f.filterArgs = filterArgs;
 
 		return f;
 	}
@@ -49,8 +55,6 @@ public class MainActivityItemsFragment extends SherlockFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		direction = getArguments() != null ? getArguments().getString(
-				"direction") : null;
 	}
 
 	@Override
@@ -68,20 +72,20 @@ public class MainActivityItemsFragment extends SherlockFragment {
 
 		DataSource data = new DataSource(getActivity());
 		data.open();
-		items = data.getAllItems(direction);
+		items = data.getAllItems(filter, filterArgs);
 		data.close();
 
-			lvItems.setOnItemClickListener(new OnItemClickListener() {
-				public void onItemClick(AdapterView<?> parent, View view,
-						int position, long id) {
-					Intent i = new Intent(getActivity(), DetailsActivity.class);
-					i.putExtra("id", items.get(position).getId());
-					startActivityForResult(i, REQUEST_CODE_DETAILS);
-				}
-			});
-			lvItems.setClickable(true);
-			lvItems.setAdapter(new ItemListAdapter());
-			lvItems.setTextFilterEnabled(false);
+		lvItems.setOnItemClickListener(new OnItemClickListener() {
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				Intent i = new Intent(getActivity(), DetailsActivity.class);
+				i.putExtra("id", items.get(position).getId());
+				startActivityForResult(i, REQUEST_CODE_DETAILS);
+			}
+		});
+		lvItems.setClickable(true);
+		lvItems.setAdapter(new ItemListAdapter());
+		lvItems.setTextFilterEnabled(false);
 
 	}
 
@@ -99,7 +103,7 @@ public class MainActivityItemsFragment extends SherlockFragment {
 		@Override
 		public View getView(int position, View contentView, ViewGroup viewGroup) {
 			View view = null;
-			
+
 			if (items.get(position) == null) {
 				LayoutInflater layoutInflater = (LayoutInflater) getContext()
 						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -124,27 +128,17 @@ public class MainActivityItemsFragment extends SherlockFragment {
 			TextView tvPerson = (TextView) view.findViewById(R.id.tvPerson);
 			tvPerson.setText(item.getPerson());
 
-			if (direction.equals("lent")) {
-				TextView tvUntil = (TextView) view.findViewById(R.id.tvUntil);
+			TextView tvUntil = (TextView) view.findViewById(R.id.tvUntil);
+			if (item.getUntil() != null)
+				tvUntil.setText(getString(R.string.until,
+						new SimpleDateFormat(getString(R.string.date_format))
+								.format(item.getUntil())));
+			else {
 				if (item.getDate() != null)
 					tvUntil.setText(getString(R.string.since,
 							new SimpleDateFormat(
 									getString(R.string.date_format))
 									.format(item.getDate())));
-			} else {
-				TextView tvUntil = (TextView) view.findViewById(R.id.tvUntil);
-				if (item.getUntil() != null)
-					tvUntil.setText(getString(R.string.until,
-							new SimpleDateFormat(
-									getString(R.string.date_format))
-									.format(item.getUntil())));
-				else {
-					if (item.getDate() != null)
-						tvUntil.setText(getString(R.string.since,
-								new SimpleDateFormat(
-										getString(R.string.date_format))
-										.format(item.getDate())));
-				}
 			}
 
 			return view;
