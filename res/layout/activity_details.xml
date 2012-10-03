@@ -60,7 +60,7 @@
 
             <QuickContactBadge
                 android:id="@+id/qcbPerson"
-                android:layout_width="wrap_content"
+                android:layout_width="62dp"
                 android:layout_height="62dp"
                 android:src="@drawable/ic_contact_picture" />
 
