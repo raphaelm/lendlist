@@ -118,7 +118,7 @@ public class LendlistContentProvider extends ContentProvider {
 			break;
 		}
 		if (itemUri != null) {
-			notifyUri(itemUri);
+			notifyUri(uri);
 		}
 		return itemUri;
 	}
@@ -133,17 +133,22 @@ public class LendlistContentProvider extends ContentProvider {
 	@Override
 	public Cursor query(Uri uri, String[] projection, String selection,
 			String[] selectionArgs, String sortOrder) {
+		Cursor cursor;
 		switch (getTypeMime(uri)) {
 		case OBJECT_DIR:
-			return queryDatabase(Database.OBJECT_TABLE, projection, selection,
-					selectionArgs, null, null, null);
+			cursor = queryDatabase(Database.OBJECT_TABLE, projection,
+					selection, selectionArgs, null, null, null);
+			break;
 		case OBJECT_ITEM:
-			return queryDatabase(Database.OBJECT_TABLE, projection,
+			cursor = queryDatabase(Database.OBJECT_TABLE, projection,
 					Database.OBJECT_WHERE_ID, selectionForUri(uri), null, null,
 					null);
+			break;
 		default:
 			return null;
 		}
+		cursor.setNotificationUri(getContext().getContentResolver(), uri);
+		return cursor;
 	}
 
 	private int updateInDatabase(String table, ContentValues values,

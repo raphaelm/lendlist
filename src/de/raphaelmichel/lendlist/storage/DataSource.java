@@ -32,7 +32,7 @@ public class DataSource {
 		dbHelper.close();
 	}
 
-	public void addItem(Item item) {
+	public void addItem(Context context, Item item) {
 		ContentValues values = new ContentValues();
 		values.put("direction", item.getDirection());
 		values.put("thing", item.getThing());
@@ -44,7 +44,7 @@ public class DataSource {
 		values.put("date", (item.getDate() != null ? item.getDate().getTime()
 				: 0));
 		values.put("returned", item.isReturned());
-		database.insert("objects", null, values);
+		context.getContentResolver().insert(LendlistContentProvider.OBJECT_URI, values);
 	}
 
 	public void updateItem(Item item) {

@@ -273,9 +273,7 @@ public class AddActivity extends SherlockFragmentActivity {
 		}
 		item.setDate(new Date());
 
-		data.openWritable();
-		data.addItem(item);
-		data.close();
+		data.addItem(this, item);
 	}
 
 	@Override
