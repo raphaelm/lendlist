@@ -17,8 +17,10 @@ public class Database extends SQLiteOpenHelper {
 			+ " contact_id integer," + " until integer," + " date integer,"
 			+ " returned integer," + " contact_lookup text" + ");";
 	public static final String[] COLUMNS = { "id", "direction", "thing",
-			"person", "contact_id", "until", "date", "returned", "contact_lookup" };
+			"person", "contact_id", "until", "date", "returned",
+			"contact_lookup" };
 	public static final String OBJECT_TABLE = "objects";
+	public static final String OBJECT_WHERE_ID = "id = ?";
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {

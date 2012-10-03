@@ -86,8 +86,8 @@ public class LendlistContentProvider extends ContentProvider {
 					selectionArgs);
 			break;
 		case OBJECT_ITEM:
-			rowsAffected = deleteInDatabase(Database.OBJECT_TABLE, "id = ?",
-					new String[] { String.valueOf(ContentUris.parseId(uri)) });
+			rowsAffected = deleteInDatabase(Database.OBJECT_TABLE,
+					Database.OBJECT_WHERE_ID, selectionForUri(uri));
 			break;
 		default:
 			rowsAffected = 0;
@@ -123,11 +123,27 @@ public class LendlistContentProvider extends ContentProvider {
 		return itemUri;
 	}
 
+	private Cursor queryDatabase(String table, String[] projection,
+			String selection, String[] selectionArgs, String groupBy,
+			String having, String orderBy) {
+		return database.getReadableDatabase().query(table, projection,
+				selection, selectionArgs, groupBy, having, orderBy);
+	}
+
 	@Override
 	public Cursor query(Uri uri, String[] projection, String selection,
 			String[] selectionArgs, String sortOrder) {
-		// TODO Auto-generated method stub
-		return null;
+		switch (getTypeMime(uri)) {
+		case OBJECT_DIR:
+			return queryDatabase(Database.OBJECT_TABLE, projection, selection,
+					selectionArgs, null, null, null);
+		case OBJECT_ITEM:
+			return queryDatabase(Database.OBJECT_TABLE, projection,
+					Database.OBJECT_WHERE_ID, selectionForUri(uri), null, null,
+					null);
+		default:
+			return null;
+		}
 	}
 
 	@Override
@@ -139,6 +155,10 @@ public class LendlistContentProvider extends ContentProvider {
 
 	private void notifyUri(Uri uri) {
 		getContext().getContentResolver().notifyChange(uri, null);
+	}
+
+	private String[] selectionForUri(Uri uri) {
+		return new String[] { String.valueOf(ContentUris.parseId(uri)) };
 	}
 
 }
