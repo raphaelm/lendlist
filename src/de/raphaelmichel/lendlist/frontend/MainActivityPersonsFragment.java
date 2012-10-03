@@ -1,21 +1,24 @@
 package de.raphaelmichel.lendlist.frontend;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -27,11 +30,12 @@ import com.actionbarsherlock.view.MenuInflater;
 import de.raphaelmichel.lendlist.ContactsHelper;
 import de.raphaelmichel.lendlist.R;
 import de.raphaelmichel.lendlist.objects.Person;
-import de.raphaelmichel.lendlist.storage.DataSource;
+import de.raphaelmichel.lendlist.storage.LendlistContentProvider;
 
-public class MainActivityPersonsFragment extends SherlockFragment {
+public class MainActivityPersonsFragment extends SherlockFragment implements
+		LoaderCallbacks<Cursor> {
 
-	private List<Person> persons;
+	private ItemListAdapter adapter;
 
 	static MainActivityPersonsFragment newInstance() {
 		MainActivityPersonsFragment f = new MainActivityPersonsFragment();
@@ -48,6 +52,9 @@ public class MainActivityPersonsFragment extends SherlockFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		getLoaderManager().initLoader(0, null, this);
+		adapter = new ItemListAdapter();
 	}
 
 	@Override
@@ -55,20 +62,13 @@ public class MainActivityPersonsFragment extends SherlockFragment {
 			Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_main, container, false);
 
-		refresh(v);
-
-		return v;
-	}
-
-	private void refresh(View v) {
 		ListView lvItems = (ListView) v.findViewById(R.id.lvItems);
-
-		persons = DataSource.getPersonList(getActivity());
 
 		lvItems.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				Person person = persons.get(position);
+				Person person = cursorToPerson((Cursor) parent
+						.getItemAtPosition(position));
 				Intent i = new Intent(getActivity(), PersonLookupActivity.class);
 				i.putExtra("name", person.getName());
 				if (person.getId() > 0) {
@@ -80,46 +80,18 @@ public class MainActivityPersonsFragment extends SherlockFragment {
 			}
 		});
 		lvItems.setClickable(true);
-		lvItems.setAdapter(new ItemListAdapter());
+		lvItems.setAdapter(adapter);
 		lvItems.setTextFilterEnabled(false);
 
+		return v;
 	}
 
-	@Override
-	public void onResume() {
-		super.onResume();
-		refresh();
-	}
-
-	public void refresh() {
-		refresh(getView());
-	}
-
-	private class ItemListAdapter extends ArrayAdapter<Person> {
+	private class ItemListAdapter extends SimpleCursorAdapter {
 		Map<Uri, Bitmap> bitmapcache = new HashMap<Uri, Bitmap>();
 
 		@Override
-		public View getView(int position, View contentView, ViewGroup viewGroup) {
-			View view = null;
-
-			if (persons.get(position) == null) {
-				LayoutInflater layoutInflater = (LayoutInflater) getContext()
-						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				view = layoutInflater.inflate(R.layout.listitem_person,
-						viewGroup, false);
-				return view;
-			}
-
-			Person person = persons.get(position);
-
-			if (contentView == null) {
-				LayoutInflater layoutInflater = (LayoutInflater) getContext()
-						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				view = layoutInflater.inflate(R.layout.listitem_person,
-						viewGroup, false);
-			} else {
-				view = contentView;
-			}
+		public void bindView(View view, Context context, Cursor cursor) {
+			Person person = cursorToPerson(cursor);
 
 			TextView tvName = (TextView) view.findViewById(R.id.tvName);
 			tvName.setText(person.getName());
@@ -146,12 +118,11 @@ public class MainActivityPersonsFragment extends SherlockFragment {
 			} else {
 				ivPhoto.setImageResource(R.drawable.ic_contact_picture);
 			}
-
-			return view;
 		}
 
 		public ItemListAdapter() {
-			super(getActivity(), R.layout.listitem_main, persons);
+			super(getActivity(), R.layout.listitem_person, null,
+					new String[] { "_id" }, null, 0);
 		}
 	}
 
@@ -176,6 +147,33 @@ public class MainActivityPersonsFragment extends SherlockFragment {
 				((ViewGroup) view).removeAllViews();
 			}
 		}
+	}
+
+	@Override
+	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
+		return new CursorLoader(getActivity(),
+				LendlistContentProvider.PERSON_URI, new String[] { "person",
+						"contact_id", "contact_lookup", "COUNT(thing)",
+						"id AS _id" }, null, null, null);
+	}
+
+	@Override
+	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+		adapter.swapCursor(cursor);
+	}
+
+	@Override
+	public void onLoaderReset(Loader<Cursor> arg0) {
+		adapter.swapCursor(null);
+	}
+
+	private Person cursorToPerson(Cursor cursor) {
+		Person person = new Person();
+		person.setName(cursor.getString(0));
+		person.setId(cursor.getLong(1));
+		person.setLookup(cursor.getString(2));
+		person.setCount(cursor.getInt(3));
+		return person;
 	}
 
 }
