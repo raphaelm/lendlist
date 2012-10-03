@@ -105,9 +105,12 @@ public class AddActivity extends SherlockFragmentActivity {
 		if (savedInstanceState.getString("direction") != null) {
 			if (getIntent().getStringExtra("direction").equals("lent")) {
 				tvLent.setBackgroundResource(R.drawable.dirsel_lent_highlighted);
-				tvLent.setTextColor(getResources().getColorStateList(R.color.dirsel_lent_highlighted));
-				tvBorrowed.setBackgroundResource(R.drawable.dirsel_borrowed_inactive);
-				tvBorrowed.setTextColor(getResources().getColorStateList(R.color.dirsel_borrowed_inactive));
+				tvLent.setTextColor(getResources().getColorStateList(
+						R.color.dirsel_lent_highlighted));
+				tvBorrowed
+						.setBackgroundResource(R.drawable.dirsel_borrowed_inactive);
+				tvBorrowed.setTextColor(getResources().getColorStateList(
+						R.color.dirsel_borrowed_inactive));
 				tvTo.setText(R.string.add_text_to);
 				direction = "lent";
 			}
@@ -130,9 +133,12 @@ public class AddActivity extends SherlockFragmentActivity {
 		if (getIntent().getStringExtra("direction") != null) {
 			if (getIntent().getStringExtra("direction").equals("lent")) {
 				tvLent.setBackgroundResource(R.drawable.dirsel_lent_highlighted);
-				tvLent.setTextColor(getResources().getColorStateList(R.color.dirsel_lent_highlighted));
-				tvBorrowed.setBackgroundResource(R.drawable.dirsel_borrowed_inactive);
-				tvBorrowed.setTextColor(getResources().getColorStateList(R.color.dirsel_borrowed_inactive));
+				tvLent.setTextColor(getResources().getColorStateList(
+						R.color.dirsel_lent_highlighted));
+				tvBorrowed
+						.setBackgroundResource(R.drawable.dirsel_borrowed_inactive);
+				tvBorrowed.setTextColor(getResources().getColorStateList(
+						R.color.dirsel_borrowed_inactive));
 				tvTo.setText(R.string.add_text_to);
 				direction = "lent";
 			}
@@ -143,9 +149,12 @@ public class AddActivity extends SherlockFragmentActivity {
 			public void onClick(View v) {
 				if (!direction.equals("borrowed")) {
 					tvLent.setBackgroundResource(R.drawable.dirsel_lent_inactive);
-					tvLent.setTextColor(getResources().getColorStateList(R.color.dirsel_lent_inactive));
-					tvBorrowed.setBackgroundResource(R.drawable.dirsel_borrowed_highlighted);
-					tvBorrowed.setTextColor(getResources().getColorStateList(R.color.dirsel_borrowed_highlighted));
+					tvLent.setTextColor(getResources().getColorStateList(
+							R.color.dirsel_lent_inactive));
+					tvBorrowed
+							.setBackgroundResource(R.drawable.dirsel_borrowed_highlighted);
+					tvBorrowed.setTextColor(getResources().getColorStateList(
+							R.color.dirsel_borrowed_highlighted));
 					tvTo.setText(R.string.add_text_from);
 					direction = "borrowed";
 				}
@@ -157,9 +166,12 @@ public class AddActivity extends SherlockFragmentActivity {
 			public void onClick(View v) {
 				if (!direction.equals("lent")) {
 					tvLent.setBackgroundResource(R.drawable.dirsel_lent_highlighted);
-					tvLent.setTextColor(getResources().getColorStateList(R.color.dirsel_lent_highlighted));
-					tvBorrowed.setBackgroundResource(R.drawable.dirsel_borrowed_inactive);
-					tvBorrowed.setTextColor(getResources().getColorStateList(R.color.dirsel_borrowed_inactive));
+					tvLent.setTextColor(getResources().getColorStateList(
+							R.color.dirsel_lent_highlighted));
+					tvBorrowed
+							.setBackgroundResource(R.drawable.dirsel_borrowed_inactive);
+					tvBorrowed.setTextColor(getResources().getColorStateList(
+							R.color.dirsel_borrowed_inactive));
 					tvTo.setText(R.string.add_text_to);
 					direction = "lent";
 				}

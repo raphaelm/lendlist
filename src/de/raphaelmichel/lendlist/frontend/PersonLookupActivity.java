@@ -23,7 +23,8 @@ public class PersonLookupActivity extends SherlockFragmentActivity {
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		ItemsFragment frItems = ((ItemsFragment) getSupportFragmentManager()
 				.findFragmentById(R.id.frMain));
-		frItems.setFilter("person = ?", new String[] { getIntent().getStringExtra("name") });
+		frItems.setFilter("person = ?", new String[] { getIntent()
+				.getStringExtra("name") });
 
 		TextView tvName = (TextView) findViewById(R.id.tvName);
 		tvName.setText(getIntent().getStringExtra("name"));

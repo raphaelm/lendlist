@@ -1,7 +1,6 @@
 package de.raphaelmichel.lendlist;
-import java.io.InputStream;
 
-import de.raphaelmichel.lendlist.R;
+import java.io.InputStream;
 
 import android.content.ContentUris;
 import android.content.Context;
