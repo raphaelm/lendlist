@@ -92,22 +92,29 @@ public class LendlistContentProvider extends ContentProvider {
 	@Override
 	public int delete(Uri uri, String selection, String[] selectionArgs) {
 		int rowsAffected;
+		boolean notifyPersonsChanged;
 		switch (getTypeMime(uri)) {
 		case OBJECT_DIR:
 			rowsAffected = deleteInDatabase(Database.OBJECT_TABLE, selection,
 					selectionArgs);
+			notifyPersonsChanged = true;
 			break;
 		case OBJECT_ITEM:
 			rowsAffected = deleteInDatabase(Database.OBJECT_TABLE,
 					Database.OBJECT_WHERE_ID, selectionForUri(uri));
+			notifyPersonsChanged = true;
 			break;
 		default:
 			rowsAffected = 0;
+			notifyPersonsChanged = false;
 			break;
 		}
 
 		if (rowsAffected > 0) {
 			notifyUri(uri);
+			if (notifyPersonsChanged) {
+				notifyUri(PERSON_URI);
+			}
 		}
 		return rowsAffected;
 	}
@@ -124,6 +131,7 @@ public class LendlistContentProvider extends ContentProvider {
 		case OBJECT_DIR:
 			long id = insertIntoDatabase(Database.OBJECT_TABLE, values);
 			itemUri = ContentUris.withAppendedId(OBJECT_URI, id);
+			notifyUri(PERSON_URI);
 			break;
 		default:
 			itemUri = null;
@@ -177,22 +185,29 @@ public class LendlistContentProvider extends ContentProvider {
 	public int update(Uri uri, ContentValues values, String selection,
 			String[] selectionArgs) {
 		int rowsAffected;
+		boolean notifyPersonsChanged;
 		switch (getTypeMime(uri)) {
 		case OBJECT_DIR:
 			rowsAffected = updateInDatabase(Database.OBJECT_TABLE, values,
 					selection, selectionArgs);
+			notifyPersonsChanged = true;
 			break;
 		case OBJECT_ITEM:
 			rowsAffected = updateInDatabase(Database.OBJECT_TABLE, values,
 					Database.OBJECT_WHERE_ID, selectionForUri(uri));
+			notifyPersonsChanged = true;
 			break;
 		default:
 			rowsAffected = 0;
+			notifyPersonsChanged = false;
 			break;
 		}
 
 		if (rowsAffected > 0) {
 			notifyUri(uri);
+			if (notifyPersonsChanged) {
+				notifyUri(PERSON_URI);
+			}
 		}
 		return rowsAffected;
 	}
