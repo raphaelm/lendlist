@@ -1,18 +1,20 @@
 package de.raphaelmichel.lendlist.frontend;
 
 import java.text.SimpleDateFormat;
-import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -23,16 +25,20 @@ import com.actionbarsherlock.view.MenuInflater;
 import de.raphaelmichel.lendlist.R;
 import de.raphaelmichel.lendlist.objects.Item;
 import de.raphaelmichel.lendlist.storage.DataSource;
+import de.raphaelmichel.lendlist.storage.Database;
+import de.raphaelmichel.lendlist.storage.LendlistContentProvider;
 
-public class ItemsFragment extends SherlockFragment {
+public class ItemsFragment extends SherlockFragment implements
+		LoaderCallbacks<Cursor> {
 
 	private static int REQUEST_CODE_DETAILS = 2;
 
 	protected String filter;
 	protected String[] filterArgs;
-	protected List<Item> items;
 
-	static ItemsFragment newInstance(String direction) {
+	private ItemListAdapter adapter;
+
+	public static ItemsFragment newInstance(String direction) {
 		return newInstanceFiltered("direction = ?", new String[] { direction });
 	}
 
@@ -55,6 +61,8 @@ public class ItemsFragment extends SherlockFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		getLoaderManager().initLoader(0, null, this);
+		adapter = new ItemListAdapter();
 	}
 
 	@Override
@@ -62,66 +70,26 @@ public class ItemsFragment extends SherlockFragment {
 			Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_main, container, false);
 
-		refresh(v);
+		ListView list = (ListView) v.findViewById(R.id.lvItems);
+		list.setAdapter(adapter);
+		list.setOnItemClickListener(new OnItemClickListener() {
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				Intent i = new Intent(getActivity(), DetailsActivity.class);
+				i.putExtra("id", id);
+				startActivityForResult(i, REQUEST_CODE_DETAILS);
+			}
+		});
+		list.setClickable(true);
+		list.setTextFilterEnabled(false);
 
 		return v;
 	}
 
-	private void refresh(View v) {
-		ListView lvItems = (ListView) v.findViewById(R.id.lvItems);
-
-		DataSource data = new DataSource(getActivity());
-		data.open();
-		items = data.getAllItems(filter, filterArgs);
-		data.close();
-
-		lvItems.setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
-				Intent i = new Intent(getActivity(), DetailsActivity.class);
-				i.putExtra("id", items.get(position).getId());
-				startActivityForResult(i, REQUEST_CODE_DETAILS);
-			}
-		});
-		lvItems.setClickable(true);
-		lvItems.setAdapter(new ItemListAdapter());
-		lvItems.setTextFilterEnabled(false);
-
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-		refresh();
-	}
-
-	public void refresh() {
-		refresh(getView());
-	}
-
-	private class ItemListAdapter extends ArrayAdapter<Item> {
+	private class ItemListAdapter extends SimpleCursorAdapter {
 		@Override
-		public View getView(int position, View contentView, ViewGroup viewGroup) {
-			View view = null;
-
-			if (items.get(position) == null) {
-				LayoutInflater layoutInflater = (LayoutInflater) getContext()
-						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				view = layoutInflater.inflate(R.layout.listitem_main,
-						viewGroup, false);
-				return view;
-			}
-
-			Item item = items.get(position);
-
-			if (contentView == null) {
-				LayoutInflater layoutInflater = (LayoutInflater) getContext()
-						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				view = layoutInflater.inflate(R.layout.listitem_main,
-						viewGroup, false);
-			} else {
-				view = contentView;
-			}
+		public void bindView(View view, Context context, Cursor cursor) {
+			Item item = DataSource.cursorToItem(cursor);
 
 			TextView tvThing = (TextView) view.findViewById(R.id.tvThing);
 			tvThing.setText(item.getThing());
@@ -140,13 +108,29 @@ public class ItemsFragment extends SherlockFragment {
 									getString(R.string.date_format))
 									.format(item.getDate())));
 			}
-
-			return view;
 		}
 
 		public ItemListAdapter() {
-			super(getActivity(), R.layout.listitem_main, items);
+			super(getActivity(), R.layout.listitem_main, null,
+					new String[] { "direction" }, null, 0);
 		}
+	}
+
+	@Override
+	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
+		return new CursorLoader(getActivity(),
+				LendlistContentProvider.OBJECT_URI, Database.COLUMNS, filter,
+				filterArgs, null);
+	}
+
+	@Override
+	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+		adapter.swapCursor(cursor);
+	}
+
+	@Override
+	public void onLoaderReset(Loader<Cursor> arg0) {
+		adapter.swapCursor(null);
 	}
 
 }

@@ -132,7 +132,7 @@ public class DataSource {
 		return item;
 	}
 
-	private Item cursorToItem(Cursor cursor) {
+	public static Item cursorToItem(Cursor cursor) {
 		Item item = new Item();
 		item.setId(cursor.getLong(0));
 		item.setDirection(cursor.getString(1));

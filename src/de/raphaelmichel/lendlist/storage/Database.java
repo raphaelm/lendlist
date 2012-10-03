@@ -16,7 +16,7 @@ public class Database extends SQLiteOpenHelper {
 			+ " direction text," + " thing text," + " person text,"
 			+ " contact_id integer," + " until integer," + " date integer,"
 			+ " returned integer," + " contact_lookup text" + ");";
-	public static final String[] COLUMNS = { "id", "direction", "thing",
+	public static final String[] COLUMNS = { "id AS _id", "direction", "thing",
 			"person", "contact_id", "until", "date", "returned",
 			"contact_lookup" };
 	public static final String OBJECT_TABLE = "objects";

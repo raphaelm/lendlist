@@ -89,7 +89,7 @@ public class MainActivity extends SherlockFragmentActivity {
 
 		case R.id.action_filter:
 			String filter = "direction = ?";
-			
+
 			if (sp.getBoolean("show_returned", false)) {
 				sp.edit().putBoolean("show_returned", false).commit();
 				item.setTitle(R.string.returned_show);
@@ -98,17 +98,18 @@ public class MainActivity extends SherlockFragmentActivity {
 				sp.edit().putBoolean("show_returned", true).commit();
 				item.setTitle(R.string.returned_hide);
 			}
-			
+
 			int number_of_fragments = FRAGMENTS.length;
-			for(int j = 0; j < number_of_fragments; j++){
+			for (int j = 0; j < number_of_fragments; j++) {
 				if (FRAGMENTS[j][2] == FRAGMENT_TYPE_ITEMS) {
 					String[] filterArgs = { DIRECTIONS[FRAGMENTS[j][1]] };
 					((ItemsFragment) fragmentAdapter.fragments[j]).filter = filter;
 					((ItemsFragment) fragmentAdapter.fragments[j]).filterArgs = filterArgs;
-					((ItemsFragment) fragmentAdapter.fragments[j]).refresh();
+					// TODO
+					// ((ItemsFragment) fragmentAdapter.fragments[j]).refresh();
 				}
 			}
-			
+
 			return true;
 
 		}
@@ -146,7 +147,7 @@ public class MainActivity extends SherlockFragmentActivity {
 				return fragments[position];
 			} else if (FRAGMENTS[position][2] == FRAGMENT_TYPE_PERSONS)
 				return MainActivityPersonsFragment.newInstance();
-			
+
 			return null;
 		}
 
