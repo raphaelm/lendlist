@@ -63,10 +63,7 @@ public class MainActivityPersonsFragment extends SherlockFragment {
 	private void refresh(View v) {
 		ListView lvItems = (ListView) v.findViewById(R.id.lvItems);
 
-		DataSource data = new DataSource(getActivity());
-		data.open();
-		persons = data.getPersonList();
-		data.close();
+		persons = DataSource.getPersonList(getActivity());
 
 		lvItems.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view,

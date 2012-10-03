@@ -13,12 +13,14 @@ public class LendlistContentProvider extends ContentProvider {
 
 	private static final String AUTHORITY = "de.raphaelmichel.lendlist.provider";
 	private static final String OBJECT_TYPE = "object";
+	private static final String PERSON_TYPE = "person";
 
-	public static final Uri OBJECT_URI = Uri.parse("content://" + AUTHORITY
-			+ "/" + OBJECT_TYPE);
+	private static final String BASE_URI = "content://" + AUTHORITY + "/";
+	public static final Uri OBJECT_URI = Uri.parse(BASE_URI + OBJECT_TYPE);
+	public static final Uri PERSON_URI = Uri.parse(BASE_URI + PERSON_TYPE);
 
 	private static enum Mime {
-		OBJECT_ITEM, OBJECT_DIR
+		OBJECT_ITEM, OBJECT_DIR, PERSON_DIR
 	}
 
 	@Override
@@ -34,6 +36,8 @@ public class LendlistContentProvider extends ContentProvider {
 			+ OBJECT_MIME_POSTFIX;
 	private static final String OBJECT_ITEM_MIME = MIME_PREFIX + "item"
 			+ OBJECT_MIME_POSTFIX;
+	private static final String PERSON_DIR_MIME = MIME_PREFIX + "dir" + "/vnd."
+			+ AUTHORITY + "." + PERSON_TYPE;
 
 	private static Mime getTypeMime(Uri uri) {
 		if (!AUTHORITY.equals(uri.getAuthority())) {
@@ -54,6 +58,12 @@ public class LendlistContentProvider extends ContentProvider {
 			default:
 				return null;
 			}
+		} else if (PERSON_TYPE.equals(type)) {
+			if (segments.size() == 1) {
+				return Mime.PERSON_DIR;
+			} else {
+				return null;
+			}
 		} else {
 			return null;
 		}
@@ -66,6 +76,8 @@ public class LendlistContentProvider extends ContentProvider {
 			return OBJECT_DIR_MIME;
 		case OBJECT_ITEM:
 			return OBJECT_ITEM_MIME;
+		case PERSON_DIR:
+			return PERSON_DIR_MIME;
 		default:
 			return null;
 		}
@@ -143,6 +155,10 @@ public class LendlistContentProvider extends ContentProvider {
 			cursor = queryDatabase(Database.OBJECT_TABLE, projection,
 					Database.OBJECT_WHERE_ID, selectionForUri(uri), null, null,
 					null);
+			break;
+		case PERSON_DIR:
+			cursor = queryDatabase(Database.OBJECT_TABLE, projection,
+					selection, selectionArgs, "person", null, null);
 			break;
 		default:
 			return null;

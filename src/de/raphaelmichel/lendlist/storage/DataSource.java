@@ -9,30 +9,10 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.SQLException;
-import android.database.sqlite.SQLiteDatabase;
 import de.raphaelmichel.lendlist.objects.Item;
 import de.raphaelmichel.lendlist.objects.Person;
 
 public class DataSource {
-	private SQLiteDatabase database;
-	private Database dbHelper;
-
-	public DataSource(Context context) {
-		dbHelper = new Database(context);
-	}
-
-	public void openWritable() throws SQLException {
-		database = dbHelper.getWritableDatabase();
-	}
-
-	public void open() throws SQLException {
-		database = dbHelper.getReadableDatabase();
-	}
-
-	public void close() {
-		dbHelper.close();
-	}
 
 	public static void addItem(Context context, Item item) {
 		ContentValues values = new ContentValues();
@@ -99,14 +79,14 @@ public class DataSource {
 		return items;
 	}
 
-	public List<Person> getPersonList() {
+	public static List<Person> getPersonList(Context context) {
 		List<Person> items = new ArrayList<Person>();
 
 		String[] proj = { "person", "contact_id", "contact_lookup",
 				"COUNT(thing)" };
 
-		Cursor cursor = database.query("objects", proj, null, null, "person",
-				null, null);
+		Cursor cursor = context.getContentResolver().query(
+				LendlistContentProvider.PERSON_URI, proj, null, null, null);
 
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast()) {
