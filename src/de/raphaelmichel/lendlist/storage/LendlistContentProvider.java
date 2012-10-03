@@ -13,7 +13,8 @@ public class LendlistContentProvider extends ContentProvider {
 
 	private static final String AUTHORITY = "de.raphaelmichel.lendlist.provider";
 	private static final String OBJECT_TYPE = "object";
-	private static final Uri OBJECT_URI = Uri.parse("content://" + AUTHORITY
+
+	public static final Uri OBJECT_URI = Uri.parse("content://" + AUTHORITY
 			+ "/" + OBJECT_TYPE);
 
 	private static enum Mime {
@@ -94,15 +95,32 @@ public class LendlistContentProvider extends ContentProvider {
 		}
 
 		if (rowsAffected > 0) {
-			getContext().getContentResolver().notifyChange(uri, null);
+			notifyUri(uri);
 		}
 		return rowsAffected;
 	}
 
+	private long insertIntoDatabase(String table, ContentValues values) {
+		return database.getWritableDatabase()
+				.insertOrThrow(table, null, values);
+	}
+
 	@Override
 	public Uri insert(Uri uri, ContentValues values) {
-		// TODO Auto-generated method stub
-		return null;
+		Uri itemUri;
+		switch (getTypeMime(uri)) {
+		case OBJECT_DIR:
+			long id = insertIntoDatabase(Database.OBJECT_TABLE, values);
+			itemUri = ContentUris.withAppendedId(OBJECT_URI, id);
+			break;
+		default:
+			itemUri = null;
+			break;
+		}
+		if (itemUri != null) {
+			notifyUri(itemUri);
+		}
+		return itemUri;
 	}
 
 	@Override
@@ -117,6 +135,10 @@ public class LendlistContentProvider extends ContentProvider {
 			String[] selectionArgs) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	private void notifyUri(Uri uri) {
+		getContext().getContentResolver().notifyChange(uri, null);
 	}
 
 }
