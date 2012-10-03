@@ -68,10 +68,7 @@ public class DetailsActivity extends SherlockFragmentActivity {
 		super.onCreate(savedInstanceState);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-		DataSource data = new DataSource(this);
-		data.open();
-		item = data.getItem(getIntent().getLongExtra("id", 0));
-		data.close();
+		item = DataSource.getItem(this, getIntent().getLongExtra("id", 0));
 
 		if (item == null) {
 			setContentView(R.layout.error);
@@ -422,10 +419,7 @@ public class DetailsActivity extends SherlockFragmentActivity {
 			changed = true;
 		}
 
-		DataSource data = new DataSource(this);
-		data.openWritable();
-		data.updateItem(item);
-		data.close();
+		DataSource.updateItem(this, item);
 
 		if (changed)
 			Toast.makeText(DetailsActivity.this, R.string.save_success,
@@ -439,10 +433,7 @@ public class DetailsActivity extends SherlockFragmentActivity {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				dialog.dismiss();
-				DataSource data = new DataSource(DetailsActivity.this);
-				data.openWritable();
-				data.deleteItem(item.getId());
-				data.close();
+				DataSource.deleteItem(DetailsActivity.this, item.getId());
 				setResult(-1);
 				Toast.makeText(DetailsActivity.this, R.string.delete_success,
 						Toast.LENGTH_SHORT).show();
