@@ -13,10 +13,10 @@
     <string name="add_text_borrowed">ausgeliehen</string>
     <string name="add_text_lent">verliehen</string>
     <string name="add_text_something">etwas</string>
-    <string name="add_text_to">an</string>
-    <string name="add_text_from">von</string>
+    <string name="add_text_to">AN</string>
+    <string name="add_text_from">VON</string>
     <string name="add_text_someone">jemand</string>
-    <string name="add_text_until">bis</string>
+    <string name="add_text_until">BIS</string>
     <string name="edit_text_borrowed">geliehen von</string>
     <string name="edit_text_lent">verliehen an</string>
     <string name="date_format">dd.MM.yyyy</string>
