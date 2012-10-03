@@ -33,23 +33,31 @@ public class ItemsFragment extends SherlockFragment implements
 
 	private static int REQUEST_CODE_DETAILS = 2;
 
-	protected String filter;
-	protected String[] filterArgs;
+	private String filter;
+	private String[] filterArgs;
+	private boolean created = false;
 
 	private ItemListAdapter adapter;
 
 	public static ItemsFragment newInstance(String direction) {
-		return newInstanceFiltered("direction = ?", new String[] { direction });
+		ItemsFragment f = new ItemsFragment();
+		f.setFilter("direction = ?", new String[] { direction });
+		return f;
 	}
 
-	protected static ItemsFragment newInstanceFiltered(String filter,
+	public static ItemsFragment newInstanceFiltered(String filter,
 			String[] filterArgs) {
 		ItemsFragment f = new ItemsFragment();
-
-		f.filter = filter;
-		f.filterArgs = filterArgs;
-
+		f.setFilter(filter, filterArgs);
 		return f;
+	}
+
+	public void setFilter(String filter, String[] filterArgs) {
+		this.filter = filter;
+		this.filterArgs = filterArgs;
+		if (created) {
+			getLoaderManager().restartLoader(0, null, this);
+		}
 	}
 
 	@Override
@@ -63,6 +71,13 @@ public class ItemsFragment extends SherlockFragment implements
 		super.onCreate(savedInstanceState);
 		getLoaderManager().initLoader(0, null, this);
 		adapter = new ItemListAdapter();
+		created = true;
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		created = false;
 	}
 
 	@Override

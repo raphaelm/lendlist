@@ -9,7 +9,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.util.Log;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
@@ -103,10 +102,8 @@ public class MainActivity extends SherlockFragmentActivity {
 			for (int j = 0; j < number_of_fragments; j++) {
 				if (FRAGMENTS[j][2] == FRAGMENT_TYPE_ITEMS) {
 					String[] filterArgs = { DIRECTIONS[FRAGMENTS[j][1]] };
-					((ItemsFragment) fragmentAdapter.fragments[j]).filter = filter;
-					((ItemsFragment) fragmentAdapter.fragments[j]).filterArgs = filterArgs;
-					// TODO
-					// ((ItemsFragment) fragmentAdapter.fragments[j]).refresh();
+					((ItemsFragment) fragmentAdapter.fragments[j]).setFilter(
+							filter, filterArgs);
 				}
 			}
 
