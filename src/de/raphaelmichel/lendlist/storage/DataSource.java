@@ -4,35 +4,17 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.SQLException;
-import android.database.sqlite.SQLiteDatabase;
 import de.raphaelmichel.lendlist.objects.Item;
 import de.raphaelmichel.lendlist.objects.Person;
 
 public class DataSource {
-	private SQLiteDatabase database;
-	private Database dbHelper;
 
-	public DataSource(Context context) {
-		dbHelper = new Database(context);
-	}
-
-	public void openWritable() throws SQLException {
-		database = dbHelper.getWritableDatabase();
-	}
-
-	public void open() throws SQLException {
-		database = dbHelper.getReadableDatabase();
-	}
-
-	public void close() {
-		dbHelper.close();
-	}
-
-	public void addItem(Item item) {
+	public static void addItem(Context context, Item item) {
 		ContentValues values = new ContentValues();
 		values.put("direction", item.getDirection());
 		values.put("thing", item.getThing());
@@ -44,10 +26,11 @@ public class DataSource {
 		values.put("date", (item.getDate() != null ? item.getDate().getTime()
 				: 0));
 		values.put("returned", item.isReturned());
-		database.insert("objects", null, values);
+		context.getContentResolver().insert(LendlistContentProvider.OBJECT_URI,
+				values);
 	}
 
-	public void updateItem(Item item) {
+	public static void updateItem(Context context, Item item) {
 		ContentValues values = new ContentValues();
 		values.put("direction", item.getDirection());
 		values.put("thing", item.getThing());
@@ -59,26 +42,30 @@ public class DataSource {
 		values.put("date", (item.getDate() != null ? item.getDate().getTime()
 				: 0));
 		values.put("returned", item.isReturned());
-		String[] selA = { item.getId() + "" };
-		database.update("objects", values, "id = ?", selA);
+		context.getContentResolver().update(
+				ContentUris.withAppendedId(LendlistContentProvider.OBJECT_URI,
+						item.getId()), values, null, null);
 	}
 
-	public void deleteItem(long id) {
-		String[] selA = { "" + id };
-		database.delete("objects", "id = ?", selA);
+	public static void deleteItem(Context context, long id) {
+		context.getContentResolver().delete(
+				ContentUris.withAppendedId(LendlistContentProvider.OBJECT_URI,
+						id), null, null);
 	}
 
-	public List<Item> getAllItems(String filter, String[] filterArgs) {
+	public static List<Item> getAllItems(Context context, String filter,
+			String[] filterArgs) {
 		// direction is ignored if filter is != null!
 		List<Item> items = new ArrayList<Item>();
 		Cursor cursor = null;
+		ContentResolver resolver = context.getContentResolver();
 
 		if (filter == null) {
-			cursor = database.query("objects", Database.COLUMNS, null, null,
-					null, null, null);
+			cursor = resolver.query(LendlistContentProvider.OBJECT_URI,
+					Database.COLUMNS, null, null, null);
 		} else {
-			cursor = database.query("objects", Database.COLUMNS, filter,
-					filterArgs, null, null, null);
+			cursor = resolver.query(LendlistContentProvider.OBJECT_URI,
+					Database.COLUMNS, filter, filterArgs, null);
 		}
 
 		cursor.moveToFirst();
@@ -92,14 +79,14 @@ public class DataSource {
 		return items;
 	}
 
-	public List<Person> getPersonList() {
+	public static List<Person> getPersonList(Context context) {
 		List<Person> items = new ArrayList<Person>();
 
 		String[] proj = { "person", "contact_id", "contact_lookup",
 				"COUNT(thing)" };
 
-		Cursor cursor = database.query("objects", proj, null, null, "person",
-				null, null);
+		Cursor cursor = context.getContentResolver().query(
+				LendlistContentProvider.PERSON_URI, proj, null, null, null);
 
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast()) {
@@ -116,10 +103,10 @@ public class DataSource {
 		return items;
 	}
 
-	public Item getItem(long id) {
-		String[] selA = { "" + id };
-		Cursor cursor = database.query("objects", Database.COLUMNS, "id = ?",
-				selA, null, null, null);
+	public static Item getItem(Context context, long id) {
+		Cursor cursor = context.getContentResolver().query(
+				ContentUris.withAppendedId(LendlistContentProvider.OBJECT_URI,
+						id), Database.COLUMNS, null, null, null);
 
 		Item item = null;
 
@@ -132,7 +119,7 @@ public class DataSource {
 		return item;
 	}
 
-	private Item cursorToItem(Cursor cursor) {
+	public static Item cursorToItem(Cursor cursor) {
 		Item item = new Item();
 		item.setId(cursor.getLong(0));
 		item.setDirection(cursor.getString(1));
