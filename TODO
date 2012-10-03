@@ -11,8 +11,9 @@
 	* System-Backup? http://developer.android.com/guide/topics/data/backup.html
 	(* Dropbox NICHT, weil wir ohne Permission INTERNET auskommen wollen, wenns geht)
 * Prüfen, ob man Personen wirklich nach Namen oder doch nach LOOKUP_KEY zusammenfassen will
-* Opac App Anbindung
+* Opac App Anbindung?
 * AlertDialog und DatePicker aus HoloEverywhere nehmen
 * Touch Feedback bei "Edit" und "Delete" ImageViews in der Detailansicht
 * Settings (welche eigentlich?)
 * Launcher Icon
+* saveInstanceState bei Details hinzufügen und bei Hinzufügen vervollständigen
