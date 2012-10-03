@@ -1,17 +1,19 @@
 * Multi-Auswahl mit Löschen und Zurückgeben
-* Sortieren
-* Datum als "noch X Tage"/…
+* Sortieren (nach Datum, alphabetisch, Rückgabe, …)
+* Datum als "noch X Tage"/… anzeigen
 * Auflistung nach Personen
 	-> Unterscheidung geliehen und verliehen
-* Foto
+* Foto(s) zu Gegenständen hinzufügen
 * "Willkommensnachricht" bei leerer Liste
-* Backup
-	* SD Karte
-	* Dropbox? 
+* Backup/Export
+	* irgendein menschenlesbares Format für den PC
+	* Export und Import auf die SD Karte
+	* System-Backup? http://developer.android.com/guide/topics/data/backup.html
+	(* Dropbox NICHT, weil wir ohne Permission INTERNET auskommen wollen, wenns geht)
+* Prüfen, ob man Personen wirklich nach Namen oder doch nach LOOKUP_KEY zusammenfassen will
 * Opac App Anbindung
 * AlertDialog und DatePicker aus HoloEverywhere nehmen
 * Touch Feedback bei "Edit" und "Delete" ImageViews in der Detailansicht
-* Settings
+* Settings (welche eigentlich?)
 * Datenbank- und Kontakte-Zeug asynchron machen?
-* About
-* Overflow-Menü prüfen
+* Launcher Icon

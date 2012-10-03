@@ -32,7 +32,6 @@ public class MainActivity extends SherlockFragmentActivity {
 	private ViewPager mViewPager;
 	private MainFragmentAdapter fragmentAdapter;
 	private SharedPreferences sp;
-	private MenuItem miFilter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -107,6 +106,11 @@ public class MainActivity extends SherlockFragmentActivity {
 				}
 			}
 
+			return true;
+
+		case R.id.menu_about:
+			Intent iAbout = new Intent(this, AboutActivity.class);
+			startActivity(iAbout);
 			return true;
 
 		}

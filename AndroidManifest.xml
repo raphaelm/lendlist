@@ -44,6 +44,13 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="de.raphaelmichel.lendlist.frontend.MainActivity" />
         </activity>
+        <activity
+            android:name=".frontend.AboutActivity"
+            android:label="@string/about" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="de.raphaelmichel.lendlist.frontend.MainActivity" />
+        </activity>
 
         <provider
             android:name=".storage.LendlistContentProvider"

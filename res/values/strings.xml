@@ -44,5 +44,6 @@
     <string name="title_activity_person_lookup">Person</string>
     <string name="returned_hide">Hide returned</string>
     <string name="returned_show">Show returned</string>
+    <string name="about">About</string>
 
 </resources>
