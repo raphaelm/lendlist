@@ -260,8 +260,6 @@ public class AddActivity extends SherlockFragmentActivity {
 	}
 
 	public void save() {
-		DataSource data = new DataSource(this);
-
 		item.setDirection(direction);
 		item.setThing(etThing.getText().toString());
 		item.setPerson(etPerson.getText().toString());
@@ -273,9 +271,7 @@ public class AddActivity extends SherlockFragmentActivity {
 		}
 		item.setDate(new Date());
 
-		data.openWritable();
-		data.addItem(item);
-		data.close();
+		DataSource.addItem(this, item);
 	}
 
 	@Override
