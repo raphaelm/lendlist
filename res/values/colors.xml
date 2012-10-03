@@ -3,5 +3,16 @@
     <color name="itemlist_meta">#666666</color>
     <color name="emphasis">#31b6e7</color>
     <color name="bg_gray">#cecbce</color>
-
+	<color name="borrowed_inactive">#E4C3C3</color>
+	<color name="borrowed_inactive_text">#000000</color>
+	<color name="borrowed_highlighted">#911D1D</color>
+	<color name="borrowed_highlighted_text">#FFFFFF</color>
+	<color name="borrowed_pressed">#D44E4E</color>
+	<color name="borrowed_pressed_text">#000000</color>
+	<color name="lent_inactive">#D8E6C5</color>
+	<color name="lent_inactive_text">#000000</color>
+	<color name="lent_highlighted">#5F911D</color>
+	<color name="lent_highlighted_text">#FFFFFF</color>
+	<color name="lent_pressed">#9AD44E</color>
+	<color name="lent_pressed_text">#000000</color>
 </resources>
