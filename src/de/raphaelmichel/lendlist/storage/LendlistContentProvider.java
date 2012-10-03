@@ -3,6 +3,7 @@ package de.raphaelmichel.lendlist.storage;
 import java.util.List;
 
 import android.content.ContentProvider;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
@@ -69,10 +70,33 @@ public class LendlistContentProvider extends ContentProvider {
 		}
 	}
 
+	private int deleteInDatabase(String table, String whereClause,
+			String[] whereArgs) {
+		return database.getWritableDatabase().delete(table, whereClause,
+				whereArgs);
+	}
+
 	@Override
 	public int delete(Uri uri, String selection, String[] selectionArgs) {
-		// TODO Auto-generated method stub
-		return 0;
+		int rowsAffected;
+		switch (getTypeMime(uri)) {
+		case OBJECT_DIR:
+			rowsAffected = deleteInDatabase(Database.OBJECT_TABLE, selection,
+					selectionArgs);
+			break;
+		case OBJECT_ITEM:
+			rowsAffected = deleteInDatabase(Database.OBJECT_TABLE, "id = ?",
+					new String[] { String.valueOf(ContentUris.parseId(uri)) });
+			break;
+		default:
+			rowsAffected = 0;
+			break;
+		}
+
+		if (rowsAffected > 0) {
+			getContext().getContentResolver().notifyChange(uri, null);
+		}
+		return rowsAffected;
 	}
 
 	@Override
