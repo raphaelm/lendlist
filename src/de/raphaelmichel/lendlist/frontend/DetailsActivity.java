@@ -204,25 +204,22 @@ public class DetailsActivity extends SherlockFragmentActivity {
 				}
 			});
 
-			tvPerson.setOnClickListener(new View.OnClickListener() { // TODO:
-																		// Provide
-																		// touch
-																		// feedback!!!
-				@Override
-				public void onClick(View v) {
-					save(); // TODO: Is this what the user wants us to do?
-					Intent i = new Intent(DetailsActivity.this,
-							PersonLookupActivity.class);
-					i.putExtra("name", item.getPerson());
-					if (item.getContact_id() > 0) {
-						Uri contactUri = ContactsContract.Contacts
-								.getLookupUri(item.getContact_id(),
-										item.getContact_lookup());
-						i.putExtra("uri", contactUri.toString());
-					}
-					startActivity(i);
-				}
-			});
+			// tvPerson.setOnClickListener(new View.OnClickListener() {
+			// @Override
+			// public void onClick(View v) {
+			// save(); // TODO: Is this what the user wants us to do?
+			// Intent i = new Intent(DetailsActivity.this,
+			// PersonLookupActivity.class);
+			// i.putExtra("name", item.getPerson());
+			// if (item.getContact_id() > 0) {
+			// Uri contactUri = ContactsContract.Contacts
+			// .getLookupUri(item.getContact_id(),
+			// item.getContact_lookup());
+			// i.putExtra("uri", contactUri.toString());
+			// }
+			// startActivity(i);
+			// }
+			// });
 
 		}
 	}
