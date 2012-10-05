@@ -27,8 +27,8 @@ import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 
-import de.raphaelmichel.lendlist.ContactsHelper;
 import de.raphaelmichel.lendlist.R;
+import de.raphaelmichel.lendlist.library.ContactsHelper;
 import de.raphaelmichel.lendlist.objects.Person;
 import de.raphaelmichel.lendlist.storage.LendlistContentProvider;
 

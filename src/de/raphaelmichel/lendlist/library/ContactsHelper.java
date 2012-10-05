@@ -1,6 +1,9 @@
-package de.raphaelmichel.lendlist;
+package de.raphaelmichel.lendlist.library;
 
 import java.io.InputStream;
+
+import de.raphaelmichel.lendlist.R;
+import de.raphaelmichel.lendlist.R.drawable;
 
 import android.content.ContentUris;
 import android.content.Context;

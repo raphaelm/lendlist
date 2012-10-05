@@ -11,8 +11,8 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
-import de.raphaelmichel.lendlist.ContactsHelper;
 import de.raphaelmichel.lendlist.R;
+import de.raphaelmichel.lendlist.library.ContactsHelper;
 
 public class PersonLookupActivity extends SherlockFragmentActivity {
 
