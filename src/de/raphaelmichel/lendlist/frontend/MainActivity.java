@@ -87,22 +87,28 @@ public class MainActivity extends SherlockFragmentActivity {
 
 		case R.id.action_filter:
 			String filter = "direction = ?";
+			String filterPersons = null;
 
 			if (sp.getBoolean("show_returned", false)) {
 				sp.edit().putBoolean("show_returned", false).commit();
 				item.setTitle(R.string.returned_show);
 				filter = "direction = ? and returned = 0";
+				filterPersons = "returned = 0";
 			} else {
 				sp.edit().putBoolean("show_returned", true).commit();
 				item.setTitle(R.string.returned_hide);
 			}
 
-			int number_of_fragments = FRAGMENTS.length;
+			int number_of_fragments = fragmentAdapter.fragments.length;
 			for (int j = 0; j < number_of_fragments; j++) {
 				if (FRAGMENTS[j][2] == FRAGMENT_TYPE_ITEMS) {
 					String[] filterArgs = { DIRECTIONS[FRAGMENTS[j][1]] };
 					((ItemsFragment) fragmentAdapter.fragments[j]).setFilter(
 							filter, filterArgs);
+				} else if (FRAGMENTS[j][2] == FRAGMENT_TYPE_PERSONS) {
+					String[] filterArgs = {};
+					((PersonsFragment) fragmentAdapter.fragments[j]).setFilter(
+							filterPersons, filterArgs);
 				}
 			}
 
@@ -132,6 +138,7 @@ public class MainActivity extends SherlockFragmentActivity {
 		@Override
 		public Fragment getItem(int position) {
 			if (fragments[position] != null) {
+				// Cache them!
 				return fragments[position];
 			}
 			if (FRAGMENTS[position][2] == FRAGMENT_TYPE_ITEMS) {
@@ -145,11 +152,16 @@ public class MainActivity extends SherlockFragmentActivity {
 
 				fragments[position] = ItemsFragment.newInstanceFiltered(filter,
 						filterArgs);
-				return fragments[position];
-			} else if (FRAGMENTS[position][2] == FRAGMENT_TYPE_PERSONS)
-				return MainActivityPersonsFragment.newInstance();
-
-			return null;
+			} else if (FRAGMENTS[position][2] == FRAGMENT_TYPE_PERSONS) {
+				String filter = null;
+				String[] filterArgs = null;
+				if (!sp.getBoolean("show_returned", false)) {
+					filter = "returned = 0";
+				}
+				fragments[position] = PersonsFragment.newInstance(
+						filter, filterArgs);
+			}
+			return fragments[position];
 		}
 
 		@Override

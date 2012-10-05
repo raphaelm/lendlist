@@ -79,14 +79,14 @@ public class DataSource {
 		return items;
 	}
 
-	public static List<Person> getPersonList(Context context) {
+	public static List<Person> getPersonList(Context context, String selection, String[] selectionArgs) {
 		List<Person> items = new ArrayList<Person>();
 
 		String[] proj = { "person", "contact_id", "contact_lookup",
 				"COUNT(thing)" };
 
 		Cursor cursor = context.getContentResolver().query(
-				LendlistContentProvider.PERSON_URI, proj, null, null, null);
+				LendlistContentProvider.PERSON_URI, proj, selection, selectionArgs, null);
 
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast()) {

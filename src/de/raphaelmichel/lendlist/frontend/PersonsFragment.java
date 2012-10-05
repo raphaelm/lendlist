@@ -32,15 +32,27 @@ import de.raphaelmichel.lendlist.R;
 import de.raphaelmichel.lendlist.objects.Person;
 import de.raphaelmichel.lendlist.storage.LendlistContentProvider;
 
-public class MainActivityPersonsFragment extends SherlockFragment implements
+public class PersonsFragment extends SherlockFragment implements
 		LoaderCallbacks<Cursor> {
 
 	private ItemListAdapter adapter;
 
-	static MainActivityPersonsFragment newInstance() {
-		MainActivityPersonsFragment f = new MainActivityPersonsFragment();
-
+	private String filter;
+	private String[] filterArgs;
+	private boolean created = false;
+	
+	static PersonsFragment newInstance(String filter, String[] filterArgs) {
+		PersonsFragment f = new PersonsFragment();
+		f.setFilter(filter, filterArgs);
 		return f;
+	}
+
+	public void setFilter(String filter, String[] filterArgs) {
+		this.filter = filter;
+		this.filterArgs = filterArgs;
+		if (created) {
+			getLoaderManager().restartLoader(0, null, this);
+		}
 	}
 
 	@Override
@@ -55,6 +67,7 @@ public class MainActivityPersonsFragment extends SherlockFragment implements
 
 		getLoaderManager().initLoader(0, null, this);
 		adapter = new ItemListAdapter();
+		created = true;
 	}
 
 	@Override
@@ -133,6 +146,7 @@ public class MainActivityPersonsFragment extends SherlockFragment implements
 		}
 		super.onDestroy();
 		System.gc();
+		created = false;
 	}
 
 	protected void unbindDrawables(View view) {
@@ -154,7 +168,7 @@ public class MainActivityPersonsFragment extends SherlockFragment implements
 		return new CursorLoader(getActivity(),
 				LendlistContentProvider.PERSON_URI, new String[] { "person",
 						"contact_id", "contact_lookup", "COUNT(thing)",
-						"id AS _id" }, null, null, null);
+						"id AS _id" }, filter, filterArgs, null);
 	}
 
 	@Override
