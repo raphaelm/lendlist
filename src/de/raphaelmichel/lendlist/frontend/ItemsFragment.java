@@ -23,6 +23,8 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 
 import de.raphaelmichel.lendlist.R;
+import de.raphaelmichel.lendlist.library.RelativeDateBuilder;
+import de.raphaelmichel.lendlist.library.RelativeDateBuilder.RelativeDate;
 import de.raphaelmichel.lendlist.objects.Item;
 import de.raphaelmichel.lendlist.storage.DataSource;
 import de.raphaelmichel.lendlist.storage.Database;
@@ -112,6 +114,9 @@ public class ItemsFragment extends SherlockFragment implements
 	}
 
 	private class ItemListAdapter extends SimpleCursorAdapter {
+
+		RelativeDateBuilder rdb;
+
 		@Override
 		public void bindView(View view, Context context, Cursor cursor) {
 			Item item = DataSource.cursorToItem(cursor);
@@ -122,22 +127,26 @@ public class ItemsFragment extends SherlockFragment implements
 			tvPerson.setText(item.getPerson());
 
 			TextView tvUntil = (TextView) view.findViewById(R.id.tvUntil);
-			if (item.getUntil() != null)
-				tvUntil.setText(getString(R.string.until,
-						new SimpleDateFormat(getString(R.string.date_format))
-								.format(item.getUntil())));
-			else {
-				if (item.getDate() != null)
-					tvUntil.setText(getString(R.string.since,
-							new SimpleDateFormat(
-									getString(R.string.date_format))
-									.format(item.getDate())));
+			if (item.getUntil() != null) {
+				RelativeDate rd = rdb.build(item.getUntil());
+				tvUntil.setText(rd.text);
+				tvUntil.setTextColor(rd.color);
+			}else{
+				tvUntil.setText("");
 			}
 		}
 
 		public ItemListAdapter() {
 			super(getActivity(), R.layout.listitem_main, null,
 					new String[] { "direction" }, null, 0);
+			
+			rdb = new RelativeDateBuilder(getActivity());
+			rdb.setColors(R.color.itemlist_date_neutral,
+					R.color.itemlist_date_allgood,
+					R.color.itemlist_date_soon, R.color.itemlist_date_over);
+			rdb.setStrings(R.string.date_format, R.string.date_days_left,
+					R.string.date_days_left_1, R.string.date_days_left_0,
+					R.string.date_days_over, R.string.date_days_over_1);
 		}
 	}
 

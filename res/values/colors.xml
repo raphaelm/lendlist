@@ -1,6 +1,10 @@
 <resources>
 
     <color name="itemlist_meta">#666666</color>
+    <color name="itemlist_date_over">#FF0000</color>
+    <color name="itemlist_date_allgood">#009900</color>
+    <color name="itemlist_date_neutral">#666666</color>
+    <color name="itemlist_date_soon">#CC8800</color>
     <color name="emphasis">#31b6e7</color>
     <color name="bg_gray">#cecbce</color>
 	<color name="borrowed_inactive">#E4C3C3</color>
