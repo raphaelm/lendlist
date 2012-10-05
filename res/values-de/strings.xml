@@ -45,5 +45,11 @@
     <string name="returned_hide">Aktuelle zeigen</string>
     <string name="returned_show">Alle zeigen</string>
     <string name="about">Über</string>
+    <string name="order">Sortierung</string>
+    <string name="order_promot">Sortierung</string>
+    <string name="order_alphabetical">Alphabetisch</string>
+    <string name="order_date">Erstellungsdatum</string>
+    <string name="order_return">Rückgabedatum</string>
+    <string name="order_person">Person</string>
 
 </resources>

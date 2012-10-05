@@ -1,14 +1,19 @@
 package de.raphaelmichel.lendlist.frontend;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.view.View;
+import android.widget.EditText;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
@@ -113,7 +118,9 @@ public class MainActivity extends SherlockFragmentActivity {
 			}
 
 			return true;
-
+		case R.id.action_order:
+			selectOrder();
+			return true;
 		case R.id.menu_about:
 			Intent iAbout = new Intent(this, AboutActivity.class);
 			startActivity(iAbout);
@@ -121,6 +128,47 @@ public class MainActivity extends SherlockFragmentActivity {
 
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	public void selectOrder() {
+		final CharSequence[] items = { getString(R.string.order_alphabetical),
+				getString(R.string.order_date),
+				getString(R.string.order_return),
+				getString(R.string.order_person) };
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle(R.string.person_method);
+		builder.setItems(items, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int n) {
+				String orderBy = ItemsFragment.DEFAULT_ORDER;
+				switch (n) {
+				case 0: // Alphabetical
+					orderBy = "thing ASC";
+					break;
+				case 1: // Date
+					orderBy = "date DESC";
+					break;
+				case 2: // Return
+					orderBy = "until ASC";
+					break;
+				case 3: // Person
+					orderBy = "person ASC";
+					break;
+				}
+				sp.edit().putString("order_by", orderBy).commit();
+				
+				int number_of_fragments = fragmentAdapter.fragments.length;
+				for (int j = 0; j < number_of_fragments; j++) {
+					if (FRAGMENTS[j][2] == FRAGMENT_TYPE_ITEMS) {
+						((ItemsFragment) fragmentAdapter.fragments[j]).setOrder(orderBy);
+					} else if (FRAGMENTS[j][2] == FRAGMENT_TYPE_PERSONS) {
+						// nothing right now
+					}
+				}
+			}
+		});
+		AlertDialog alert = builder.create();
+		alert.show();
 	}
 
 	public class MainFragmentAdapter extends FragmentPagerAdapter {
@@ -152,14 +200,15 @@ public class MainActivity extends SherlockFragmentActivity {
 
 				fragments[position] = ItemsFragment.newInstanceFiltered(filter,
 						filterArgs);
+				((ItemsFragment) fragments[position]).setOrder(sp.getString("order_by", ItemsFragment.DEFAULT_ORDER));
 			} else if (FRAGMENTS[position][2] == FRAGMENT_TYPE_PERSONS) {
 				String filter = null;
 				String[] filterArgs = null;
 				if (!sp.getBoolean("show_returned", false)) {
 					filter = "returned = 0";
 				}
-				fragments[position] = PersonsFragment.newInstance(
-						filter, filterArgs);
+				fragments[position] = PersonsFragment.newInstance(filter,
+						filterArgs);
 			}
 			return fragments[position];
 		}

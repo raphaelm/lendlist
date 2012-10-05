@@ -157,16 +157,16 @@ public class LendlistContentProvider extends ContentProvider {
 		switch (getTypeMime(uri)) {
 		case OBJECT_DIR:
 			cursor = queryDatabase(Database.OBJECT_TABLE, projection,
-					selection, selectionArgs, null, null, null);
+					selection, selectionArgs, null, null, sortOrder);
 			break;
 		case OBJECT_ITEM:
 			cursor = queryDatabase(Database.OBJECT_TABLE, projection,
 					Database.OBJECT_WHERE_ID, selectionForUri(uri), null, null,
-					null);
+					sortOrder);
 			break;
 		case PERSON_DIR:
 			cursor = queryDatabase(Database.OBJECT_TABLE, projection,
-					selection, selectionArgs, "person", null, null);
+					selection, selectionArgs, "person", null, sortOrder);
 			break;
 		default:
 			return null;

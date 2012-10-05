@@ -35,6 +35,8 @@ import de.raphaelmichel.lendlist.storage.LendlistContentProvider;
 public class PersonsFragment extends SherlockFragment implements
 		LoaderCallbacks<Cursor> {
 
+	public static final String SORT_ORDER = "person ASC";
+	
 	private ItemListAdapter adapter;
 
 	private String filter;
@@ -168,7 +170,7 @@ public class PersonsFragment extends SherlockFragment implements
 		return new CursorLoader(getActivity(),
 				LendlistContentProvider.PERSON_URI, new String[] { "person",
 						"contact_id", "contact_lookup", "COUNT(thing)",
-						"id AS _id" }, filter, filterArgs, null);
+						"id AS _id" }, filter, filterArgs, SORT_ORDER);
 	}
 
 	@Override

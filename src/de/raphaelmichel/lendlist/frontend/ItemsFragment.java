@@ -33,8 +33,11 @@ public class ItemsFragment extends SherlockFragment implements
 
 	private static int REQUEST_CODE_DETAILS = 2;
 
+	public static final String DEFAULT_ORDER = "date DESC";
+
 	private String filter;
 	private String[] filterArgs;
+	private String orderBy = DEFAULT_ORDER;
 	private boolean created = false;
 
 	private ItemListAdapter adapter;
@@ -55,6 +58,13 @@ public class ItemsFragment extends SherlockFragment implements
 	public void setFilter(String filter, String[] filterArgs) {
 		this.filter = filter;
 		this.filterArgs = filterArgs;
+		if (created) {
+			getLoaderManager().restartLoader(0, null, this);
+		}
+	}
+
+	public void setOrder(String orderBy) {
+		this.orderBy = orderBy;
 		if (created) {
 			getLoaderManager().restartLoader(0, null, this);
 		}
@@ -135,7 +145,7 @@ public class ItemsFragment extends SherlockFragment implements
 	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
 		return new CursorLoader(getActivity(),
 				LendlistContentProvider.OBJECT_URI, Database.COLUMNS, filter,
-				filterArgs, null);
+				filterArgs, orderBy);
 	}
 
 	@Override

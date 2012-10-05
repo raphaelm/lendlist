@@ -45,5 +45,10 @@
     <string name="returned_hide">Hide returned</string>
     <string name="returned_show">Show returned</string>
     <string name="about">About</string>
-
+    <string name="order">Order</string>
+    <string name="order_promot">Sort things</string>
+    <string name="order_alphabetical">Alphabetical</string>
+    <string name="order_date">Creation date</string>
+    <string name="order_return">Return date</string>
+    <string name="order_person">Person name</string>
 </resources>
