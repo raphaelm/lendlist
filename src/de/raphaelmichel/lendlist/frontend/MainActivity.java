@@ -11,7 +11,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.util.Log;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
@@ -154,11 +153,12 @@ public class MainActivity extends SherlockFragmentActivity {
 					break;
 				}
 				sp.edit().putString("order_by", orderBy).commit();
-				
+
 				int number_of_fragments = fragmentAdapter.fragments.length;
 				for (int j = 0; j < number_of_fragments; j++) {
 					if (FRAGMENTS[j][2] == FRAGMENT_TYPE_ITEMS) {
-						((ItemsFragment) fragmentAdapter.getItem(j)).setOrder(orderBy);
+						((ItemsFragment) fragmentAdapter.getItem(j))
+								.setOrder(orderBy);
 					} else if (FRAGMENTS[j][2] == FRAGMENT_TYPE_PERSONS) {
 						// nothing right now
 					}
@@ -187,6 +187,7 @@ public class MainActivity extends SherlockFragmentActivity {
 				// Cache them!
 				return fragments[position];
 			}
+
 			if (FRAGMENTS[position][2] == FRAGMENT_TYPE_ITEMS) {
 				String filter = "direction = ?";
 				String[] filterArgs = { DIRECTIONS[FRAGMENTS[position][1]] };
@@ -196,9 +197,10 @@ public class MainActivity extends SherlockFragmentActivity {
 					filterArgs = new String[] { DIRECTIONS[FRAGMENTS[position][1]] };
 				}
 
-				fragments[position] = ItemsFragment.newInstanceFiltered(filter,
+				fragments[position] = ItemsFragment.newInstance(filter,
 						filterArgs);
-				((ItemsFragment) fragments[position]).setOrder(sp.getString("order_by", ItemsFragment.DEFAULT_ORDER));
+				((ItemsFragment) fragments[position]).setOrder(sp.getString(
+						"order_by", ItemsFragment.DEFAULT_ORDER));
 			} else if (FRAGMENTS[position][2] == FRAGMENT_TYPE_PERSONS) {
 				String filter = null;
 				String[] filterArgs = null;

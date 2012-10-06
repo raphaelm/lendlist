@@ -42,14 +42,7 @@ public class ItemsFragment extends SherlockFragment implements
 
 	private ItemListAdapter adapter;
 
-	public static ItemsFragment newInstance(String direction) {
-		ItemsFragment f = new ItemsFragment();
-		f.setFilter("direction = ?", new String[] { direction });
-		return f;
-	}
-
-	public static ItemsFragment newInstanceFiltered(String filter,
-			String[] filterArgs) {
+	public static ItemsFragment newInstance(String filter, String[] filterArgs) {
 		ItemsFragment f = new ItemsFragment();
 		f.setFilter(filter, filterArgs);
 		return f;
@@ -79,9 +72,24 @@ public class ItemsFragment extends SherlockFragment implements
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		if (savedInstanceState != null) {
+			filter = savedInstanceState.getString("filter");
+			filterArgs = savedInstanceState.getStringArray("filterArgs");
+			orderBy = savedInstanceState.getString("orderBy");
+		}
+
 		getLoaderManager().initLoader(0, null, this);
 		adapter = new ItemListAdapter();
 		created = true;
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putString("filter", filter);
+		outState.putStringArray("filterArgs", filterArgs);
+		outState.putString("orderBy", orderBy);
 	}
 
 	@Override
@@ -127,7 +135,8 @@ public class ItemsFragment extends SherlockFragment implements
 			TextView tvUntil = (TextView) view.findViewById(R.id.tvUntil);
 			if (item.isReturned()) {
 				tvUntil.setText(R.string.itemlist_returned);
-				tvUntil.setTextColor(getResources().getColor(R.color.itemlist_returned));
+				tvUntil.setTextColor(getResources().getColor(
+						R.color.itemlist_returned));
 			} else if (item.getUntil() != null) {
 				RelativeDate rd = rdb.build(item.getUntil());
 				tvUntil.setText(rd.text);
