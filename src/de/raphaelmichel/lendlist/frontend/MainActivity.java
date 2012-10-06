@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.Log;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
@@ -105,11 +106,11 @@ public class MainActivity extends SherlockFragmentActivity {
 			for (int j = 0; j < number_of_fragments; j++) {
 				if (FRAGMENTS[j][2] == FRAGMENT_TYPE_ITEMS) {
 					String[] filterArgs = { DIRECTIONS[FRAGMENTS[j][1]] };
-					((ItemsFragment) fragmentAdapter.fragments[j]).setFilter(
+					((ItemsFragment) fragmentAdapter.getItem(j)).setFilter(
 							filter, filterArgs);
 				} else if (FRAGMENTS[j][2] == FRAGMENT_TYPE_PERSONS) {
 					String[] filterArgs = {};
-					((PersonsFragment) fragmentAdapter.fragments[j]).setFilter(
+					((PersonsFragment) fragmentAdapter.getItem(j)).setFilter(
 							filterPersons, filterArgs);
 				}
 			}
@@ -157,7 +158,7 @@ public class MainActivity extends SherlockFragmentActivity {
 				int number_of_fragments = fragmentAdapter.fragments.length;
 				for (int j = 0; j < number_of_fragments; j++) {
 					if (FRAGMENTS[j][2] == FRAGMENT_TYPE_ITEMS) {
-						((ItemsFragment) fragmentAdapter.fragments[j]).setOrder(orderBy);
+						((ItemsFragment) fragmentAdapter.getItem(j)).setOrder(orderBy);
 					} else if (FRAGMENTS[j][2] == FRAGMENT_TYPE_PERSONS) {
 						// nothing right now
 					}
