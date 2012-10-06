@@ -36,13 +36,13 @@ public class PersonsFragment extends SherlockFragment implements
 		LoaderCallbacks<Cursor> {
 
 	public static final String SORT_ORDER = "person ASC";
-	
+
 	private ItemListAdapter adapter;
 
 	private String filter;
 	private String[] filterArgs;
 	private boolean created = false;
-	
+
 	static PersonsFragment newInstance(String filter, String[] filterArgs) {
 		PersonsFragment f = new PersonsFragment();
 		f.setFilter(filter, filterArgs);
@@ -67,9 +67,21 @@ public class PersonsFragment extends SherlockFragment implements
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		if (savedInstanceState != null) {
+			filter = savedInstanceState.getString("filter");
+			filterArgs = savedInstanceState.getStringArray("filterArgs");
+		}
+
 		getLoaderManager().initLoader(0, null, this);
 		adapter = new ItemListAdapter();
 		created = true;
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putString("filter", filter);
+		outState.putStringArray("filterArgs", filterArgs);
 	}
 
 	@Override
