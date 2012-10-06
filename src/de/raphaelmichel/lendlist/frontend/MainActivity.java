@@ -146,7 +146,7 @@ public class MainActivity extends SherlockFragmentActivity {
 					orderBy = "date DESC";
 					break;
 				case 2: // Return
-					orderBy = "until ASC";
+					orderBy = "returned ASC, until ASC";
 					break;
 				case 3: // Person
 					orderBy = "person ASC";

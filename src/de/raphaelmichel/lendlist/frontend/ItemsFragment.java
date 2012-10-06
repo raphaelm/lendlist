@@ -1,7 +1,5 @@
 package de.raphaelmichel.lendlist.frontend;
 
-import java.text.SimpleDateFormat;
-
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -127,11 +125,14 @@ public class ItemsFragment extends SherlockFragment implements
 			tvPerson.setText(item.getPerson());
 
 			TextView tvUntil = (TextView) view.findViewById(R.id.tvUntil);
-			if (item.getUntil() != null) {
+			if (item.isReturned()) {
+				tvUntil.setText(R.string.itemlist_returned);
+				tvUntil.setTextColor(getResources().getColor(R.color.itemlist_returned));
+			} else if (item.getUntil() != null) {
 				RelativeDate rd = rdb.build(item.getUntil());
 				tvUntil.setText(rd.text);
 				tvUntil.setTextColor(rd.color);
-			}else{
+			} else {
 				tvUntil.setText("");
 			}
 		}
@@ -139,11 +140,11 @@ public class ItemsFragment extends SherlockFragment implements
 		public ItemListAdapter() {
 			super(getActivity(), R.layout.listitem_main, null,
 					new String[] { "direction" }, null, 0);
-			
+
 			rdb = new RelativeDateBuilder(getActivity());
 			rdb.setColors(R.color.itemlist_date_neutral,
-					R.color.itemlist_date_allgood,
-					R.color.itemlist_date_soon, R.color.itemlist_date_over);
+					R.color.itemlist_date_allgood, R.color.itemlist_date_soon,
+					R.color.itemlist_date_over);
 			rdb.setStrings(R.string.date_format, R.string.date_days_left,
 					R.string.date_days_left_1, R.string.date_days_left_0,
 					R.string.date_days_over, R.string.date_days_over_1);

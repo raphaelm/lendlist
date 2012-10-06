@@ -48,13 +48,14 @@
     <string name="order">Sortierung</string>
     <string name="order_promot">Sortierung</string>
     <string name="order_alphabetical">Alphabetisch</string>
-    <string name="order_date">Erstellungsdatum</string>
-    <string name="order_return">Rückgabedatum</string>
+    <string name="order_date">Datum (Erstellung)</string>
+    <string name="order_return">Rückgabe</string>
     <string name="order_person">Person</string>
     <string name="date_days_left">noch %d Tage</string>
     <string name="date_days_left_1">noch 1 Tag</string>
     <string name="date_days_left_0">bis heute</string>
     <string name="date_days_over">%d Tage überzogen</string>
     <string name="date_days_over_1">1 Tag überzogen</string>
+    <string name="itemlist_returned">zurückgegeben</string>
 
 </resources>

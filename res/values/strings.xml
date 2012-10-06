@@ -48,12 +48,13 @@
     <string name="order">Order</string>
     <string name="order_promot">Sort things</string>
     <string name="order_alphabetical">Alphabetical</string>
-    <string name="order_date">Creation date</string>
-    <string name="order_return">Return date</string>
+    <string name="order_date">Creation</string>
+    <string name="order_return">Return</string>
     <string name="order_person">Person name</string>
     <string name="date_days_left">%d days left</string>
     <string name="date_days_left_1">1 day left</string>
     <string name="date_days_left_0">until today</string>
     <string name="date_days_over">%d days overdue</string>
     <string name="date_days_over_1">1 day overdue</string>
+    <string name="itemlist_returned">returned</string>
 </resources>
