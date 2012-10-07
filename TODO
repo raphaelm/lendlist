@@ -2,12 +2,12 @@
 * Auflistung nach Personen
 	-> Unterscheidung geliehen und verliehen
 * Foto(s) zu Gegenständen hinzufügen
+* Export von Rückgabefristen in den Kalender
 * "Willkommensnachricht" bei leerer Liste
 * Backup/Export
 	* irgendein menschenlesbares Format für den PC
 	* Export und Import auf die SD Karte
 	* System-Backup verbessern
-	(* Dropbox NICHT, weil wir ohne Permission INTERNET auskommen wollen, wenns geht)
 * Prüfen, ob man Personen wirklich nach Namen oder doch nach LOOKUP_KEY zusammenfassen will
 * Opac App Anbindung?
 * AlertDialog und DatePicker aus HoloEverywhere nehmen
