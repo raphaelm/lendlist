@@ -56,7 +56,6 @@
                     android:textColor="@color/dirsel_lent_inactive" />
             </LinearLayout>
 
-
             <TextView
                 android:id="@+id/tvTo"
                 android:layout_width="fill_parent"
@@ -65,7 +64,7 @@
                 android:drawableBottom="@drawable/section_header"
                 android:drawablePadding="4dp"
                 android:paddingLeft="4dp"
-                android:text="@string/add_text_to"
+                android:text="@string/add_text_from"
                 android:textAllCaps="true"
                 android:textColor="@color/emphasis"
                 android:textSize="14sp" />
