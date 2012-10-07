@@ -6,7 +6,7 @@
 * Backup/Export
 	* irgendein menschenlesbares Format für den PC
 	* Export und Import auf die SD Karte
-	* System-Backup? http://developer.android.com/guide/topics/data/backup.html
+	* System-Backup verbessern
 	(* Dropbox NICHT, weil wir ohne Permission INTERNET auskommen wollen, wenns geht)
 * Prüfen, ob man Personen wirklich nach Namen oder doch nach LOOKUP_KEY zusammenfassen will
 * Opac App Anbindung?

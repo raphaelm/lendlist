@@ -7,8 +7,8 @@ import android.util.Log;
 
 public class Database extends SQLiteOpenHelper {
 
-	private static final String DATABASE_NAME = "objects.db";
-	private static final int DATABASE_VERSION = 5; // REPLACE ONUPGRADE IF YOU
+	public static final String DATABASE_NAME = "objects.db";
+	public static final int DATABASE_VERSION = 5; // REPLACE ONUPGRADE IF YOU
 													// CHANGE THIS
 
 	private static final String DATABASE_CREATE = "create table "
