@@ -57,4 +57,6 @@
     <string name="date_days_over">%d days overdue</string>
     <string name="date_days_over_1">1 day overdue</string>
     <string name="itemlist_returned">returned</string>
+    <string name="itemlist_dir_borrowed">theirs</string>
+    <string name="itemlist_dir_lent">mine</string>
 </resources>

@@ -57,5 +57,7 @@
     <string name="date_days_over">%d Tage überzogen</string>
     <string name="date_days_over_1">1 Tag überzogen</string>
     <string name="itemlist_returned">zurückgegeben</string>
+    <string name="itemlist_dir_borrowed">ausgeliehen</string>
+    <string name="itemlist_dir_lent">verliehen</string>
 
 </resources>
