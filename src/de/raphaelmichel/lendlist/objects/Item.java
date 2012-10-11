@@ -2,15 +2,36 @@ package de.raphaelmichel.lendlist.objects;
 
 import java.util.Date;
 
+import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.Element;
+
 public class Item {
+	
+	@Attribute
 	private long id;
+	
+	@Attribute(required=false)
 	private String direction;
+	
+	@Element(required=false)
 	private String thing;
+	
+	@Element(required=false)
 	private String person;
+	
+	@Element(required=false)
 	private long contact_id;
+	
+	@Element(required=false)
 	private String contact_lookup;
+	
+	@Element(required=false)
 	private Date until;
+	
+	@Element(required=false)
 	private Date date = new Date();
+	
+	@Attribute
 	private boolean returned = false;
 
 	public long getId() {

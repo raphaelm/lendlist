@@ -115,9 +115,16 @@ public class MainActivity extends SherlockFragmentActivity {
 			}
 
 			return true;
+			
 		case R.id.action_order:
 			selectOrder();
 			return true;
+
+		case R.id.menu_export:
+			Intent iExport = new Intent(this, ExportActivity.class);
+			startActivity(iExport);
+			return true;
+			
 		case R.id.menu_about:
 			Intent iAbout = new Intent(this, AboutActivity.class);
 			startActivity(iAbout);

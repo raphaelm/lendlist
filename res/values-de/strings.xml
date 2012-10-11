@@ -62,5 +62,7 @@
     <string name="add_to_calendar">Rückgabe zum Kalender hinzufügen</string>
     <string name="calendar_return">%1$s zurückgeben an %2$s</string>
     <string name="error_no_return_date">Kein Rückgabedatum angegeben</string>
+    <string name="export">Export</string>
+    <string name="export_sd_btn">Export to SD card</string>
 
 </resources>
