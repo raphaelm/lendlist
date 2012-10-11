@@ -24,7 +24,7 @@
     <string name="since">since %s</string>
     <string name="until">until %s</string>
     <string name="delete">Delete</string>
-    <string name="title_activity_details">Edit item</string>
+    <string name="title_activity_details">Details</string>
     <string name="person_heading">PERSON</string>
     <string name="date">Date</string>
     <string name="date_return">Return date</string>
@@ -59,4 +59,7 @@
     <string name="itemlist_returned">returned</string>
     <string name="itemlist_dir_borrowed">theirs</string>
     <string name="itemlist_dir_lent">mine</string>
+    <string name="add_to_calendar">Add to calendar</string>
+    <string name="calendar_return">Return %1$s to %2$s</string>
+    <string name="error_no_return_date">No return date specified</string>
 </resources>

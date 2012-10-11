@@ -447,12 +447,30 @@ public class DetailsActivity extends SherlockFragmentActivity {
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
+	public boolean onOptionsItemSelected(MenuItem mi) {
+		switch (mi.getItemId()) {
 		case android.R.id.home:
 			save();
 			NavUtils.navigateUpFromSameTask(this);
 			return true;
+		case R.id.action_calendar:
+			if (item.getUntil() != null) {
+				Intent intent = new Intent(Intent.ACTION_EDIT);
+				intent.setType("vnd.android.cursor.item/event");
+				intent.putExtra("beginTime", item.getUntil().getTime());
+				intent.putExtra("allDay", true);
+				intent.putExtra(
+						"title",
+						getString(R.string.calendar_return, item.getThing(),
+								item.getPerson()));
+				startActivity(intent);
+			} else {
+				Toast.makeText(DetailsActivity.this,
+						R.string.error_no_return_date, Toast.LENGTH_SHORT)
+						.show();
+			}
+			return true;
+
 		case R.id.action_delete:
 			delete();
 			return true;
@@ -461,7 +479,7 @@ public class DetailsActivity extends SherlockFragmentActivity {
 			finish();
 			return true;
 		}
-		return super.onOptionsItemSelected(item);
+		return super.onOptionsItemSelected(mi);
 	}
 
 }
