@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
+import org.simpleframework.xml.stream.Format;
 
 import android.content.Context;
 import android.os.Environment;
@@ -40,15 +41,19 @@ public class BackupHelper {
 		File source = new File(getDefaultDirectory(), filename);
 		List<Item> items = serializer.read(ItemList.class, source).getItems();
 		DataSource.deleteAll(context);
-		for(Item item: items) {
+		for (Item item : items) {
 			DataSource.addItem(context, item);
 		}
 	}
 
 	public static void writeBackup(Context context, File output)
 			throws Exception {
-		Serializer serializer = new Persister();
+		Serializer serializer = new Persister(
+				new Format(
+						"<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+								+ "<?xml-stylesheet href=\"http://www.raphaelmichel.de/lendlist/stylesheet.xsl\" type=\"text/xsl\" ?>"));
 		List<Item> items = DataSource.getAllItems(context, null, null);
+
 		serializer.write(new ItemList(items), output);
 	}
 
