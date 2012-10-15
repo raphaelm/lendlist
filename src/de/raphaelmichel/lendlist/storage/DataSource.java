@@ -47,6 +47,10 @@ public class DataSource {
 						item.getId()), values, null, null);
 	}
 
+	public static void deleteAll(Context context) {
+		context.getContentResolver().delete(LendlistContentProvider.OBJECT_URI, null, null);
+	}
+
 	public static void deleteItem(Context context, long id) {
 		context.getContentResolver().delete(
 				ContentUris.withAppendedId(LendlistContentProvider.OBJECT_URI,

@@ -1,14 +1,10 @@
 package de.raphaelmichel.lendlist.frontend;
 
 import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
+import java.io.FilenameFilter;
 
-import org.simpleframework.xml.Serializer;
-import org.simpleframework.xml.core.Persister;
-
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.NavUtils;
@@ -16,14 +12,13 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
+import com.WazaBe.HoloEverywhere.widget.Toast;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
 import de.raphaelmichel.lendlist.R;
-import de.raphaelmichel.lendlist.objects.Item;
-import de.raphaelmichel.lendlist.objects.ItemList;
-import de.raphaelmichel.lendlist.storage.DataSource;
+import de.raphaelmichel.lendlist.backup.BackupHelper;
 
 public class ExportActivity extends SherlockActivity {
 
@@ -37,31 +32,133 @@ public class ExportActivity extends SherlockActivity {
 		btExportSd.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				String state = Environment.getExternalStorageState();
-
-				if (Environment.MEDIA_MOUNTED.equals(state)) {
-					// We can read and write the media
-					File dir = Environment.getExternalStorageDirectory();
-					File ourdir = new File(dir, "LendList/");
-					ourdir.mkdirs();
-					File ourfile = new File(ourdir, "backup."
-							+ (new SimpleDateFormat(
-
-							"yyyy-MM-dd-HH-mm-ss").format(new Date())) + ".xml");
-
-					Serializer serializer = new Persister();
-					try {
-						List<Item> items = DataSource.getAllItems(
-								ExportActivity.this, null, null);
-						serializer.write(new ItemList(items), ourfile);
-
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
+				export();
 			}
 		});
+		Button btImportSd = (Button) findViewById(R.id.btImportSd);
+		btImportSd.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				importChooseFile();
+			}
+		});
+	}
+
+	private String[] loadFileList() {
+		try {
+			FilenameFilter filter = new FilenameFilter() {
+				public boolean accept(File dir, String filename) {
+					return filename.contains(".xml");
+				}
+			};
+			return BackupHelper.getDefaultDirectory().list(filter);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	private void importChooseFile() {
+		final String[] fileList = loadFileList();
+		if (fileList == null) {
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setMessage(R.string.import_failed);
+			builder.setPositiveButton(R.string.accept,
+					new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int id) {
+							dialog.dismiss();
+						}
+					});
+			AlertDialog dialog = builder.create();
+			dialog.show();
+			return;
+		}
+
+		AlertDialog.Builder fcBuilder = new AlertDialog.Builder(this);
+		fcBuilder.setTitle(R.string.import_choose);
+		fcBuilder.setItems(fileList, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                importConfirm(fileList[which]);
+                dialog.dismiss();
+            }
+        });
+		AlertDialog fcDialog = fcBuilder.create();
+		fcDialog.show();
+	}
+
+	private void importConfirm(final String filename) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage(R.string.import_confirm);
+		builder.setNegativeButton(R.string.cancel,
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						dialog.cancel();
+					}
+				});
+		builder.setPositiveButton(R.string.accept,
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						dialog.dismiss();
+						importDo(filename);
+					}
+				});
+		AlertDialog dialog = builder.create();
+		dialog.show();
+	}
+
+	private void importDo(final String filename) {
+		try {
+			BackupHelper.importBackup(this, filename);
+			Toast.makeText(this, R.string.import_success,
+					Toast.LENGTH_SHORT).show();
+		} catch (Exception e) {
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setMessage(R.string.import_failed);
+			builder.setPositiveButton(R.string.accept,
+					new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int id) {
+							dialog.dismiss();
+						}
+					});
+			AlertDialog dialog = builder.create();
+			dialog.show();
+			e.printStackTrace();
+		}
+	}
+
+	private void export() {
+		String state = Environment.getExternalStorageState();
+
+		if (Environment.MEDIA_MOUNTED.equals(state)) {
+			try {
+				BackupHelper.writeBackup(this, BackupHelper.getDefaultFile());
+				Toast.makeText(this, R.string.export_success,
+						Toast.LENGTH_SHORT).show();
+			} catch (Exception e) {
+				e.printStackTrace();
+				AlertDialog.Builder builder = new AlertDialog.Builder(this);
+				builder.setMessage(R.string.export_failed);
+				builder.setPositiveButton(R.string.accept,
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								dialog.dismiss();
+							}
+						});
+				AlertDialog dialog = builder.create();
+				dialog.show();
+			}
+		} else {
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setMessage(R.string.export_failed_sd);
+			builder.setPositiveButton(R.string.accept,
+					new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int id) {
+							dialog.dismiss();
+						}
+					});
+			AlertDialog dialog = builder.create();
+			dialog.show();
+		}
 	}
 
 	@Override
