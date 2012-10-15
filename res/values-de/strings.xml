@@ -7,6 +7,7 @@
     <string name="borrowed">Ausgeliehen</string>
     <string name="lent">Verliehen</string>
     <string name="add">Hinzufügen</string>
+    <string name="loading">Lade…</string>
     <string name="accept">OK</string>
     <string name="cancel">Abbrechen</string>
     <string name="add_text_ijust">Ich habe gerade</string>
@@ -77,4 +78,7 @@
     <string name="photo_heading">FOTOS</string>
     <string name="photo_choose">Aus Fotos auswählen</string>
     <string name="photo_take">Foto aufnehmen</string>
+    <string name="photo_share">Foto teilen</string>
+    <string name="photo_delete">Foto löschen</string>
+    <string name="photo_delete_confirm">Foto wirklich löschen?</string>
 </resources>

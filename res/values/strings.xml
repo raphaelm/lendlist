@@ -7,6 +7,7 @@
     <string name="borrowed">Theirs</string>
     <string name="lent">Mine</string>
     <string name="add">Add</string>
+    <string name="loading">Loading…</string>
     <string name="accept">OK</string>
     <string name="cancel">Cancel</string>
     <string name="add_text_ijust">I just</string>
@@ -77,4 +78,7 @@
     <string name="photo_heading">PHOTOS</string>
     <string name="photo_choose">Choose from photos</string>
     <string name="photo_take">Take photo</string>
+    <string name="photo_share">Share photo</string>
+    <string name="photo_delete">Delete photo</string>
+    <string name="photo_delete_confirm">Really delete this photo?</string>
 </resources>

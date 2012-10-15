@@ -6,10 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -29,9 +26,11 @@ import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.NavUtils;
+import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
+import android.view.View.OnLongClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -51,6 +50,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
+import de.raphaelmichel.lendlist.MutableTriplet;
 import de.raphaelmichel.lendlist.R;
 import de.raphaelmichel.lendlist.library.ContactsHelper;
 import de.raphaelmichel.lendlist.objects.Item;
@@ -63,7 +63,7 @@ public class DetailsActivity extends SherlockFragmentActivity {
 	private static final int REQUEST_CODE_PHOTOS = 5;
 
 	private Item item;
-	private Map<Long, Uri> photos = new HashMap<Long, Uri>();
+	private List<MutableTriplet<Long, Uri, Bitmap>> photos = new ArrayList<MutableTriplet<Long, Uri, Bitmap>>();
 
 	private boolean changed = false;
 
@@ -78,6 +78,7 @@ public class DetailsActivity extends SherlockFragmentActivity {
 	private ImageView ibRemoveUntil;
 	private ImageButton ibAddPhoto;
 	private LinearLayout llPhotos;
+	private TextView tvLoading;
 
 	private DialogFragment dpDialog;
 
@@ -262,7 +263,15 @@ public class DetailsActivity extends SherlockFragmentActivity {
 	}
 
 	public void loadphotos() {
-		new LoadPhotoTask().execute(this, item.getId());
+		photos = DataSource.getPhotos(this, item.getId());
+		if (photos.size() > 0) {
+			tvLoading = new TextView(this);
+			tvLoading.setText(R.string.loading);
+			llPhotos.addView(tvLoading);
+			new LoadPhotoTask().execute(this, item.getId());
+		}else{
+			llPhotos.removeAllViews();
+		}
 	}
 
 	public class LoadPhotoTask extends AsyncTask<Object, Object, Object> {
@@ -273,32 +282,77 @@ public class DetailsActivity extends SherlockFragmentActivity {
 		protected Object doInBackground(Object... params) {
 			ctx = (DetailsActivity) params[0];
 			object = (Long) params[1];
-			List<Bitmap> bitmaps = new ArrayList<Bitmap>();
 
-			Map<Long, Uri> photos = DataSource.getPhotos(ctx, object);
-			Iterator<Map.Entry<Long, Uri>> it = photos.entrySet().iterator();
-			while (it.hasNext()) {
-				Map.Entry<Long, Uri> e = (Map.Entry<Long, Uri>) it.next();
-				File f = new File(e.getValue().getPath());
-				if (f != null)
-					bitmaps.add(BitmapFactory.decodeFile(f.getAbsolutePath()));
+			for (MutableTriplet<Long, Uri, Bitmap> photo : photos) {
+				File f = new File(photo.second.getPath());
+				if (f != null) {
+					Display display = getWindowManager().getDefaultDisplay();
+					int dstW = display.getWidth();
+					int dstH = 0;
+					Bitmap bm = BitmapFactory.decodeFile(f.getAbsolutePath());
 
-				it.remove();
+					float srcW = bm.getWidth();
+					float srcH = bm.getHeight();
+					dstH = (int) (srcH / srcW * (float) dstW);
+					// Pre-scale
+					photo.third = Bitmap.createScaledBitmap(bm, dstW, dstH,
+							false);
+				}
 			}
-
-			return bitmaps;
+			return null;
 		}
 
 		@Override
 		protected void onPostExecute(Object result) {
 			llPhotos.removeAllViews();
-			for (Bitmap bitmap : (List<Bitmap>) result) {
+			for (final MutableTriplet<Long, Uri, Bitmap> row : photos) {
 				ImageView ivNew = new ImageView(ctx);
-				ivNew.setImageBitmap(bitmap);
+				ivNew.setScaleType(ImageView.ScaleType.FIT_XY);
+				ivNew.setAdjustViewBounds(true);
+				ivNew.setImageBitmap(row.third);
+				ivNew.setOnLongClickListener(new OnLongClickListener() {
+					@Override
+					public boolean onLongClick(View v) {
+						contextMenuPicture(row.first, row.second);
+						return false;
+					}
+				});
 				llPhotos.addView(ivNew);
 			}
 		}
 
+	}
+
+	private void contextMenuPicture(final long id, final Uri uri) {
+		final CharSequence[] items = { getString(R.string.photo_share),
+				getString(R.string.photo_delete) };
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle(R.string.person_method);
+		builder.setItems(items, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int n) {
+				dialog.dismiss();
+				if (n == 0) {
+					// Share
+					Intent share = new Intent(Intent.ACTION_SEND);
+					share.setType("image/jpeg");
+					share.putExtra(Intent.EXTRA_STREAM, uri);
+					startActivity(Intent.createChooser(share, "Share Image"));
+				} else if (n == 1) {
+					// Delete
+					deletePicture(id);
+				}
+			}
+		});
+		AlertDialog alert = builder.create();
+		alert.show();
+	}
+
+	@Override
+	protected void onDestroy() {
+		unbindDrawables(llPhotos);
+		System.gc();
+		super.onDestroy();
 	}
 
 	protected void unbindDrawables(View view) {
@@ -564,6 +618,26 @@ public class DetailsActivity extends SherlockFragmentActivity {
 		if (changed)
 			Toast.makeText(DetailsActivity.this, R.string.save_success,
 					Toast.LENGTH_SHORT).show();
+	}
+
+	public void deletePicture(final long id) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage(R.string.photo_delete_confirm);
+		builder.setPositiveButton(R.string.delete, new OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+				DataSource.deletePhoto(DetailsActivity.this, id);
+				loadphotos();
+			}
+		});
+		builder.setNegativeButton(android.R.string.no, new OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.cancel();
+			}
+		});
+		builder.show();
 	}
 
 	public void delete() {

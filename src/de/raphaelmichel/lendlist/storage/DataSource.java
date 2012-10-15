@@ -2,16 +2,16 @@ package de.raphaelmichel.lendlist.storage;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import de.raphaelmichel.lendlist.MutableTriplet;
 import de.raphaelmichel.lendlist.objects.Item;
 import de.raphaelmichel.lendlist.objects.Person;
 
@@ -75,19 +75,21 @@ public class DataSource {
 						id), null, null);
 	}
 
-	public static Map<Long, Uri> getPhotos(Context context, long object) {
-		Map<Long, Uri> photos = new HashMap<Long, Uri>();
+	public static List<MutableTriplet<Long, Uri, Bitmap>> getPhotos(
+			Context context, long object) {
+		List<MutableTriplet<Long, Uri, Bitmap>> photos = new ArrayList<MutableTriplet<Long, Uri, Bitmap>>();
 		Cursor cursor = null;
 		ContentResolver resolver = context.getContentResolver();
 
 		cursor = resolver.query(LendlistContentProvider.PHOTO_URI,
-				Database.COLUMNS_PHOTOS, "object = ?", new String[] { "" + object },
-				null);
+				Database.COLUMNS_PHOTOS, "object = ?", new String[] { ""
+						+ object }, null);
 
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast()) {
 			if (cursor.getString(2) != null)
-				photos.put(cursor.getLong(0), Uri.parse(cursor.getString(2)));
+				photos.add(new MutableTriplet<Long, Uri, Bitmap>(cursor
+						.getLong(0), Uri.parse(cursor.getString(2)), null));
 			cursor.moveToNext();
 		}
 		// Make sure to close the cursor
