@@ -2,17 +2,28 @@ package de.raphaelmichel.lendlist.storage;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 import de.raphaelmichel.lendlist.objects.Item;
 import de.raphaelmichel.lendlist.objects.Person;
 
 public class DataSource {
+
+	public static void addPhoto(Context context, long object, Uri uri) {
+		ContentValues values = new ContentValues();
+		values.put("object", object);
+		values.put("uri", uri.toString());
+		context.getContentResolver().insert(LendlistContentProvider.PHOTO_URI,
+				values);
+	}
 
 	public static void addItem(Context context, Item item) {
 		ContentValues values = new ContentValues();
@@ -48,13 +59,40 @@ public class DataSource {
 	}
 
 	public static void deleteAll(Context context) {
-		context.getContentResolver().delete(LendlistContentProvider.OBJECT_URI, null, null);
+		context.getContentResolver().delete(LendlistContentProvider.OBJECT_URI,
+				null, null);
 	}
 
 	public static void deleteItem(Context context, long id) {
 		context.getContentResolver().delete(
 				ContentUris.withAppendedId(LendlistContentProvider.OBJECT_URI,
 						id), null, null);
+	}
+
+	public static void deletePhoto(Context context, long id) {
+		context.getContentResolver().delete(
+				ContentUris.withAppendedId(LendlistContentProvider.PHOTO_URI,
+						id), null, null);
+	}
+
+	public static Map<Long, Uri> getPhotos(Context context, long object) {
+		Map<Long, Uri> photos = new HashMap<Long, Uri>();
+		Cursor cursor = null;
+		ContentResolver resolver = context.getContentResolver();
+
+		cursor = resolver.query(LendlistContentProvider.PHOTO_URI,
+				Database.COLUMNS_PHOTOS, "object = ?", new String[] { "" + object },
+				null);
+
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast()) {
+			if (cursor.getString(2) != null)
+				photos.put(cursor.getLong(0), Uri.parse(cursor.getString(2)));
+			cursor.moveToNext();
+		}
+		// Make sure to close the cursor
+		cursor.close();
+		return photos;
 	}
 
 	public static List<Item> getAllItems(Context context, String filter,
@@ -83,14 +121,16 @@ public class DataSource {
 		return items;
 	}
 
-	public static List<Person> getPersonList(Context context, String selection, String[] selectionArgs) {
+	public static List<Person> getPersonList(Context context, String selection,
+			String[] selectionArgs) {
 		List<Person> items = new ArrayList<Person>();
 
 		String[] proj = { "person", "contact_id", "contact_lookup",
 				"COUNT(thing)" };
 
 		Cursor cursor = context.getContentResolver().query(
-				LendlistContentProvider.PERSON_URI, proj, selection, selectionArgs, null);
+				LendlistContentProvider.PERSON_URI, proj, selection,
+				selectionArgs, null);
 
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast()) {

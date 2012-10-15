@@ -93,6 +93,10 @@ public class LendlistContentProvider extends ContentProvider {
 			return OBJECT_DIR_MIME;
 		case OBJECT_ITEM:
 			return OBJECT_ITEM_MIME;
+		case PHOTO_DIR:
+			return PHOTO_DIR_MIME;
+		case PHOTO_ITEM:
+			return PHOTO_ITEM_MIME;
 		case PERSON_DIR:
 			return PERSON_DIR_MIME;
 		default:

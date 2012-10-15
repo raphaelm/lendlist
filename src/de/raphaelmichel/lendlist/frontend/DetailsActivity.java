@@ -1,11 +1,15 @@
 package de.raphaelmichel.lendlist.frontend;
 
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -14,20 +18,29 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.ContactsContract;
+import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.NavUtils;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.view.View.OnTouchListener;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.QuickContactBadge;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -46,8 +59,11 @@ import de.raphaelmichel.lendlist.storage.DataSource;
 public class DetailsActivity extends SherlockFragmentActivity {
 
 	private static final int REQUEST_CODE_CONTACT = 3;
+	private static final int REQUEST_CODE_CAMERA = 4;
+	private static final int REQUEST_CODE_PHOTOS = 5;
 
 	private Item item;
+	private Map<Long, Uri> photos = new HashMap<Long, Uri>();
 
 	private boolean changed = false;
 
@@ -60,8 +76,12 @@ public class DetailsActivity extends SherlockFragmentActivity {
 	private TextView tvPerson;
 	private ImageView ibPersonEdit;
 	private ImageView ibRemoveUntil;
+	private ImageButton ibAddPhoto;
+	private LinearLayout llPhotos;
 
 	private DialogFragment dpDialog;
+
+	private Uri imageCaptureUri;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -204,6 +224,16 @@ public class DetailsActivity extends SherlockFragmentActivity {
 				}
 			});
 
+			llPhotos = (LinearLayout) findViewById(R.id.llPhotos);
+
+			ibAddPhoto = (ImageButton) findViewById(R.id.ibAddPhoto);
+			ibAddPhoto.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					addphoto();
+				}
+			});
+
 			// tvPerson.setOnClickListener(new View.OnClickListener() {
 			// @Override
 			// public void onClick(View v) {
@@ -221,7 +251,101 @@ public class DetailsActivity extends SherlockFragmentActivity {
 			// }
 			// });
 
+			loadphotos();
+
 		}
+	}
+
+	public void savephoto(Uri uri) {
+		DataSource.addPhoto(this, item.getId(), uri);
+		loadphotos();
+	}
+
+	public void loadphotos() {
+		new LoadPhotoTask().execute(this, item.getId());
+	}
+
+	public class LoadPhotoTask extends AsyncTask<Object, Object, Object> {
+		private DetailsActivity ctx;
+		private long object;
+
+		@Override
+		protected Object doInBackground(Object... params) {
+			ctx = (DetailsActivity) params[0];
+			object = (Long) params[1];
+			List<Bitmap> bitmaps = new ArrayList<Bitmap>();
+
+			Map<Long, Uri> photos = DataSource.getPhotos(ctx, object);
+			Iterator<Map.Entry<Long, Uri>> it = photos.entrySet().iterator();
+			while (it.hasNext()) {
+				Map.Entry<Long, Uri> e = (Map.Entry<Long, Uri>) it.next();
+				File f = new File(e.getValue().getPath());
+				if (f != null)
+					bitmaps.add(BitmapFactory.decodeFile(f.getAbsolutePath()));
+
+				it.remove();
+			}
+
+			return bitmaps;
+		}
+
+		@Override
+		protected void onPostExecute(Object result) {
+			llPhotos.removeAllViews();
+			for (Bitmap bitmap : (List<Bitmap>) result) {
+				ImageView ivNew = new ImageView(ctx);
+				ivNew.setImageBitmap(bitmap);
+				llPhotos.addView(ivNew);
+			}
+		}
+
+	}
+
+	protected void unbindDrawables(View view) {
+		if (view.getBackground() != null) {
+			view.getBackground().setCallback(null);
+		}
+		if (view instanceof ViewGroup) {
+			for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+				unbindDrawables(((ViewGroup) view).getChildAt(i));
+			}
+			if (!(view instanceof AdapterView)) {
+				((ViewGroup) view).removeAllViews();
+			}
+		}
+	}
+
+	public void addphoto() {
+		final CharSequence[] items = { getString(R.string.photo_choose),
+				getString(R.string.photo_take) };
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle(R.string.person_method);
+		builder.setItems(items, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int n) {
+				dialog.dismiss();
+				if (n == 0) {
+					// Choose
+					Intent iPick = new Intent(
+							Intent.ACTION_PICK,
+							android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+					startActivityForResult(iPick, REQUEST_CODE_PHOTOS);
+				} else if (n == 1) {
+					// Take photo
+					Intent iCam = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+					File image = new File(
+							getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+							"lendlist_"
+									+ new SimpleDateFormat("yyyyMMdd_HHmmss")
+											.format(new Date()) + ".jpg");
+					imageCaptureUri = Uri.fromFile(image);
+					iCam.putExtra(MediaStore.EXTRA_OUTPUT, imageCaptureUri);
+					startActivityForResult(iCam, REQUEST_CODE_CAMERA);
+				}
+			}
+		});
+		AlertDialog alert = builder.create();
+		alert.show();
 	}
 
 	@Override
@@ -229,6 +353,25 @@ public class DetailsActivity extends SherlockFragmentActivity {
 		super.onActivityResult(reqCode, resultCode, data);
 
 		switch (reqCode) {
+		case REQUEST_CODE_CAMERA:
+			if (resultCode == RESULT_OK) {
+				savephoto(imageCaptureUri);
+			}
+			break;
+		case REQUEST_CODE_PHOTOS:
+			if (resultCode == RESULT_OK) {
+				Uri selectedImage = data.getData();
+				String[] filePathColumn = { MediaStore.Images.Media.DATA };
+				Cursor cursor = getContentResolver().query(selectedImage,
+						filePathColumn, null, null, null);
+				cursor.moveToFirst();
+
+				int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+				String filePath = cursor.getString(columnIndex);
+				cursor.close();
+				savephoto(Uri.parse(filePath));
+			}
+			break;
 		case REQUEST_CODE_CONTACT:
 			if (resultCode == RESULT_OK) {
 				Uri contactData = data.getData();

@@ -75,4 +75,6 @@
     <string name="import_confirm">Really overwrite current data with backup?</string>
     <string name="import_choose">Choose file</string>
     <string name="photo_heading">PHOTOS</string>
+    <string name="photo_choose">Choose from photos</string>
+    <string name="photo_take">Take photo</string>
 </resources>

@@ -75,4 +75,6 @@
     <string name="import_confirm">Wirklich aktuelle Daten mit Sicherung überschreiben?</string>
     <string name="import_choose">Datei wählen</string>
     <string name="photo_heading">FOTOS</string>
+    <string name="photo_choose">Aus Fotos auswählen</string>
+    <string name="photo_take">Foto aufnehmen</string>
 </resources>
