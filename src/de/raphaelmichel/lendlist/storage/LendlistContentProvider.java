@@ -166,7 +166,7 @@ public class LendlistContentProvider extends ContentProvider {
 			break;
 		case PERSON_DIR:
 			cursor = queryDatabase(Database.OBJECT_TABLE, projection,
-					selection, selectionArgs, "person", null, sortOrder);
+					selection, selectionArgs, "person", "person != ''", sortOrder);
 			break;
 		default:
 			return null;
