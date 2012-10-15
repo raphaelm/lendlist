@@ -129,6 +129,35 @@
                 android:src="@drawable/ic_action_cancel" />
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvHeaderPhotos"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="8dp"
+            android:drawableBottom="@drawable/section_header"
+            android:drawablePadding="4dp"
+            android:paddingLeft="4dp"
+            android:text="@string/photo_heading"
+            android:textAllCaps="true"
+            android:textColor="@color/emphasis"
+            android:textSize="14sp" />
+
+        <LinearLayout
+            android:id="@+id/llPhotos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/ibAddPhoto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_action_add" />
+
     </LinearLayout>
 
 </ScrollView>

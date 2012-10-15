@@ -74,4 +74,5 @@
     <string name="import_failed">Import fehlgeschlagen.</string> 
     <string name="import_confirm">Wirklich aktuelle Daten mit Sicherung überschreiben?</string>
     <string name="import_choose">Datei wählen</string>
+    <string name="photo_heading">FOTOS</string>
 </resources>

@@ -74,4 +74,5 @@
     <string name="import_failed">Import failed.</string> 
     <string name="import_confirm">Really overwrite current data with backup?</string>
     <string name="import_choose">Choose file</string>
+    <string name="photo_heading">PHOTOS</string>
 </resources>
