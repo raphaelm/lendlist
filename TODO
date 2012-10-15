@@ -2,11 +2,6 @@
 * Foto(s) zu Gegenständen hinzufügen
 * "Willkommensnachricht" bei leerer Liste
 * Backup/Export
-	* XML
-		* Feedback
-		* Import
-		* XSL
-	* Export und Import auf die SD Karte
 	* System-Backup verbessern
 * Prüfen, ob man Personen wirklich nach Namen oder doch nach LOOKUP_KEY zusammenfassen will
 * Opac App Anbindung?
