@@ -699,4 +699,10 @@ public class DetailsActivity extends SherlockFragmentActivity {
 		return super.onOptionsItemSelected(mi);
 	}
 
+	@Override
+	public void onBackPressed() {
+		save();
+		super.onBackPressed();
+	}
+
 }
