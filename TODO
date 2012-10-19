@@ -1,12 +1,16 @@
-* Multi-Auswahl mit Löschen und Zurückgeben
+RELEASE
 * Foto(s) zu Gegenständen hinzufügen
+	* Foto machen fixen
+	* Direkt beim hinzufügen
 * "Willkommensnachricht" bei leerer Liste
-* Backup/Export
-	* System-Backup verbessern
-* Prüfen, ob man Personen wirklich nach Namen oder doch nach LOOKUP_KEY zusammenfassen will
-* Opac App Anbindung?
-* AlertDialog und DatePicker aus HoloEverywhere nehmen
-* Touch Feedback bei "Edit" und "Delete" ImageViews in der Detailansicht
-* Settings (welche eigentlich?)
+* System-Backup verbessern
+* Benachrichtigungen
+* Settings
 * Launcher Icon
 * saveInstanceState bei Details hinzufügen und bei Hinzufügen vervollständigen
+* Touch Feedback bei "Edit" und "Delete" ImageViews in der Detailansicht
+
+SOMEDAY
+* Multi-Auswahl mit Löschen und Zurückgeben
+* Opac App Anbindung?
+* AlertDialog und DatePicker aus HoloEverywhere nehmen
