@@ -157,14 +157,11 @@ public class DetailsActivity extends SherlockFragmentActivity {
 				}
 			});
 			etDate = (EditText) findViewById(R.id.etDate);
-			etDate.setOnTouchListener(new OnTouchListener() {
+			etDate.setOnClickListener(new View.OnClickListener() {
 				@Override
-				public boolean onTouch(View v, MotionEvent event) {
-					if (event.getAction() == MotionEvent.ACTION_UP) {
-						dpDialog = new DatePickerFragment();
-						dpDialog.show(getSupportFragmentManager(), "datePicker");
-					}
-					return true;
+				public void onClick(View v) {
+					dpDialog = new DatePickerFragment();
+					dpDialog.show(getSupportFragmentManager(), "datePicker");
 				}
 			});
 
