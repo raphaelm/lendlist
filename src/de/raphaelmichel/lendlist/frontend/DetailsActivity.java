@@ -14,6 +14,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -269,7 +270,7 @@ public class DetailsActivity extends SherlockFragmentActivity {
 			tvLoading.setText(R.string.loading);
 			llPhotos.addView(tvLoading);
 			new LoadPhotoTask().execute(this, item.getId());
-		}else{
+		} else {
 			llPhotos.removeAllViews();
 		}
 	}
@@ -370,36 +371,47 @@ public class DetailsActivity extends SherlockFragmentActivity {
 	}
 
 	public void addphoto() {
-		final CharSequence[] items = { getString(R.string.photo_choose),
-				getString(R.string.photo_take) };
+		PackageManager pm = getPackageManager();
 
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle(R.string.person_method);
-		builder.setItems(items, new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int n) {
-				dialog.dismiss();
-				if (n == 0) {
-					// Choose
-					Intent iPick = new Intent(
-							Intent.ACTION_PICK,
-							android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-					startActivityForResult(iPick, REQUEST_CODE_PHOTOS);
-				} else if (n == 1) {
-					// Take photo
-					Intent iCam = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-					File image = new File(
-							getExternalFilesDir(Environment.DIRECTORY_PICTURES),
-							"lendlist_"
-									+ new SimpleDateFormat("yyyyMMdd_HHmmss")
-											.format(new Date()) + ".jpg");
-					imageCaptureUri = Uri.fromFile(image);
-					iCam.putExtra(MediaStore.EXTRA_OUTPUT, imageCaptureUri);
-					startActivityForResult(iCam, REQUEST_CODE_CAMERA);
+		if (pm.hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
+			final CharSequence[] items = { getString(R.string.photo_choose),
+					getString(R.string.photo_take) };
+
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setTitle(R.string.person_method);
+			builder.setItems(items, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int n) {
+					dialog.dismiss();
+					if (n == 0) {
+						// Choose
+						Intent iPick = new Intent(
+								Intent.ACTION_PICK,
+								android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+						startActivityForResult(iPick, REQUEST_CODE_PHOTOS);
+					} else if (n == 1) {
+						// Take photo
+						Intent iCam = new Intent(
+								MediaStore.ACTION_IMAGE_CAPTURE);
+						File image = new File(
+								getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+								"lendlist_"
+										+ new SimpleDateFormat(
+												"yyyyMMdd_HHmmss")
+												.format(new Date()) + ".jpg");
+						imageCaptureUri = Uri.fromFile(image);
+						iCam.putExtra(MediaStore.EXTRA_OUTPUT, imageCaptureUri);
+						startActivityForResult(iCam, REQUEST_CODE_CAMERA);
+					}
 				}
-			}
-		});
-		AlertDialog alert = builder.create();
-		alert.show();
+			});
+			AlertDialog alert = builder.create();
+			alert.show();
+		} else {
+			Intent iPick = new Intent(
+					Intent.ACTION_PICK,
+					android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+			startActivityForResult(iPick, REQUEST_CODE_PHOTOS);
+		}
 	}
 
 	@Override
