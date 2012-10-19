@@ -1,5 +1,8 @@
 package de.raphaelmichel.lendlist.storage;
 
+import java.io.File;
+
+import de.raphaelmichel.lendlist.backup.BackupHelper;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -24,6 +27,8 @@ public class Database extends SQLiteOpenHelper {
 	public static final String PHOTO_WHERE_ID = "id = ?";
 	public static final String PHOTO_WHERE_OBJECT = "object = ?";
 
+	private Context context;
+	
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL("create table "
@@ -38,21 +43,29 @@ public class Database extends SQLiteOpenHelper {
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		if(db.isReadOnly()) db = getWritableDatabase();
-		if (oldVersion == 6 && newVersion == 7) {
-			db.execSQL("create table photos ( id integer primary key autoincrement,"
-					+ "object integer," + " uri text" + ");");
-		} else {
-			Log.w(Database.class.getName(), "Upgrading database from version "
-					+ oldVersion + " to " + newVersion
-					+ ", which will destroy all old data");
-			db.execSQL("DROP TABLE IF EXISTS objects");
-			db.execSQL("DROP TABLE IF EXISTS photos");
-			onCreate(db);
+		
+		File backupFile = null;
+		try {
+			backupFile = BackupHelper.getDefaultFile();
+			BackupHelper.writeBackup(context, backupFile);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		db.execSQL("DROP TABLE IF EXISTS objects");
+		db.execSQL("DROP TABLE IF EXISTS photos");
+		onCreate(db);
+		try {
+			BackupHelper.importBackup(context, backupFile);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
 	public Database(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
+		this.context = context;
 	}
 
 }

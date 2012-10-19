@@ -37,9 +37,15 @@ public class BackupHelper {
 
 	public static void importBackup(Context context, String filename)
 			throws Exception {
-		Serializer serializer = new Persister();
 		File source = new File(getDefaultDirectory(), filename);
-		List<Item> items = serializer.read(ItemList.class, source).getItems();
+		importBackup(context, source);
+	}
+
+	public static void importBackup(Context context, File backupFile)
+			throws Exception {
+		Serializer serializer = new Persister();
+		List<Item> items = serializer.read(ItemList.class, backupFile)
+				.getItems();
 		DataSource.deleteAll(context);
 		for (Item item : items) {
 			DataSource.addItem(context, item);
