@@ -1,7 +1,7 @@
 RELEASE
 * Foto(s) zu Gegenständen hinzufügen
-	* Foto machen fixen
 	* Direkt beim hinzufügen
+	* Fix Speichern, direkt anzeigen, Thumbs speichern und nicht RAM sprengen.
 * "Willkommensnachricht" bei leerer Liste
 * System-Backup verbessern
 * Benachrichtigungen
@@ -9,6 +9,7 @@ RELEASE
 * Launcher Icon
 * saveInstanceState bei Details hinzufügen und bei Hinzufügen vervollständigen
 * Touch Feedback bei "Edit" und "Delete" ImageViews in der Detailansicht
+* Datepicker Felder onTouch besser lösen
 
 SOMEDAY
 * Multi-Auswahl mit Löschen und Zurückgeben

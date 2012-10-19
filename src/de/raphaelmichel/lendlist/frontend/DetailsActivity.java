@@ -11,10 +11,12 @@ import java.util.List;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.backup.SharedPreferencesBackupHelper;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.ContentObserver;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -23,10 +25,13 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.NavUtils;
+import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
@@ -56,6 +61,7 @@ import de.raphaelmichel.lendlist.R;
 import de.raphaelmichel.lendlist.library.ContactsHelper;
 import de.raphaelmichel.lendlist.objects.Item;
 import de.raphaelmichel.lendlist.storage.DataSource;
+import de.raphaelmichel.lendlist.storage.LendlistContentProvider;
 
 public class DetailsActivity extends SherlockFragmentActivity {
 
@@ -82,8 +88,6 @@ public class DetailsActivity extends SherlockFragmentActivity {
 	private TextView tvLoading;
 
 	private DialogFragment dpDialog;
-
-	private Uri imageCaptureUri;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -260,18 +264,16 @@ public class DetailsActivity extends SherlockFragmentActivity {
 
 	public void savephoto(Uri uri) {
 		DataSource.addPhoto(this, item.getId(), uri);
-		loadphotos();
 	}
 
 	public void loadphotos() {
+		llPhotos.removeAllViews();
 		photos = DataSource.getPhotos(this, item.getId());
 		if (photos.size() > 0) {
 			tvLoading = new TextView(this);
 			tvLoading.setText(R.string.loading);
 			llPhotos.addView(tvLoading);
 			new LoadPhotoTask().execute(this, item.getId());
-		} else {
-			llPhotos.removeAllViews();
 		}
 	}
 
@@ -398,8 +400,14 @@ public class DetailsActivity extends SherlockFragmentActivity {
 										+ new SimpleDateFormat(
 												"yyyyMMdd_HHmmss")
 												.format(new Date()) + ".jpg");
-						imageCaptureUri = Uri.fromFile(image);
-						iCam.putExtra(MediaStore.EXTRA_OUTPUT, imageCaptureUri);
+						Uri imageUri = Uri.fromFile(image);
+						PreferenceManager
+								.getDefaultSharedPreferences(
+										DetailsActivity.this)
+								.edit()
+								.putString("last_photo_path",
+										imageUri.toString()).commit();
+						iCam.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
 						startActivityForResult(iCam, REQUEST_CODE_CAMERA);
 					}
 				}
@@ -421,7 +429,9 @@ public class DetailsActivity extends SherlockFragmentActivity {
 		switch (reqCode) {
 		case REQUEST_CODE_CAMERA:
 			if (resultCode == RESULT_OK) {
-				savephoto(imageCaptureUri);
+				savephoto(Uri.parse(PreferenceManager
+						.getDefaultSharedPreferences(this).getString(
+								"last_photo_path", null)));
 			}
 			break;
 		case REQUEST_CODE_PHOTOS:
