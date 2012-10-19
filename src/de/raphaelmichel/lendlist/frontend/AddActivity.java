@@ -14,11 +14,9 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.NavUtils;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
-import android.view.View.OnTouchListener;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -54,6 +52,9 @@ public class AddActivity extends SherlockFragmentActivity {
 		savedInstanceState.putString("thing", etThing.getText().toString());
 		savedInstanceState.putString("person", etPerson.getText().toString());
 		savedInstanceState.putString("until", etUntil.getText().toString());
+		savedInstanceState.putLong("contact_id", item.getContact_id());
+		savedInstanceState
+				.putString("contact_lookup", item.getContact_lookup());
 		savedInstanceState.putString("direction", direction);
 	}
 
@@ -102,8 +103,15 @@ public class AddActivity extends SherlockFragmentActivity {
 		etThing.setText(getS(savedInstanceState, "thing"));
 		etPerson.setText(getS(savedInstanceState, "person"));
 		etUntil.setText(getS(savedInstanceState, "until"));
+		item.setContact_lookup(savedInstanceState.getString("contact_lookup"));
+		item.setContact_id(savedInstanceState.getLong("contact_id"));
+		if (item.getContact_id() > 0) {
+			etPerson.setEnabled(false);
+			ibContact.setImageResource(R.drawable.ic_action_cancel);
+		}
+
 		if (savedInstanceState.getString("direction") != null) {
-			if (getIntent().getStringExtra("direction").equals("lent")) {
+			if (savedInstanceState.getString("direction").equals("lent")) {
 				tvLent.setBackgroundResource(R.drawable.dirsel_lent_highlighted);
 				tvLent.setTextColor(getResources().getColorStateList(
 						R.color.dirsel_lent_highlighted));
