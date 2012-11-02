@@ -125,6 +125,11 @@ public class MainActivity extends SherlockFragmentActivity {
 			startActivity(iExport);
 			return true;
 			
+		case R.id.menu_settings:
+			Intent iPref = new Intent(this, PreferenceActivity.class);
+			startActivity(iPref);
+			return true;
+			
 		case R.id.menu_about:
 			Intent iAbout = new Intent(this, AboutActivity.class);
 			startActivity(iAbout);

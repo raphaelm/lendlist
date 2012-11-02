@@ -81,4 +81,10 @@
     <string name="photo_share">Foto teilen</string>
     <string name="photo_delete">Foto löschen</string>
     <string name="photo_delete_confirm">Foto wirklich löschen?</string>
+    <string name="settings">Einstellungen</string>
+    <string name="notifications">Benachrichtigungen</string>
+    <string name="notification_switch">Benachrichtige bei fälliger Rückgabe</string>
+    <string name="notify_days">Anzahl Tage vor Rückgabedatum</string>
+    <string name="notify_vibrate">Vibriere</string>
+    <string name="notify_ringtone">Benachrichtigungston</string>
 </resources>

@@ -81,4 +81,10 @@
     <string name="photo_share">Share photo</string>
     <string name="photo_delete">Delete photo</string>
     <string name="photo_delete_confirm">Really delete this photo?</string>
+    <string name="settings">Settings</string>
+    <string name="notifications">Notifications</string>
+    <string name="notification_switch">Notify when item is due</string>
+    <string name="notify_days">Notify X days before due date</string>
+    <string name="notify_vibrate">Vibrate</string>
+    <string name="notify_ringtone">Sound</string>
 </resources>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory android:title="@string/notifications" >
+        <CheckBoxPreference
+            android:key="notify_enabled"
+            android:title="@string/notification_switch" />
+
+        <EditTextPreference
+            android:dependency="notify_enabled"
+            android:key="notify_days"
+            android:numeric="integer"
+            android:title="@string/notify_days" />
+
+        <CheckBoxPreference
+            android:dependency="notify_enabled"
+            android:key="notify_vibrate"
+            android:title="@string/notify_vibrate" />
+
+        <RingtonePreference
+            android:dependency="notify_enabled"
+            android:key="notify_ringtone"
+            android:ringtoneType="notification|alarm"
+            android:showDefault="true"
+            android:showSilent="true"
+            android:title="@string/notify_ringtone" />
+    </PreferenceCategory>
+
+</PreferenceScreen>
