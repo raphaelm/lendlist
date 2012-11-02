@@ -37,7 +37,6 @@
                 android:text="@string/edit_returned"
                 android:textOff="@string/edit_returned"
                 android:textOn="@string/edit_not_returned" />
-
         </LinearLayout>
 
         <TextView
@@ -81,7 +80,6 @@
                 android:layout_height="match_parent"
                 android:minHeight="32dp"
                 android:src="@drawable/ic_action_edit" />
-
         </LinearLayout>
 
         <TextView
@@ -127,7 +125,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_action_cancel" />
-
         </LinearLayout>
 
         <TextView
@@ -142,22 +139,23 @@
             android:text="@string/photo_heading"
             android:textAllCaps="true"
             android:textColor="@color/emphasis"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:visibility="gone" />
 
         <LinearLayout
             android:id="@+id/llPhotos"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
-
+            android:orientation="vertical"
+            android:visibility="gone" >
         </LinearLayout>
 
         <ImageButton
             android:id="@+id/ibAddPhoto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_action_add" />
-
+            android:src="@drawable/ic_action_add"
+            android:visibility="gone" />
     </LinearLayout>
 
 </ScrollView>

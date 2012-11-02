@@ -1,6 +1,5 @@
 package de.raphaelmichel.lendlist.frontend;
 
-import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -11,41 +10,26 @@ import java.util.List;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.app.backup.SharedPreferencesBackupHelper;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.database.ContentObserver;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
-import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
-import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.NavUtils;
-import android.util.Log;
-import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
-import android.view.View.OnLongClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.QuickContactBadge;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -56,21 +40,20 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
-import de.raphaelmichel.lendlist.MutableTriplet;
 import de.raphaelmichel.lendlist.R;
 import de.raphaelmichel.lendlist.library.ContactsHelper;
 import de.raphaelmichel.lendlist.objects.Item;
 import de.raphaelmichel.lendlist.storage.DataSource;
-import de.raphaelmichel.lendlist.storage.LendlistContentProvider;
 
 public class DetailsActivity extends SherlockFragmentActivity {
 
 	private static final int REQUEST_CODE_CONTACT = 3;
-	private static final int REQUEST_CODE_CAMERA = 4;
-	private static final int REQUEST_CODE_PHOTOS = 5;
+	// private static final int REQUEST_CODE_CAMERA = 4;
+	// private static final int REQUEST_CODE_PHOTOS = 5;
 
 	private Item item;
-	private List<MutableTriplet<Long, Uri, Bitmap>> photos = new ArrayList<MutableTriplet<Long, Uri, Bitmap>>();
+	// private List<MutableTriplet<Long, Uri, Bitmap>> photos = new
+	// ArrayList<MutableTriplet<Long, Uri, Bitmap>>();
 
 	private boolean changed = false;
 
@@ -83,9 +66,9 @@ public class DetailsActivity extends SherlockFragmentActivity {
 	private TextView tvPerson;
 	private ImageView ibPersonEdit;
 	private ImageView ibRemoveUntil;
-	private ImageButton ibAddPhoto;
-	private LinearLayout llPhotos;
-	private TextView tvLoading;
+	// private ImageButton ibAddPhoto;
+	// private LinearLayout llPhotos;
+	// private TextView tvLoading;
 
 	private DialogFragment dpDialog;
 
@@ -226,16 +209,16 @@ public class DetailsActivity extends SherlockFragmentActivity {
 					changed = true;
 				}
 			});
-
-			llPhotos = (LinearLayout) findViewById(R.id.llPhotos);
-
-			ibAddPhoto = (ImageButton) findViewById(R.id.ibAddPhoto);
-			ibAddPhoto.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					addphoto();
-				}
-			});
+			//
+			// llPhotos = (LinearLayout) findViewById(R.id.llPhotos);
+			//
+			// ibAddPhoto = (ImageButton) findViewById(R.id.ibAddPhoto);
+			// ibAddPhoto.setOnClickListener(new View.OnClickListener() {
+			// @Override
+			// public void onClick(View v) {
+			// addphoto();
+			// }
+			// });
 
 			// tvPerson.setOnClickListener(new View.OnClickListener() {
 			// @Override
@@ -254,103 +237,103 @@ public class DetailsActivity extends SherlockFragmentActivity {
 			// }
 			// });
 
-			loadphotos();
+			// loadphotos();
 
 		}
 	}
 
-	public void savephoto(Uri uri) {
-		DataSource.addPhoto(this, item.getId(), uri);
-	}
-
-	public void loadphotos() {
-		llPhotos.removeAllViews();
-		photos = DataSource.getPhotos(this, item.getId());
-		if (photos.size() > 0) {
-			tvLoading = new TextView(this);
-			tvLoading.setText(R.string.loading);
-			llPhotos.addView(tvLoading);
-			new LoadPhotoTask().execute(this, item.getId());
-		}
-	}
-
-	public class LoadPhotoTask extends AsyncTask<Object, Object, Object> {
-		private DetailsActivity ctx;
-		private long object;
-
-		@Override
-		protected Object doInBackground(Object... params) {
-			ctx = (DetailsActivity) params[0];
-			object = (Long) params[1];
-
-			for (MutableTriplet<Long, Uri, Bitmap> photo : photos) {
-				File f = new File(photo.second.getPath());
-				if (f != null) {
-					Display display = getWindowManager().getDefaultDisplay();
-					int dstW = display.getWidth();
-					int dstH = 0;
-					Bitmap bm = BitmapFactory.decodeFile(f.getAbsolutePath());
-
-					float srcW = bm.getWidth();
-					float srcH = bm.getHeight();
-					dstH = (int) (srcH / srcW * (float) dstW);
-					// Pre-scale
-					photo.third = Bitmap.createScaledBitmap(bm, dstW, dstH,
-							false);
-				}
-			}
-			return null;
-		}
-
-		@Override
-		protected void onPostExecute(Object result) {
-			llPhotos.removeAllViews();
-			for (final MutableTriplet<Long, Uri, Bitmap> row : photos) {
-				ImageView ivNew = new ImageView(ctx);
-				ivNew.setScaleType(ImageView.ScaleType.FIT_XY);
-				ivNew.setAdjustViewBounds(true);
-				ivNew.setImageBitmap(row.third);
-				ivNew.setOnLongClickListener(new OnLongClickListener() {
-					@Override
-					public boolean onLongClick(View v) {
-						contextMenuPicture(row.first, row.second);
-						return false;
-					}
-				});
-				llPhotos.addView(ivNew);
-			}
-		}
-
-	}
-
-	private void contextMenuPicture(final long id, final Uri uri) {
-		final CharSequence[] items = { getString(R.string.photo_share),
-				getString(R.string.photo_delete) };
-
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle(R.string.person_method);
-		builder.setItems(items, new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int n) {
-				dialog.dismiss();
-				if (n == 0) {
-					// Share
-					Intent share = new Intent(Intent.ACTION_SEND);
-					share.setType("image/jpeg");
-					share.putExtra(Intent.EXTRA_STREAM, uri);
-					startActivity(Intent.createChooser(share, "Share Image"));
-				} else if (n == 1) {
-					// Delete
-					deletePicture(id);
-				}
-			}
-		});
-		AlertDialog alert = builder.create();
-		alert.show();
-	}
+	// public void savephoto(Uri uri) {
+	// DataSource.addPhoto(this, item.getId(), uri);
+	// }
+	//
+	// public void loadphotos() {
+	// llPhotos.removeAllViews();
+	// photos = DataSource.getPhotos(this, item.getId());
+	// if (photos.size() > 0) {
+	// tvLoading = new TextView(this);
+	// tvLoading.setText(R.string.loading);
+	// llPhotos.addView(tvLoading);
+	// new LoadPhotoTask().execute(this, item.getId());
+	// }
+	// }
+	//
+	// public class LoadPhotoTask extends AsyncTask<Object, Object, Object> {
+	// private DetailsActivity ctx;
+	// private long object;
+	//
+	// @Override
+	// protected Object doInBackground(Object... params) {
+	// ctx = (DetailsActivity) params[0];
+	// object = (Long) params[1];
+	//
+	// for (MutableTriplet<Long, Uri, Bitmap> photo : photos) {
+	// File f = new File(photo.second.getPath());
+	// if (f != null) {
+	// Display display = getWindowManager().getDefaultDisplay();
+	// int dstW = display.getWidth();
+	// int dstH = 0;
+	// Bitmap bm = BitmapFactory.decodeFile(f.getAbsolutePath());
+	//
+	// float srcW = bm.getWidth();
+	// float srcH = bm.getHeight();
+	// dstH = (int) (srcH / srcW * (float) dstW);
+	// // Pre-scale
+	// photo.third = Bitmap.createScaledBitmap(bm, dstW, dstH,
+	// false);
+	// }
+	// }
+	// return null;
+	// }
+	//
+	// @Override
+	// protected void onPostExecute(Object result) {
+	// llPhotos.removeAllViews();
+	// for (final MutableTriplet<Long, Uri, Bitmap> row : photos) {
+	// ImageView ivNew = new ImageView(ctx);
+	// ivNew.setScaleType(ImageView.ScaleType.FIT_XY);
+	// ivNew.setAdjustViewBounds(true);
+	// ivNew.setImageBitmap(row.third);
+	// ivNew.setOnLongClickListener(new OnLongClickListener() {
+	// @Override
+	// public boolean onLongClick(View v) {
+	// contextMenuPicture(row.first, row.second);
+	// return false;
+	// }
+	// });
+	// llPhotos.addView(ivNew);
+	// }
+	// }
+	//
+	// }
+	//
+	// private void contextMenuPicture(final long id, final Uri uri) {
+	// final CharSequence[] items = { getString(R.string.photo_share),
+	// getString(R.string.photo_delete) };
+	//
+	// AlertDialog.Builder builder = new AlertDialog.Builder(this);
+	// builder.setTitle(R.string.person_method);
+	// builder.setItems(items, new DialogInterface.OnClickListener() {
+	// public void onClick(DialogInterface dialog, int n) {
+	// dialog.dismiss();
+	// if (n == 0) {
+	// // Share
+	// Intent share = new Intent(Intent.ACTION_SEND);
+	// share.setType("image/jpeg");
+	// share.putExtra(Intent.EXTRA_STREAM, uri);
+	// startActivity(Intent.createChooser(share, "Share Image"));
+	// } else if (n == 1) {
+	// // Delete
+	// deletePicture(id);
+	// }
+	// }
+	// });
+	// AlertDialog alert = builder.create();
+	// alert.show();
+	// }
 
 	@Override
 	protected void onDestroy() {
-		unbindDrawables(llPhotos);
+		// unbindDrawables(llPhotos);
 		System.gc();
 		super.onDestroy();
 	}
@@ -369,82 +352,83 @@ public class DetailsActivity extends SherlockFragmentActivity {
 		}
 	}
 
-	public void addphoto() {
-		PackageManager pm = getPackageManager();
-
-		if (pm.hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
-			final CharSequence[] items = { getString(R.string.photo_choose),
-					getString(R.string.photo_take) };
-
-			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setTitle(R.string.person_method);
-			builder.setItems(items, new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int n) {
-					dialog.dismiss();
-					if (n == 0) {
-						// Choose
-						Intent iPick = new Intent(
-								Intent.ACTION_PICK,
-								android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-						startActivityForResult(iPick, REQUEST_CODE_PHOTOS);
-					} else if (n == 1) {
-						// Take photo
-						Intent iCam = new Intent(
-								MediaStore.ACTION_IMAGE_CAPTURE);
-						File image = new File(
-								getExternalFilesDir(Environment.DIRECTORY_PICTURES),
-								"lendlist_"
-										+ new SimpleDateFormat(
-												"yyyyMMdd_HHmmss")
-												.format(new Date()) + ".jpg");
-						Uri imageUri = Uri.fromFile(image);
-						PreferenceManager
-								.getDefaultSharedPreferences(
-										DetailsActivity.this)
-								.edit()
-								.putString("last_photo_path",
-										imageUri.toString()).commit();
-						iCam.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-						startActivityForResult(iCam, REQUEST_CODE_CAMERA);
-					}
-				}
-			});
-			AlertDialog alert = builder.create();
-			alert.show();
-		} else {
-			Intent iPick = new Intent(
-					Intent.ACTION_PICK,
-					android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-			startActivityForResult(iPick, REQUEST_CODE_PHOTOS);
-		}
-	}
+	//
+	// public void addphoto() {
+	// PackageManager pm = getPackageManager();
+	//
+	// if (pm.hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
+	// final CharSequence[] items = { getString(R.string.photo_choose),
+	// getString(R.string.photo_take) };
+	//
+	// AlertDialog.Builder builder = new AlertDialog.Builder(this);
+	// builder.setTitle(R.string.person_method);
+	// builder.setItems(items, new DialogInterface.OnClickListener() {
+	// public void onClick(DialogInterface dialog, int n) {
+	// dialog.dismiss();
+	// if (n == 0) {
+	// // Choose
+	// Intent iPick = new Intent(
+	// Intent.ACTION_PICK,
+	// android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+	// startActivityForResult(iPick, REQUEST_CODE_PHOTOS);
+	// } else if (n == 1) {
+	// // Take photo
+	// Intent iCam = new Intent(
+	// MediaStore.ACTION_IMAGE_CAPTURE);
+	// File image = new File(
+	// getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+	// "lendlist_"
+	// + new SimpleDateFormat(
+	// "yyyyMMdd_HHmmss")
+	// .format(new Date()) + ".jpg");
+	// Uri imageUri = Uri.fromFile(image);
+	// PreferenceManager
+	// .getDefaultSharedPreferences(
+	// DetailsActivity.this)
+	// .edit()
+	// .putString("last_photo_path",
+	// imageUri.toString()).commit();
+	// iCam.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+	// startActivityForResult(iCam, REQUEST_CODE_CAMERA);
+	// }
+	// }
+	// });
+	// AlertDialog alert = builder.create();
+	// alert.show();
+	// } else {
+	// Intent iPick = new Intent(
+	// Intent.ACTION_PICK,
+	// android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+	// startActivityForResult(iPick, REQUEST_CODE_PHOTOS);
+	// }
+	// }
 
 	@Override
 	public void onActivityResult(int reqCode, int resultCode, Intent data) {
 		super.onActivityResult(reqCode, resultCode, data);
 
 		switch (reqCode) {
-		case REQUEST_CODE_CAMERA:
-			if (resultCode == RESULT_OK) {
-				savephoto(Uri.parse(PreferenceManager
-						.getDefaultSharedPreferences(this).getString(
-								"last_photo_path", null)));
-			}
-			break;
-		case REQUEST_CODE_PHOTOS:
-			if (resultCode == RESULT_OK) {
-				Uri selectedImage = data.getData();
-				String[] filePathColumn = { MediaStore.Images.Media.DATA };
-				Cursor cursor = getContentResolver().query(selectedImage,
-						filePathColumn, null, null, null);
-				cursor.moveToFirst();
-
-				int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-				String filePath = cursor.getString(columnIndex);
-				cursor.close();
-				savephoto(Uri.parse(filePath));
-			}
-			break;
+		// case REQUEST_CODE_CAMERA:
+		// if (resultCode == RESULT_OK) {
+		// savephoto(Uri.parse(PreferenceManager
+		// .getDefaultSharedPreferences(this).getString(
+		// "last_photo_path", null)));
+		// }
+		// break;
+		// case REQUEST_CODE_PHOTOS:
+		// if (resultCode == RESULT_OK) {
+		// Uri selectedImage = data.getData();
+		// String[] filePathColumn = { MediaStore.Images.Media.DATA };
+		// Cursor cursor = getContentResolver().query(selectedImage,
+		// filePathColumn, null, null, null);
+		// cursor.moveToFirst();
+		//
+		// int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+		// String filePath = cursor.getString(columnIndex);
+		// cursor.close();
+		// savephoto(Uri.parse(filePath));
+		// }
+		// break;
 		case REQUEST_CODE_CONTACT:
 			if (resultCode == RESULT_OK) {
 				Uri contactData = data.getData();
@@ -639,25 +623,26 @@ public class DetailsActivity extends SherlockFragmentActivity {
 					Toast.LENGTH_SHORT).show();
 	}
 
-	public void deletePicture(final long id) {
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setMessage(R.string.photo_delete_confirm);
-		builder.setPositiveButton(R.string.delete, new OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				dialog.dismiss();
-				DataSource.deletePhoto(DetailsActivity.this, id);
-				loadphotos();
-			}
-		});
-		builder.setNegativeButton(android.R.string.no, new OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				dialog.cancel();
-			}
-		});
-		builder.show();
-	}
+	//
+	// public void deletePicture(final long id) {
+	// AlertDialog.Builder builder = new AlertDialog.Builder(this);
+	// builder.setMessage(R.string.photo_delete_confirm);
+	// builder.setPositiveButton(R.string.delete, new OnClickListener() {
+	// @Override
+	// public void onClick(DialogInterface dialog, int which) {
+	// dialog.dismiss();
+	// DataSource.deletePhoto(DetailsActivity.this, id);
+	// loadphotos();
+	// }
+	// });
+	// builder.setNegativeButton(android.R.string.no, new OnClickListener() {
+	// @Override
+	// public void onClick(DialogInterface dialog, int which) {
+	// dialog.cancel();
+	// }
+	// });
+	// builder.show();
+	// }
 
 	public void delete() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);

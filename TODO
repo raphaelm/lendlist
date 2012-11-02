@@ -1,18 +1,19 @@
-RELEASE
-* Foto(s) zu Gegenständen hinzufügen
-	* Direkt beim hinzufügen
-	* Fix Speichern, direkt anzeigen, Thumbs speichern und nicht RAM sprengen.
+RELEASE 1.0
 * "Willkommensnachricht" bei leerer Liste
 * System-Backup verbessern
+* Backup während Database-Upgrad unabhängig von externem Speicher machen
 * Benachrichtigungen
 * Settings
 * Launcher Icon
 * saveInstanceState bei Details hinzufügen
 * Touch Feedback bei "Edit" und "Delete" ImageViews in der Detailansicht
-* Datepicker Felder onTouch besser lösen
 * Personen-Name-Edit-Dialog ist immer in <ICS oder >ICS unlesbar.
 
 SOMEDAY
 * Multi-Auswahl mit Löschen und Zurückgeben
 * Opac App Anbindung?
 * AlertDialog und DatePicker aus HoloEverywhere nehmen
+* Fotos
+	* Direkt beim hinzufügen
+	* Im Detail-Dialog wieder auskommentieren, und fixen (direkt anzeigen,
+	  Thumbs speichern und nicht RAM sprengen).

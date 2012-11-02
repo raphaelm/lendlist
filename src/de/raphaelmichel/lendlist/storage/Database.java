@@ -6,7 +6,6 @@ import de.raphaelmichel.lendlist.backup.BackupHelper;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 public class Database extends SQLiteOpenHelper {
 
@@ -28,7 +27,7 @@ public class Database extends SQLiteOpenHelper {
 	public static final String PHOTO_WHERE_OBJECT = "object = ?";
 
 	private Context context;
-	
+
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL("create table "
@@ -42,8 +41,9 @@ public class Database extends SQLiteOpenHelper {
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		if(db.isReadOnly()) db = getWritableDatabase();
-		
+		if (db.isReadOnly())
+			db = getWritableDatabase();
+
 		File backupFile = null;
 		try {
 			backupFile = BackupHelper.getDefaultFile();

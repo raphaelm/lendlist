@@ -65,7 +65,7 @@
     <string name="error_no_return_date">Kein Rückgabedatum angegeben</string>
     <string name="export">Export</string>
     <string name="export_sd_btn">Export (zur SD-Karte)</string>
-    <string name="export_sd_text">Beim Klick auf diesen Knopf werden alle Ihre gespeicherten Einträge (allerdings derzeit ohne Fotos) in einem Ordner namens LendList/ im externen Speicher Ihres Gerätes abgelegt.</string>
+    <string name="export_sd_text">Beim Klick auf diesen Knopf werden alle Ihre gespeicherten Einträge in einem Ordner namens LendList/ im externen Speicher Ihres Gerätes abgelegt.</string>
     <string name="import_sd_btn">Import (Datei wählen)</string>
     <string name="import_sd_text"> Mit dieser Funktion können Sie ein wie oben erstelles Backup wieder einspielen. Achtung: Alle Änderungen seit dem Zeitpunkt des Backups gehen verloren! Machen Sie also sicherheitshalber erst ein neues Backup.</string>   
     <string name="export_success">Export erfolgreich.</string>

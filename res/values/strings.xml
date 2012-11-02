@@ -65,7 +65,7 @@
     <string name="error_no_return_date">No return date specified</string>
     <string name="export">Export</string>
     <string name="export_sd_btn">Export to SD card</string>
-    <string name="export_sd_text">If you click the button below a backup file of your items (including all data but photos) will be written to your device\'s external storage in a directory called LendList/</string>
+    <string name="export_sd_text">If you click the button below a backup file of your items will be written to your device\'s external storage in a directory called LendList/</string>
     <string name="import_sd_btn">Import (choose file)</string>
     <string name="import_sd_text">Using this function you can import one of the backup files you created into the application to restore your data. Attention: Make a new backup first, because any changes newer than the backup you are going to restore will be LOST!</string>
     <string name="export_success">Export was successful.</string>
