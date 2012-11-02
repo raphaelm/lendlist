@@ -141,7 +141,7 @@ public class MainActivity extends SherlockFragmentActivity {
 				getString(R.string.order_person) };
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle(R.string.person_method);
+		builder.setTitle(R.string.order);
 		builder.setItems(items, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int n) {
 				String orderBy = ItemsFragment.DEFAULT_ORDER;
