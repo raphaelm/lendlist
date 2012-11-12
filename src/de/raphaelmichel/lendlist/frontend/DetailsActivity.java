@@ -109,6 +109,8 @@ public class DetailsActivity extends SherlockFragmentActivity {
 			tvPerson.setText(item.getPerson());
 
 			// Date picker
+			// I know how dirty this is. Feel free to create a patch with a
+			// custom widget doing this better.
 			etUntil = (EditText) findViewById(R.id.etUntil);
 			etUntil.setOnTouchListener(new OnTouchListener() {
 				@Override

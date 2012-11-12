@@ -60,6 +60,7 @@
                 android:id="@+id/tvTo"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
                 android:layout_marginTop="20dp"
                 android:drawableBottom="@drawable/section_header"
                 android:drawablePadding="4dp"
@@ -68,7 +69,7 @@
                 android:textAllCaps="true"
                 android:textColor="@color/emphasis"
                 android:textSize="14sp" />
-            
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
@@ -96,6 +97,7 @@
                 android:id="@+id/tvUntil"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
                 android:layout_marginTop="20dp"
                 android:drawableBottom="@drawable/section_header"
                 android:drawablePadding="4dp"
@@ -109,6 +111,7 @@
                 android:id="@+id/etUntil"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:editable="false"
                 android:ems="10"
                 android:hint="@string/add_until_hint"
                 android:inputType="none"

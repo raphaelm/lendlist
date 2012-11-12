@@ -187,6 +187,8 @@ public class AddActivity extends SherlockFragmentActivity {
 		});
 
 		etUntil = (EditText) findViewById(R.id.etUntil);
+		// I know how dirty this is. Feel free to create a patch with a custom
+		// widget doing this better.
 
 		etUntil.setOnClickListener(new View.OnClickListener() {
 			@Override

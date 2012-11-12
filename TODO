@@ -8,7 +8,6 @@ RELEASE 1.0
 * saveInstanceState bei Details hinzufügen
 * Touch Feedback bei "Edit" und "Delete" ImageViews in der Detailansicht
 * Personen-Name-Edit-Dialog ist immer in <ICS oder >ICS unlesbar.
-* DatePicker-Felder optimieren
 
 SOMEDAY
 * Multi-Auswahl mit Löschen und Zurückgeben
