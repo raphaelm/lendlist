@@ -12,6 +12,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 import de.raphaelmichel.lendlist.R;
 import de.raphaelmichel.lendlist.frontend.DetailsActivity;
 import de.raphaelmichel.lendlist.frontend.MainActivity;
@@ -48,12 +49,13 @@ public class AlarmReceiver extends BroadcastReceiver {
 
 			cursor = resolver.query(LendlistContentProvider.OBJECT_URI,
 					Database.COLUMNS,
-					"direction = 'borrowed' AND returned = 0 AND notified = 0 AND until - "
+					"direction = 'borrowed' AND returned = 0 AND notified != 1 AND until - "
 							+ System.currentTimeMillis() + " < "
 							+ (1000 * 3600 * 24 * Integer.parseInt(sp.getString("notify_days", "2"))),
 					new String[] {}, "until ASC");
 
 			int num = cursor.getCount();
+			Log.i("notify_about", ""+num);
 			if (num == 0){
 				cursor.close();
 				return;

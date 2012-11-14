@@ -129,7 +129,13 @@ public class AddActivity extends SherlockFragmentActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		
 
+		Intent i = new Intent(this, AlarmReceiver.class);
+		sendBroadcast(i);
+		// FOR DEBUGGING
+		
 		setContentView(R.layout.activity_add);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

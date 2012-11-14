@@ -37,6 +37,7 @@ public class DataSource {
 		values.put("date", (item.getDate() != null ? item.getDate().getTime()
 				: 0));
 		values.put("returned", item.isReturned());
+		values.put("notified", 0);
 		context.getContentResolver().insert(LendlistContentProvider.OBJECT_URI,
 				values);
 	}

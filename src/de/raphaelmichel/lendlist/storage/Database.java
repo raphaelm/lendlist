@@ -3,7 +3,6 @@ package de.raphaelmichel.lendlist.storage;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import de.raphaelmichel.lendlist.backup.BackupHelper;
 
 public class Database extends SQLiteOpenHelper {
 
@@ -40,7 +39,7 @@ public class Database extends SQLiteOpenHelper {
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		// TODO: Provide something here if you change the database version
-		if(oldVersion < 10 && newVersion == 10){
+		if (oldVersion < 10 && newVersion == 10) {
 			db.execSQL("ALTER TABLE objects ADD COLUMN notified numeric");
 		}
 		// if (db.isReadOnly())
