@@ -1,9 +1,7 @@
 RELEASE 1.0
 * "Willkommensnachricht" bei leerer Liste
 * System-Backup verbessern
-* Backup während Database-Upgrade unabhängig von externem Speicher machen
 * Benachrichtigungen
-* Settings
 * Launcher Icon
 * saveInstanceState bei Details hinzufügen
 * Touch Feedback bei "Edit" und "Delete" ImageViews in der Detailansicht
@@ -14,6 +12,6 @@ SOMEDAY
 * Opac App Anbindung?
 * AlertDialog und DatePicker aus HoloEverywhere nehmen
 * Fotos
-	* Direkt beim hinzufügen
 	* Im Detail-Dialog wieder auskommentieren, und fixen (direkt anzeigen,
 	  Thumbs speichern und nicht RAM sprengen).
+	* Direkt beim hinzufügen ermöglichen

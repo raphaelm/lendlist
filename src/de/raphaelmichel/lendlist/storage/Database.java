@@ -1,16 +1,14 @@
 package de.raphaelmichel.lendlist.storage;
 
-import java.io.File;
-
-import de.raphaelmichel.lendlist.backup.BackupHelper;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import de.raphaelmichel.lendlist.backup.BackupHelper;
 
 public class Database extends SQLiteOpenHelper {
 
 	public static final String DATABASE_NAME = "objects.db";
-	public static final int DATABASE_VERSION = 7; // REPLACE ONUPGRADE IF YOU
+	public static final int DATABASE_VERSION = 9; // REPLACE ONUPGRADE IF YOU
 													// CHANGE THIS
 
 	public static final String[] COLUMNS = { "id AS _id", "direction", "thing",
@@ -41,26 +39,26 @@ public class Database extends SQLiteOpenHelper {
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		if (db.isReadOnly())
-			db = getWritableDatabase();
-
-		File backupFile = null;
-		try {
-			backupFile = BackupHelper.getDefaultFile();
-			BackupHelper.writeBackup(context, backupFile);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		db.execSQL("DROP TABLE IF EXISTS objects");
-		db.execSQL("DROP TABLE IF EXISTS photos");
-		onCreate(db);
-		try {
-			BackupHelper.importBackup(context, backupFile);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		// TODO: Provide something here if you change the database version
+		// if (db.isReadOnly())
+		// db = getWritableDatabase();
+		//
+		// String backupFile = null;
+		// try {
+		// backupFile = BackupHelper.writeInternalBackup(context);
+		// } catch (Exception e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
+		// db.execSQL("DROP TABLE IF EXISTS objects");
+		// db.execSQL("DROP TABLE IF EXISTS photos");
+		// onCreate(db);
+		// try {
+		// BackupHelper.importInternalBackup(context, backupFile);
+		// } catch (Exception e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
 	}
 
 	public Database(Context context) {
