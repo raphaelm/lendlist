@@ -67,12 +67,12 @@
     <string name="export_sd_btn">Export (zur SD-Karte)</string>
     <string name="export_sd_text">Beim Klick auf diesen Knopf werden alle Ihre gespeicherten Einträge in einem Ordner namens LendList/ im externen Speicher Ihres Gerätes abgelegt.</string>
     <string name="import_sd_btn">Import (Datei wählen)</string>
-    <string name="import_sd_text"> Mit dieser Funktion können Sie ein wie oben erstelles Backup wieder einspielen. Achtung: Alle Änderungen seit dem Zeitpunkt des Backups gehen verloren! Machen Sie also sicherheitshalber erst ein neues Backup.</string>   
+    <string name="import_sd_text"> Mit dieser Funktion können Sie ein wie oben erstelles Backup wieder einspielen. Achtung: Alle Änderungen seit dem Zeitpunkt des Backups gehen verloren! Machen Sie also sicherheitshalber erst ein neues Backup.</string>
     <string name="export_success">Export erfolgreich.</string>
     <string name="export_failed">Export fehlgeschlagen.</string>
-    <string name="export_failed_sd">Export fehlgeschlagen. Ist eine SD-Karte eingelegt und schreibbar?</string> 
-    <string name="import_success">Import war erfolgreich.</string> 
-    <string name="import_failed">Import fehlgeschlagen.</string> 
+    <string name="export_failed_sd">Export fehlgeschlagen. Ist eine SD-Karte eingelegt und schreibbar?</string>
+    <string name="import_success">Import war erfolgreich.</string>
+    <string name="import_failed">Import fehlgeschlagen.</string>
     <string name="import_confirm">Wirklich aktuelle Daten mit Sicherung überschreiben?</string>
     <string name="import_choose">Datei wählen</string>
     <string name="photo_heading">FOTOS</string>
@@ -87,9 +87,11 @@
     <string name="notify_days">Anzahl Tage vor Rückgabedatum</string>
     <string name="notify_vibrate">Vibriere</string>
     <string name="notify_ringtone">Benachrichtigungston</string>
-    
+    <string name="person">Person</string>
+
     <plurals name="notification_text">
         <item quantity="one">Ein Gegenstand muss bald zurückgegeben werden.</item>
         <item quantity="other">%d Gegenstände müssen bald zurückgegeben werden.</item>
     </plurals>
+
 </resources>

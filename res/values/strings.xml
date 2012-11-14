@@ -27,6 +27,7 @@
     <string name="delete">Delete</string>
     <string name="title_activity_details">Details</string>
     <string name="person_heading">PERSON</string>
+    <string name="person">Person</string>
     <string name="date">Date</string>
     <string name="date_return">Return date</string>
     <string name="date_start">Date of lending</string>

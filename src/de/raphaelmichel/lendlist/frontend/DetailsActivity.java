@@ -7,7 +7,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -34,6 +33,7 @@ import android.widget.QuickContactBadge;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.WazaBe.HoloEverywhere.app.AlertDialog;
 import com.WazaBe.HoloEverywhere.widget.Spinner;
 import com.WazaBe.HoloEverywhere.widget.Toast;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -76,7 +76,7 @@ public class DetailsActivity extends SherlockFragmentActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		
+
 		item = DataSource.getItem(this, getIntent().getLongExtra("id", 0));
 
 		if (getIntent().getExtras().containsKey("notified")) {
@@ -488,15 +488,10 @@ public class DetailsActivity extends SherlockFragmentActivity {
 					dialog.dismiss();
 					final EditText myView = new EditText(DetailsActivity.this);
 					myView.setText(item.getPerson());
-					myView.setTextColor(getResources().getColor(
-							R.color.bright_foreground_holo_dark)); // TODO: This
-																	// is way
-																	// too
-																	// dirty.
 					AlertDialog.Builder promptB = new AlertDialog.Builder(
 							DetailsActivity.this);
 					promptB.setCancelable(true)
-							.setTitle(R.string.person_heading)
+							.setTitle(R.string.person)
 							.setPositiveButton(R.string.accept,
 									new DialogInterface.OnClickListener() {
 										public void onClick(
