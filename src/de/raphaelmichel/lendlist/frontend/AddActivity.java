@@ -28,7 +28,6 @@ import com.actionbarsherlock.view.MenuItem;
 
 import de.raphaelmichel.lendlist.R;
 import de.raphaelmichel.lendlist.objects.Item;
-import de.raphaelmichel.lendlist.reminder.AlarmReceiver;
 import de.raphaelmichel.lendlist.storage.DataSource;
 
 public class AddActivity extends SherlockFragmentActivity {
@@ -129,12 +128,6 @@ public class AddActivity extends SherlockFragmentActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		
-
-		Intent i = new Intent(this, AlarmReceiver.class);
-		sendBroadcast(i);
-		// FOR DEBUGGING
 		
 		setContentView(R.layout.activity_add);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
