@@ -54,8 +54,10 @@ public class AlarmReceiver extends BroadcastReceiver {
 					new String[] {}, "until ASC");
 
 			int num = cursor.getCount();
-			if (num == 0)
+			if (num == 0){
+				cursor.close();
 				return;
+			}
 			cursor.moveToFirst();
 			Item firstItem = DataSource.cursorToItem(cursor);
 			int[] ids = new int[num];
