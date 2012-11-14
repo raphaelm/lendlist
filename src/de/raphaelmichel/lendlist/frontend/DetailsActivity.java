@@ -76,8 +76,12 @@ public class DetailsActivity extends SherlockFragmentActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+		
 		item = DataSource.getItem(this, getIntent().getLongExtra("id", 0));
+
+		if (getIntent().getExtras().containsKey("notified")) {
+			DataSource.markNotified(this, item.getId());
+		}
 
 		if (item == null) {
 			setContentView(R.layout.error);

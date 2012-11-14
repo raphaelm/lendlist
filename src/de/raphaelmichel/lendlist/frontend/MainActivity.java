@@ -11,12 +11,14 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.Log;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
 import de.raphaelmichel.lendlist.R;
+import de.raphaelmichel.lendlist.storage.DataSource;
 
 public class MainActivity extends SherlockFragmentActivity {
 
@@ -45,7 +47,19 @@ public class MainActivity extends SherlockFragmentActivity {
 		mViewPager = (ViewPager) findViewById(R.id.viewpager);
 		fragmentAdapter = new MainFragmentAdapter(getSupportFragmentManager());
 		mViewPager.setAdapter(fragmentAdapter);
-		mViewPager.setCurrentItem(sp.getInt("main_tab", 0));
+		if (getIntent().getExtras() != null) {
+			mViewPager.setCurrentItem(getIntent().getExtras().getInt(
+					"main_tab", sp.getInt("main_tab", 0)));
+			if (getIntent().getExtras().containsKey("notified")) {
+				int[] ids = getIntent().getExtras().getIntArray("notified");
+				int num = ids.length;
+				for (int i = 0; i < num; i++) {
+					DataSource.markNotified(this, ids[i]);
+				}
+			}
+		} else {
+			mViewPager.setCurrentItem(sp.getInt("main_tab", 0));
+		}
 		mViewPager.setOffscreenPageLimit(2);
 		mViewPager.setOnPageChangeListener(new SavePageListener());
 	}
@@ -115,7 +129,7 @@ public class MainActivity extends SherlockFragmentActivity {
 			}
 
 			return true;
-			
+
 		case R.id.action_order:
 			selectOrder();
 			return true;
@@ -124,12 +138,12 @@ public class MainActivity extends SherlockFragmentActivity {
 			Intent iExport = new Intent(this, ExportActivity.class);
 			startActivity(iExport);
 			return true;
-			
+
 		case R.id.menu_settings:
 			Intent iPref = new Intent(this, PreferenceActivity.class);
 			startActivity(iPref);
 			return true;
-			
+
 		case R.id.menu_about:
 			Intent iAbout = new Intent(this, AboutActivity.class);
 			startActivity(iAbout);

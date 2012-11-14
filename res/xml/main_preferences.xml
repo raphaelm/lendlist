@@ -10,20 +10,7 @@
             android:dependency="notify_enabled"
             android:key="notify_days"
             android:numeric="integer"
-            android:title="@string/notify_days" />
-
-        <CheckBoxPreference
-            android:dependency="notify_enabled"
-            android:key="notify_vibrate"
-            android:title="@string/notify_vibrate" />
-
-        <RingtonePreference
-            android:dependency="notify_enabled"
-            android:key="notify_ringtone"
-            android:ringtoneType="notification|alarm"
-            android:showDefault="true"
-            android:showSilent="true"
-            android:title="@string/notify_ringtone" />
+            android:title="@string/notify_days" android:defaultValue="2"/>
     </PreferenceCategory>
 
 </PreferenceScreen>

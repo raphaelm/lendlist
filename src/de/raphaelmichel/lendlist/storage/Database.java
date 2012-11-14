@@ -8,7 +8,7 @@ import de.raphaelmichel.lendlist.backup.BackupHelper;
 public class Database extends SQLiteOpenHelper {
 
 	public static final String DATABASE_NAME = "objects.db";
-	public static final int DATABASE_VERSION = 9; // REPLACE ONUPGRADE IF YOU
+	public static final int DATABASE_VERSION = 10; // REPLACE ONUPGRADE IF YOU
 													// CHANGE THIS
 
 	public static final String[] COLUMNS = { "id AS _id", "direction", "thing",
@@ -40,6 +40,9 @@ public class Database extends SQLiteOpenHelper {
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		// TODO: Provide something here if you change the database version
+		if(oldVersion < 10 && newVersion == 10){
+			db.execSQL("ALTER TABLE objects ADD COLUMN notified numeric");
+		}
 		// if (db.isReadOnly())
 		// db = getWritableDatabase();
 		//

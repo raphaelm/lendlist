@@ -41,6 +41,14 @@ public class DataSource {
 				values);
 	}
 
+	public static void markNotified(Context context, long id) {
+		ContentValues values = new ContentValues();
+		values.put("notified", 1);
+		context.getContentResolver().update(
+				ContentUris.withAppendedId(LendlistContentProvider.OBJECT_URI,
+						id), values, null, null);
+	}
+
 	public static void updateItem(Context context, Item item) {
 		ContentValues values = new ContentValues();
 		values.put("direction", item.getDirection());

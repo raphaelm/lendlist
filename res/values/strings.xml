@@ -87,4 +87,9 @@
     <string name="notify_days">Notify X days before due date</string>
     <string name="notify_vibrate">Vibrate</string>
     <string name="notify_ringtone">Sound</string>
+    
+    <plurals name="notification_text">
+        <item quantity="one">You have to return an item soon.</item>
+        <item quantity="other">You have to return %d items soon.</item>
+    </plurals>
 </resources>

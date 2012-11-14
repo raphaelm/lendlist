@@ -87,4 +87,9 @@
     <string name="notify_days">Anzahl Tage vor Rückgabedatum</string>
     <string name="notify_vibrate">Vibriere</string>
     <string name="notify_ringtone">Benachrichtigungston</string>
+    
+    <plurals name="notification_text">
+        <item quantity="one">Ein Gegenstand muss bald zurückgegeben werden.</item>
+        <item quantity="other">%d Gegenstände müssen bald zurückgegeben werden.</item>
+    </plurals>
 </resources>

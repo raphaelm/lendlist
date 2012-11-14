@@ -9,6 +9,7 @@
 
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:backupAgent=".backup.AndroidBackupAgent"
@@ -79,6 +80,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="de.raphaelmichel.lendlist.frontend.MainActivity" />
         </activity>
+
+        <receiver android:name=".reminder.BootBroadcastReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+        
+        <receiver android:name=".reminder.AlarmReceiver" >
+        </receiver>
     </application>
 
 </manifest>
