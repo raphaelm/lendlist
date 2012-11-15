@@ -37,14 +37,14 @@ public class DataSource {
 		values.put("date", (item.getDate() != null ? item.getDate().getTime()
 				: 0));
 		values.put("returned", item.isReturned());
-		values.put("notified", 0);
+		values.put("notified", item.isNotified());
 		context.getContentResolver().insert(LendlistContentProvider.OBJECT_URI,
 				values);
 	}
 
 	public static void markNotified(Context context, long id) {
 		ContentValues values = new ContentValues();
-		values.put("notified", 1);
+		values.put("notified", true);
 		context.getContentResolver().update(
 				ContentUris.withAppendedId(LendlistContentProvider.OBJECT_URI,
 						id), values, null, null);
@@ -62,6 +62,7 @@ public class DataSource {
 		values.put("date", (item.getDate() != null ? item.getDate().getTime()
 				: 0));
 		values.put("returned", item.isReturned());
+		values.put("notified", item.isNotified());
 		context.getContentResolver().update(
 				ContentUris.withAppendedId(LendlistContentProvider.OBJECT_URI,
 						item.getId()), values, null, null);
@@ -186,6 +187,7 @@ public class DataSource {
 		item.setDate(cursor.getLong(6) > 0 ? new Date(cursor.getLong(6)) : null);
 		item.setReturned(cursor.getLong(7) == 1);
 		item.setContact_lookup(cursor.getString(8));
+		item.setNotified(cursor.getLong(9) == 1);
 		return item;
 	}
 }

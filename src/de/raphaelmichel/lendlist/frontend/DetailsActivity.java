@@ -607,12 +607,11 @@ public class DetailsActivity extends SherlockFragmentActivity {
 			return s;
 	}
 
-
 	@Override
 	public void onRestoreInstanceState(Bundle savedInstanceState) {
 		super.onRestoreInstanceState(savedInstanceState);
 		Log.i("res", "restoreInstanceState");
-		
+
 		etThing.setText(getS(savedInstanceState, "thing"));
 		etDate.setText(getS(savedInstanceState, "date"));
 		etUntil.setText(getS(savedInstanceState, "until"));
@@ -620,21 +619,20 @@ public class DetailsActivity extends SherlockFragmentActivity {
 		item.setContact_lookup(savedInstanceState.getString("contact_lookup"));
 		item.setContact_id(savedInstanceState.getLong("contact_id"));
 		if (item.getContact_id() > 0) {
-				qcbPerson.setVisibility(View.VISIBLE);
-				Uri contactUri = ContactsContract.Contacts.getLookupUri(
-						item.getContact_id(), item.getContact_lookup());
-				qcbPerson.assignContactUri(contactUri);
+			qcbPerson.setVisibility(View.VISIBLE);
+			Uri contactUri = ContactsContract.Contacts.getLookupUri(
+					item.getContact_id(), item.getContact_lookup());
+			qcbPerson.assignContactUri(contactUri);
 
-				qcbPerson.setImageBitmap(ContactsHelper.getPhoto(contactUri,
-						this));
-			} else {
-				qcbPerson.setVisibility(View.GONE);
-			}
+			qcbPerson.setImageBitmap(ContactsHelper.getPhoto(contactUri, this));
+		} else {
+			qcbPerson.setVisibility(View.GONE);
+		}
 
 		if (savedInstanceState.getString("direction") != null) {
-			if(getS(savedInstanceState, "direction").equals("lent")){
+			if (getS(savedInstanceState, "direction").equals("lent")) {
 				spDirection.setSelection(1);
-			}else{
+			} else {
 				spDirection.setSelection(0);
 			}
 		}
@@ -651,14 +649,33 @@ public class DetailsActivity extends SherlockFragmentActivity {
 		}
 
 		try {
-			item.setUntil(new SimpleDateFormat(getString(R.string.date_format))
-					.parse(etUntil.getText().toString()));
+			if (!etUntil
+					.getText()
+					.toString()
+					.equals(new SimpleDateFormat(
+							getString(R.string.date_format)).format(item
+							.getUntil()))) {
+				item.setUntil(new SimpleDateFormat(
+						getString(R.string.date_format)).parse(etUntil
+						.getText().toString()));
+				changed = true;
+				item.setNotified(false);
+			}
 		} catch (ParseException e) {
 			item.setUntil(null);
 		}
 		try {
-			item.setDate(new SimpleDateFormat(getString(R.string.date_format))
-					.parse(etDate.getText().toString()));
+			if (!etUntil
+					.getText()
+					.toString()
+					.equals(new SimpleDateFormat(
+							getString(R.string.date_format)).format(item
+							.getUntil()))) {
+				item.setDate(new SimpleDateFormat(
+						getString(R.string.date_format)).parse(etDate.getText()
+						.toString()));
+				changed = true;
+			}
 		} catch (ParseException e) {
 			item.setDate(null);
 		}

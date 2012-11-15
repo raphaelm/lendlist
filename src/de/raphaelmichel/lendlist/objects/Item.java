@@ -30,6 +30,9 @@ public class Item {
 
 	@Element(required = false)
 	private Date date = new Date();
+	
+	@Attribute(required = false)
+	private boolean notified = false;
 
 	@Attribute
 	private boolean returned = false;
@@ -106,6 +109,14 @@ public class Item {
 		this.returned = returned;
 	}
 
+	public boolean isNotified() {
+		return notified;
+	}
+
+	public void setNotified(boolean notified) {
+		this.notified = notified;
+	}
+
 	@Override
 	public String toString() {
 		return "Item [id=" + id + ", direction=" + direction + ", thing="
@@ -165,6 +176,8 @@ public class Item {
 		} else if (!person.equals(other.person))
 			return false;
 		if (returned != other.returned)
+			return false;
+		if (notified != other.notified)
 			return false;
 		if (thing == null) {
 			if (other.thing != null)
