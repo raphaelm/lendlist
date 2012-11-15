@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.NavUtils;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
@@ -581,6 +582,65 @@ public class DetailsActivity extends SherlockFragmentActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getSupportMenuInflater().inflate(R.menu.activity_details, menu);
 		return true;
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle savedInstanceState) {
+		super.onSaveInstanceState(savedInstanceState);
+		savedInstanceState.putString("thing", etThing.getText().toString());
+		savedInstanceState.putString("until", etUntil.getText().toString());
+		savedInstanceState.putString("date", etDate.getText().toString());
+		savedInstanceState.putString("person", item.getPerson());
+		savedInstanceState.putLong("contact_id", item.getContact_id());
+		savedInstanceState
+				.putString("contact_lookup", item.getContact_lookup());
+		savedInstanceState.putString("direction", (spDirection
+				.getSelectedItemPosition() == 0 ? "borrowed" : "lent"));
+		savedInstanceState.putBoolean("returned", btReturned.isChecked());
+	}
+
+	public static String getS(Bundle b, String k) {
+		String s = b.getString(k);
+		if (s == null)
+			return "";
+		else
+			return s;
+	}
+
+
+	@Override
+	public void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+		Log.i("res", "restoreInstanceState");
+		
+		etThing.setText(getS(savedInstanceState, "thing"));
+		etDate.setText(getS(savedInstanceState, "date"));
+		etUntil.setText(getS(savedInstanceState, "until"));
+		item.setPerson(getS(savedInstanceState, "person"));
+		item.setContact_lookup(savedInstanceState.getString("contact_lookup"));
+		item.setContact_id(savedInstanceState.getLong("contact_id"));
+		if (item.getContact_id() > 0) {
+				qcbPerson.setVisibility(View.VISIBLE);
+				Uri contactUri = ContactsContract.Contacts.getLookupUri(
+						item.getContact_id(), item.getContact_lookup());
+				qcbPerson.assignContactUri(contactUri);
+
+				qcbPerson.setImageBitmap(ContactsHelper.getPhoto(contactUri,
+						this));
+			} else {
+				qcbPerson.setVisibility(View.GONE);
+			}
+
+		if (savedInstanceState.getString("direction") != null) {
+			if(getS(savedInstanceState, "direction").equals("lent")){
+				spDirection.setSelection(1);
+			}else{
+				spDirection.setSelection(0);
+			}
+		}
+		if (savedInstanceState.getBoolean("returned")) {
+			btReturned.setChecked(true);
+		}
 	}
 
 	public void save() {
