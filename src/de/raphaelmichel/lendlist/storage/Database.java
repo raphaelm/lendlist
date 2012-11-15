@@ -7,12 +7,12 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class Database extends SQLiteOpenHelper {
 
 	public static final String DATABASE_NAME = "objects.db";
-	public static final int DATABASE_VERSION = 10; // REPLACE ONUPGRADE IF YOU
+	public static final int DATABASE_VERSION = 11; // REPLACE ONUPGRADE IF YOU
 													// CHANGE THIS
 
 	public static final String[] COLUMNS = { "id AS _id", "direction", "thing",
 			"person", "contact_id", "until", "date", "returned",
-			"contact_lookup" };
+			"contact_lookup", "notified" };
 
 	public static final String[] COLUMNS_PHOTOS = { "id AS _id", "object",
 			"uri" };
@@ -31,7 +31,8 @@ public class Database extends SQLiteOpenHelper {
 				+ "objects ( id integer primary key autoincrement,"
 				+ " direction text," + " thing text," + " person text,"
 				+ " contact_id integer," + " until integer," + " date integer,"
-				+ " returned integer," + " contact_lookup text" + ");");
+				+ " returned integer," + " contact_lookup text,"
+				+ " notified integer" + ");");
 		db.execSQL("create table photos ( id integer primary key autoincrement,"
 				+ "object integer," + " uri text" + ");");
 	}
@@ -39,7 +40,7 @@ public class Database extends SQLiteOpenHelper {
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		// TODO: Provide something here if you change the database version
-		if (oldVersion < 10 && newVersion == 10) {
+		if ((oldVersion < 10 && newVersion == 10) || (oldVersion < 11 && newVersion == 11)) {
 			db.execSQL("ALTER TABLE objects ADD COLUMN notified numeric");
 		}
 		// if (db.isReadOnly())
