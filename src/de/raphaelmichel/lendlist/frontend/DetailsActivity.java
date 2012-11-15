@@ -20,7 +20,6 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.NavUtils;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
@@ -607,12 +606,9 @@ public class DetailsActivity extends SherlockFragmentActivity {
 			return s;
 	}
 
-
 	@Override
 	public void onRestoreInstanceState(Bundle savedInstanceState) {
 		super.onRestoreInstanceState(savedInstanceState);
-		Log.i("res", "restoreInstanceState");
-		
 		etThing.setText(getS(savedInstanceState, "thing"));
 		etDate.setText(getS(savedInstanceState, "date"));
 		etUntil.setText(getS(savedInstanceState, "until"));
@@ -620,21 +616,20 @@ public class DetailsActivity extends SherlockFragmentActivity {
 		item.setContact_lookup(savedInstanceState.getString("contact_lookup"));
 		item.setContact_id(savedInstanceState.getLong("contact_id"));
 		if (item.getContact_id() > 0) {
-				qcbPerson.setVisibility(View.VISIBLE);
-				Uri contactUri = ContactsContract.Contacts.getLookupUri(
-						item.getContact_id(), item.getContact_lookup());
-				qcbPerson.assignContactUri(contactUri);
+			qcbPerson.setVisibility(View.VISIBLE);
+			Uri contactUri = ContactsContract.Contacts.getLookupUri(
+					item.getContact_id(), item.getContact_lookup());
+			qcbPerson.assignContactUri(contactUri);
 
-				qcbPerson.setImageBitmap(ContactsHelper.getPhoto(contactUri,
-						this));
-			} else {
-				qcbPerson.setVisibility(View.GONE);
-			}
+			qcbPerson.setImageBitmap(ContactsHelper.getPhoto(contactUri, this));
+		} else {
+			qcbPerson.setVisibility(View.GONE);
+		}
 
 		if (savedInstanceState.getString("direction") != null) {
-			if(getS(savedInstanceState, "direction").equals("lent")){
+			if (getS(savedInstanceState, "direction").equals("lent")) {
 				spDirection.setSelection(1);
-			}else{
+			} else {
 				spDirection.setSelection(0);
 			}
 		}
