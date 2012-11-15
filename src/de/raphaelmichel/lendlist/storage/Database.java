@@ -2,6 +2,7 @@ package de.raphaelmichel.lendlist.storage;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class Database extends SQLiteOpenHelper {
@@ -41,7 +42,11 @@ public class Database extends SQLiteOpenHelper {
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		// TODO: Provide something here if you change the database version
 		if ((oldVersion < 10 && newVersion == 10) || (oldVersion < 11 && newVersion == 11)) {
+			try{
 			db.execSQL("ALTER TABLE objects ADD COLUMN notified numeric");
+			}catch(SQLiteException e){
+				return;
+			}
 		}
 		// if (db.isReadOnly())
 		// db = getWritableDatabase();
