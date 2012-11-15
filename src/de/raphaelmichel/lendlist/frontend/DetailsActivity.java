@@ -609,6 +609,7 @@ public class DetailsActivity extends SherlockFragmentActivity {
 	@Override
 	public void onRestoreInstanceState(Bundle savedInstanceState) {
 		super.onRestoreInstanceState(savedInstanceState);
+
 		etThing.setText(getS(savedInstanceState, "thing"));
 		etDate.setText(getS(savedInstanceState, "date"));
 		etUntil.setText(getS(savedInstanceState, "until"));
@@ -646,14 +647,33 @@ public class DetailsActivity extends SherlockFragmentActivity {
 		}
 
 		try {
-			item.setUntil(new SimpleDateFormat(getString(R.string.date_format))
-					.parse(etUntil.getText().toString()));
+			if (!etUntil
+					.getText()
+					.toString()
+					.equals(new SimpleDateFormat(
+							getString(R.string.date_format)).format(item
+							.getUntil()))) {
+				item.setUntil(new SimpleDateFormat(
+						getString(R.string.date_format)).parse(etUntil
+						.getText().toString()));
+				changed = true;
+				item.setNotified(false);
+			}
 		} catch (ParseException e) {
 			item.setUntil(null);
 		}
 		try {
-			item.setDate(new SimpleDateFormat(getString(R.string.date_format))
-					.parse(etDate.getText().toString()));
+			if (!etUntil
+					.getText()
+					.toString()
+					.equals(new SimpleDateFormat(
+							getString(R.string.date_format)).format(item
+							.getUntil()))) {
+				item.setDate(new SimpleDateFormat(
+						getString(R.string.date_format)).parse(etDate.getText()
+						.toString()));
+				changed = true;
+			}
 		} catch (ParseException e) {
 			item.setDate(null);
 		}
