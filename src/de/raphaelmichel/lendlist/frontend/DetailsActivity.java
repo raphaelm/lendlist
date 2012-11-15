@@ -568,6 +568,7 @@ public class DetailsActivity extends SherlockFragmentActivity {
 			etUntil.setText(new SimpleDateFormat(
 					getString(R.string.date_format)).format(new Date(
 					year - 1900, month, day)));
+			item.setNotified(false);
 			changed = true;
 		}
 
@@ -647,33 +648,14 @@ public class DetailsActivity extends SherlockFragmentActivity {
 		}
 
 		try {
-			if (!etUntil
-					.getText()
-					.toString()
-					.equals(new SimpleDateFormat(
-							getString(R.string.date_format)).format(item
-							.getUntil()))) {
-				item.setUntil(new SimpleDateFormat(
-						getString(R.string.date_format)).parse(etUntil
-						.getText().toString()));
-				changed = true;
-				item.setNotified(false);
-			}
+			item.setUntil(new SimpleDateFormat(getString(R.string.date_format))
+					.parse(etUntil.getText().toString()));
 		} catch (ParseException e) {
 			item.setUntil(null);
 		}
 		try {
-			if (!etUntil
-					.getText()
-					.toString()
-					.equals(new SimpleDateFormat(
-							getString(R.string.date_format)).format(item
-							.getUntil()))) {
-				item.setDate(new SimpleDateFormat(
-						getString(R.string.date_format)).parse(etDate.getText()
-						.toString()));
-				changed = true;
-			}
+			item.setDate(new SimpleDateFormat(getString(R.string.date_format))
+					.parse(etDate.getText().toString()));
 		} catch (ParseException e) {
 			item.setDate(null);
 		}
