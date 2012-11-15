@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import android.app.DatePickerDialog;
@@ -679,7 +680,9 @@ public class DetailsActivity extends SherlockFragmentActivity {
 			if (item.getUntil() != null) {
 				Intent intent = new Intent(Intent.ACTION_EDIT);
 				intent.setType("vnd.android.cursor.item/event");
-				intent.putExtra("beginTime", item.getUntil().getTime());
+				Calendar cal = new GregorianCalendar();
+				long time = item.getUntil().getTime()+(cal.get(Calendar.ZONE_OFFSET) + cal.get(Calendar.DST_OFFSET));
+				intent.putExtra("beginTime", time);
 				intent.putExtra("allDay", true);
 				intent.putExtra(
 						"title",
