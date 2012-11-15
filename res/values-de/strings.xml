@@ -31,8 +31,8 @@
     <string name="date_return">Rückgabedatum</string>
     <string name="date_start">Ausleihdatum</string>
     <string name="date_heading">ZEITRAUM</string>
-    <string name="edit_returned">Zurückgegeben</string>
-    <string name="edit_not_returned">Zurückgegeben</string>
+    <string name="edit_returned">Nicht Zurück</string>
+    <string name="edit_not_returned">Zurück</string>
     <string name="error_head">Upps!</string>
     <string name="error_unkown_item">Dieser Eintrag existiert nicht</string>
     <string name="persons">Personen</string>
