@@ -83,7 +83,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 			nb.setContentText(firstItem.getThing());
 			nb.setTicker(context.getResources().getQuantityString(
 					R.plurals.notification_text, num, num));
-			nb.setSmallIcon(R.drawable.ic_launcher);
+			nb.setSmallIcon(R.drawable.ic_stat_notification);
 			nb.setWhen(firstItem.getDate().getTime());
 			nb.setNumber(num);
 			nb.setSound(null);
