@@ -1,8 +1,8 @@
 RELEASE 1.0
-* Launcher Icon
 * saveInstanceState bei Details hinzufügen
 * Touch Feedback bei "Edit" und "Delete" ImageViews in der Detailansicht
 * Performance
+* Tablet
 
 SOMEDAY
 * "Willkommensnachricht" bei leerer Liste
