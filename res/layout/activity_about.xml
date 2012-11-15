@@ -8,21 +8,23 @@
     <ImageView
         android:id="@+id/imageView1"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="360dp"
         android:layout_marginBottom="15dip"
-        android:src="@drawable/ic_launcher" />
+        android:layout_weight="2"
+        android:src="@drawable/ic_launcher_big" />
 
     <TextView
         android:id="@+id/tvVersion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="15dip"
-        android:text="" />
+        android:text="asd" />
 
     <ScrollView
         android:id="@+id/svAbout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="fill_parent"
+        android:layout_weight="1" >
 
         <TextView
             android:id="@+id/tvAbout"
