@@ -8,7 +8,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="10dp" >
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp" >
 
         <EditText
             android:id="@+id/etThing"
@@ -20,8 +23,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp" >
+            android:layout_height="wrap_content" >
 
             <com.WazaBe.HoloEverywhere.widget.Spinner
                 android:id="@+id/spDirection"
@@ -43,7 +45,7 @@
             android:id="@+id/tvHeaderPerson"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp"
             android:drawableBottom="@drawable/section_header"
             android:drawablePadding="4dp"
@@ -59,8 +61,8 @@
 
             <QuickContactBadge
                 android:id="@+id/qcbPerson"
-                android:layout_width="62dp"
-                android:layout_height="62dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:src="@drawable/ic_contact_picture" />
 
             <TextView
@@ -87,7 +89,7 @@
             android:id="@+id/tvHeaderDate"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp"
             android:drawableBottom="@drawable/section_header"
             android:drawablePadding="4dp"
@@ -103,7 +105,7 @@
             android:layout_height="wrap_content"
             android:editable="false"
             android:ems="10"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="8dp"
             android:hint="@string/date_start"
             android:inputType="none"
             android:singleLine="true" />
@@ -135,7 +137,7 @@
             android:id="@+id/tvHeaderPhotos"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp"
             android:drawableBottom="@drawable/section_header"
             android:drawablePadding="4dp"
