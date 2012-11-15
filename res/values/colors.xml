@@ -23,4 +23,6 @@
 	<color name="lent_highlighted_text">#FFFFFF</color>
 	<color name="lent_pressed">#9AD44E</color>
 	<color name="lent_pressed_text">#000000</color>
+	<color name="emptyspace">#EEEEEE</color>
+	<color name="usedspace">#FEFEFE</color>
 </resources>

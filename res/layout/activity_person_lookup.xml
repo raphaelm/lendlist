@@ -29,6 +29,6 @@
         android:id="@+id/frMain"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        class="de.raphaelmichel.lendlist.frontend.ItemsFragment" />
+        class="de.raphaelmichel.lendlist.frontend.ItemsFragment" tools:layout="@layout/fragment_main"/>
 
 </LinearLayout>
