@@ -132,12 +132,14 @@ public class ItemsFragment extends SherlockFragment implements
 			TextView tvPerson = (TextView) view.findViewById(R.id.tvPerson);
 
 			if (getActivity() instanceof PersonLookupActivity) {
-				if(item.getDirection().equals("lent")){
+				if (item.getDirection().equals("lent")) {
 					tvPerson.setText(R.string.itemlist_dir_lent);
-					tvPerson.setTextColor(getResources().getColor(R.color.itemlist_dir_lent));
-				}else{
+					tvPerson.setTextColor(getResources().getColor(
+							R.color.itemlist_dir_lent));
+				} else {
 					tvPerson.setText(R.string.itemlist_dir_borrowed);
-					tvPerson.setTextColor(getResources().getColor(R.color.itemlist_dir_borrowed));
+					tvPerson.setTextColor(getResources().getColor(
+							R.color.itemlist_dir_borrowed));
 				}
 			} else {
 				tvPerson.setText(item.getPerson());

@@ -77,11 +77,11 @@ public class ExportActivity extends SherlockActivity {
 		AlertDialog.Builder fcBuilder = new AlertDialog.Builder(this);
 		fcBuilder.setTitle(R.string.import_choose);
 		fcBuilder.setItems(fileList, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                importConfirm(fileList[which]);
-                dialog.dismiss();
-            }
-        });
+			public void onClick(DialogInterface dialog, int which) {
+				importConfirm(fileList[which]);
+				dialog.dismiss();
+			}
+		});
 		AlertDialog fcDialog = fcBuilder.create();
 		fcDialog.show();
 	}
@@ -109,8 +109,8 @@ public class ExportActivity extends SherlockActivity {
 	private void importDo(final String filename) {
 		try {
 			BackupHelper.importBackup(this, filename);
-			Toast.makeText(this, R.string.import_success,
-					Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, R.string.import_success, Toast.LENGTH_SHORT)
+					.show();
 		} catch (Exception e) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setMessage(R.string.import_failed);

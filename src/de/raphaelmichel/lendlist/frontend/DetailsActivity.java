@@ -681,7 +681,9 @@ public class DetailsActivity extends SherlockFragmentActivity {
 				Intent intent = new Intent(Intent.ACTION_EDIT);
 				intent.setType("vnd.android.cursor.item/event");
 				Calendar cal = new GregorianCalendar();
-				long time = item.getUntil().getTime()+(cal.get(Calendar.ZONE_OFFSET) + cal.get(Calendar.DST_OFFSET));
+				long time = item.getUntil().getTime()
+						+ (cal.get(Calendar.ZONE_OFFSET) + cal
+								.get(Calendar.DST_OFFSET));
 				intent.putExtra("beginTime", time);
 				intent.putExtra("allDay", true);
 				intent.putExtra(

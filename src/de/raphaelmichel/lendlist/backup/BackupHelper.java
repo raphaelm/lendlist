@@ -58,8 +58,7 @@ public class BackupHelper {
 			throws Exception {
 		Serializer serializer = new Persister();
 		FileInputStream fis = context.openFileInput(backupFile);
-		List<Item> items = serializer.read(ItemList.class, fis)
-				.getItems();
+		List<Item> items = serializer.read(ItemList.class, fis).getItems();
 		fis.close();
 		DataSource.deleteAll(context);
 		for (Item item : items) {

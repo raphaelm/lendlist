@@ -1,9 +1,11 @@
 package de.raphaelmichel.lendlist.frontend;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -36,13 +38,12 @@ public class MainActivity extends SherlockFragmentActivity {
 	private MainFragmentAdapter fragmentAdapter;
 	private SharedPreferences sp;
 
+	@SuppressLint("NewApi")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		
-		
 		sp = PreferenceManager.getDefaultSharedPreferences(this);
 
 		if (findViewById(R.id.viewpager) != null) // Phones
@@ -150,7 +151,7 @@ public class MainActivity extends SherlockFragmentActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		
+
 		case R.id.action_add:
 			Intent i = new Intent(this, AddActivity.class);
 			if (mViewPager != null)
@@ -177,12 +178,12 @@ public class MainActivity extends SherlockFragmentActivity {
 			for (int j = 0; j < number_of_fragments; j++) {
 				if (FRAGMENTS[j][2] == FRAGMENT_TYPE_ITEMS) {
 					String[] filterArgs = { DIRECTIONS[FRAGMENTS[j][1]] };
-					((ItemsFragment) getFragment(j)).setFilter(
-							filter, filterArgs);
+					((ItemsFragment) getFragment(j)).setFilter(filter,
+							filterArgs);
 				} else if (FRAGMENTS[j][2] == FRAGMENT_TYPE_PERSONS) {
 					String[] filterArgs = {};
-					((PersonsFragment) getFragment(j)).setFilter(
-							filterPersons, filterArgs);
+					((PersonsFragment) getFragment(j)).setFilter(filterPersons,
+							filterArgs);
 				}
 			}
 
