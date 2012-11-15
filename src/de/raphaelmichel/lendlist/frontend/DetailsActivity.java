@@ -700,6 +700,9 @@ public class DetailsActivity extends SherlockFragmentActivity {
 			save();
 			finish();
 			return true;
+		case R.id.action_cancel:
+			finish();
+			return true;
 		}
 		return super.onOptionsItemSelected(mi);
 	}
