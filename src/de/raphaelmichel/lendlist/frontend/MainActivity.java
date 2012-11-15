@@ -41,8 +41,66 @@ public class MainActivity extends SherlockFragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
+		
+		
 		sp = PreferenceManager.getDefaultSharedPreferences(this);
 
+		if (findViewById(R.id.viewpager) != null) // Phones
+			installViewpager();
+		else if (findViewById(R.id.fragment1) != null) // Tablets
+			installSidebyside();
+	}
+
+	public Fragment getFragment(int num) {
+		if (fragmentAdapter != null)
+			return fragmentAdapter.getItem(num);
+		else {
+			FragmentManager fm = getSupportFragmentManager();
+			switch (num) {
+			case 0:
+				return fm.findFragmentById(R.id.fragment1);
+			case 1:
+				return fm.findFragmentById(R.id.fragment2);
+			case 2:
+				return fm.findFragmentById(R.id.fragment3);
+			}
+		}
+		return null;
+	}
+
+	public void installSidebyside() {
+		FragmentManager fm = getSupportFragmentManager();
+
+		ItemsFragment ifBorrowed = (ItemsFragment) fm
+				.findFragmentById(R.id.fragment1);
+		ItemsFragment ifLent = (ItemsFragment) fm
+				.findFragmentById(R.id.fragment2);
+		PersonsFragment ifPersons = (PersonsFragment) fm
+				.findFragmentById(R.id.fragment3);
+
+		String filter = "direction = 'borrowed'";
+		if (!sp.getBoolean("show_returned", false)) {
+			filter = filter + " and returned = 0";
+		}
+		ifBorrowed.setFilter(filter, null);
+		ifBorrowed.setOrder(sp.getString("order_by",
+				ItemsFragment.DEFAULT_ORDER));
+
+		filter = "direction = 'lent'";
+		if (!sp.getBoolean("show_returned", false)) {
+			filter = filter + " and returned = 0";
+		}
+		ifLent.setFilter(filter, null);
+		ifLent.setOrder(sp.getString("order_by", ItemsFragment.DEFAULT_ORDER));
+
+		filter = null;
+		if (!sp.getBoolean("show_returned", false)) {
+			filter = "returned = 0";
+		}
+		ifPersons.setFilter(filter, null);
+	}
+
+	public void installViewpager() {
 		mViewPager = (ViewPager) findViewById(R.id.viewpager);
 		fragmentAdapter = new MainFragmentAdapter(getSupportFragmentManager());
 		mViewPager.setAdapter(fragmentAdapter);
@@ -92,11 +150,12 @@ public class MainActivity extends SherlockFragmentActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-
+		
 		case R.id.action_add:
 			Intent i = new Intent(this, AddActivity.class);
-			i.putExtra("direction",
-					DIRECTIONS[FRAGMENTS[mViewPager.getCurrentItem()][1]]);
+			if (mViewPager != null)
+				i.putExtra("direction",
+						DIRECTIONS[FRAGMENTS[mViewPager.getCurrentItem()][1]]);
 			startActivityForResult(i, REQUEST_CODE_ADD);
 			return true;
 
@@ -114,15 +173,15 @@ public class MainActivity extends SherlockFragmentActivity {
 				item.setTitle(R.string.returned_hide);
 			}
 
-			int number_of_fragments = fragmentAdapter.fragments.length;
+			int number_of_fragments = FRAGMENTS.length;
 			for (int j = 0; j < number_of_fragments; j++) {
 				if (FRAGMENTS[j][2] == FRAGMENT_TYPE_ITEMS) {
 					String[] filterArgs = { DIRECTIONS[FRAGMENTS[j][1]] };
-					((ItemsFragment) fragmentAdapter.getItem(j)).setFilter(
+					((ItemsFragment) getFragment(j)).setFilter(
 							filter, filterArgs);
 				} else if (FRAGMENTS[j][2] == FRAGMENT_TYPE_PERSONS) {
 					String[] filterArgs = {};
-					((PersonsFragment) fragmentAdapter.getItem(j)).setFilter(
+					((PersonsFragment) getFragment(j)).setFilter(
 							filterPersons, filterArgs);
 				}
 			}
@@ -179,11 +238,10 @@ public class MainActivity extends SherlockFragmentActivity {
 				}
 				sp.edit().putString("order_by", orderBy).commit();
 
-				int number_of_fragments = fragmentAdapter.fragments.length;
+				int number_of_fragments = FRAGMENTS.length;
 				for (int j = 0; j < number_of_fragments; j++) {
 					if (FRAGMENTS[j][2] == FRAGMENT_TYPE_ITEMS) {
-						((ItemsFragment) fragmentAdapter.getItem(j))
-								.setOrder(orderBy);
+						((ItemsFragment) getFragment(j)).setOrder(orderBy);
 					} else if (FRAGMENTS[j][2] == FRAGMENT_TYPE_PERSONS) {
 						// nothing right now
 					}
