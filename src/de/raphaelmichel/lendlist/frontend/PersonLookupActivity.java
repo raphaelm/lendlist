@@ -25,6 +25,7 @@ public class PersonLookupActivity extends SherlockFragmentActivity {
 				.findFragmentById(R.id.frMain));
 		frItems.setFilter("person = ?", new String[] { ""
 				+ getIntent().getStringExtra("name") });
+		frItems.setOrder("returned ASC, until ASC");
 
 		TextView tvName = (TextView) findViewById(R.id.tvName);
 		tvName.setText(getIntent().getStringExtra("name"));
