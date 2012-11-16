@@ -40,6 +40,7 @@
     <string name="delete_confirm">Do you really want to delete this?</string>
     <string name="delete_success">Deleted.</string>
     <string name="save_success">Saved.</string>
+    <string name="add_success">Item created.</string>
     <string name="person_choosecontacts">Choose from contacts</string>
     <string name="person_entertext">Enter a name</string>
     <string name="person_method">Edit person</string>

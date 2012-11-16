@@ -22,6 +22,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.WazaBe.HoloEverywhere.widget.Toast;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -290,12 +291,17 @@ public class AddActivity extends SherlockFragmentActivity {
 		item.setDate(new Date());
 
 		DataSource.addItem(this, item);
+		
+		Toast.makeText(this, R.string.add_success,
+				Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
+			if (!etThing.getText().toString().equals(""))
+				save();
 			NavUtils.navigateUpFromSameTask(this);
 			return true;
 		case R.id.action_cancel:
@@ -307,6 +313,14 @@ public class AddActivity extends SherlockFragmentActivity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public void onBackPressed() {
+		if (!etThing.getText().toString().equals(""))
+			save();
+
+		super.onBackPressed();
 	}
 
 }
