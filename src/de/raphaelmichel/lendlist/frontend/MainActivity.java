@@ -45,6 +45,16 @@ public class MainActivity extends SherlockFragmentActivity {
 
 		sp = PreferenceManager.getDefaultSharedPreferences(this);
 
+		if (getIntent().getExtras() != null) {
+			if (getIntent().getExtras().containsKey("notified")) {
+				int[] ids = getIntent().getExtras().getIntArray("notified");
+				int num = ids.length;
+				for (int i = 0; i < num; i++) {
+					DataSource.markNotified(this, ids[i]);
+				}
+			}
+		}
+
 		if (findViewById(R.id.viewpager) != null) // Phones
 			installViewpager();
 		else if (findViewById(R.id.fragment1) != null) // Tablets
@@ -107,13 +117,6 @@ public class MainActivity extends SherlockFragmentActivity {
 		if (getIntent().getExtras() != null) {
 			mViewPager.setCurrentItem(getIntent().getExtras().getInt(
 					"main_tab", sp.getInt("main_tab", 0)));
-			if (getIntent().getExtras().containsKey("notified")) {
-				int[] ids = getIntent().getExtras().getIntArray("notified");
-				int num = ids.length;
-				for (int i = 0; i < num; i++) {
-					DataSource.markNotified(this, ids[i]);
-				}
-			}
 		} else {
 			mViewPager.setCurrentItem(sp.getInt("main_tab", 0));
 		}
