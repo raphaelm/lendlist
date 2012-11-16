@@ -8,9 +8,10 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.view.ViewGroup;
 
 import com.WazaBe.HoloEverywhere.app.AlertDialog;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -62,31 +63,19 @@ public class MainActivity extends SherlockFragmentActivity {
 	}
 
 	public Fragment getFragment(int num) {
-		if (fragmentAdapter != null)
-			return fragmentAdapter.getItem(num);
-		else {
-			FragmentManager fm = getSupportFragmentManager();
-			switch (num) {
-			case 0:
-				return fm.findFragmentById(R.id.fragment1);
-			case 1:
-				return fm.findFragmentById(R.id.fragment2);
-			case 2:
-				return fm.findFragmentById(R.id.fragment3);
-			}
-		}
-		return null;
+		return getSupportFragmentManager()
+				.findFragmentByTag("mainpager:" + num);
 	}
 
 	public void installSidebyside() {
 		FragmentManager fm = getSupportFragmentManager();
 
 		ItemsFragment ifBorrowed = (ItemsFragment) fm
-				.findFragmentById(R.id.fragment1);
+				.findFragmentByTag("mainpager:0");
 		ItemsFragment ifLent = (ItemsFragment) fm
-				.findFragmentById(R.id.fragment2);
+				.findFragmentByTag("mainpager:1");
 		PersonsFragment ifPersons = (PersonsFragment) fm
-				.findFragmentById(R.id.fragment3);
+				.findFragmentByTag("mainpager:2");
 
 		String filter = "direction = 'borrowed'";
 		if (!sp.getBoolean("show_returned", false)) {
@@ -255,7 +244,7 @@ public class MainActivity extends SherlockFragmentActivity {
 		alert.show();
 	}
 
-	public class MainFragmentAdapter extends FragmentPagerAdapter {
+	public class MainFragmentAdapter extends FragmentStatePagerAdapter {
 		public Fragment[] fragments = new Fragment[FRAGMENTS.length];
 
 		public MainFragmentAdapter(FragmentManager fm) {
@@ -265,6 +254,12 @@ public class MainActivity extends SherlockFragmentActivity {
 		@Override
 		public CharSequence getPageTitle(int position) {
 			return getString(FRAGMENTS[position][0]);
+		}
+
+		@Override
+		public void destroyItem(ViewGroup container, int position, Object object) {
+			super.destroyItem(container, position, object);
+			fragments[position] = null;
 		}
 
 		@Override
@@ -296,6 +291,8 @@ public class MainActivity extends SherlockFragmentActivity {
 				fragments[position] = PersonsFragment.newInstance(filter,
 						filterArgs);
 			}
+			getSupportFragmentManager().beginTransaction()
+					.add(fragments[position], "mainpager:" + position).commit();
 			return fragments[position];
 		}
 

@@ -20,15 +20,15 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:paddingLeft="5dp"
-            android:text="Large Text"
+            android:text=""
             android:textAppearance="?android:attr/textAppearanceLarge" />
-
     </LinearLayout>
 
     <fragment
         android:id="@+id/frMain"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        class="de.raphaelmichel.lendlist.frontend.ItemsFragment" tools:layout="@layout/fragment_main"/>
+        class="de.raphaelmichel.lendlist.frontend.ItemsFragment"
+        tools:layout="@layout/fragment_main" />
 
 </LinearLayout>

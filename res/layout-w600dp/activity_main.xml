@@ -22,6 +22,7 @@
 
         <fragment
             android:id="@+id/fragment1"
+            android:tag="mainpager:0"
             android:name="de.raphaelmichel.lendlist.frontend.ItemsFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -46,6 +47,7 @@
 
         <fragment
             android:id="@+id/fragment2"
+            android:tag="mainpager:1"
             android:name="de.raphaelmichel.lendlist.frontend.ItemsFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -71,6 +73,7 @@
 
         <fragment
             android:id="@+id/fragment3"
+            android:tag="mainpager:2"
             android:name="de.raphaelmichel.lendlist.frontend.PersonsFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
