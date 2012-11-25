@@ -49,7 +49,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 			cursor = resolver.query(
 					LendlistContentProvider.OBJECT_URI,
 					Database.COLUMNS,
-					"direction = 'borrowed' AND returned = 0 AND notified != 1 AND until - "
+					"direction = 'borrowed' AND until > 1 AND returned = 0 AND notified != 1 AND until - "
 							+ System.currentTimeMillis()
 							+ " < "
 							+ (1000 * 3600 * 24 * Integer.parseInt(sp
