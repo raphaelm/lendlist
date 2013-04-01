@@ -8,18 +8,22 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.MatrixCursor;
+import android.database.MergeCursor;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.NavUtils;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
@@ -43,8 +47,11 @@ import com.actionbarsherlock.view.MenuItem;
 
 import de.raphaelmichel.lendlist.R;
 import de.raphaelmichel.lendlist.library.ContactsHelper;
+import de.raphaelmichel.lendlist.objects.Category;
 import de.raphaelmichel.lendlist.objects.Item;
 import de.raphaelmichel.lendlist.storage.DataSource;
+import de.raphaelmichel.lendlist.storage.Database;
+import de.raphaelmichel.lendlist.storage.LendlistContentProvider;
 
 public class DetailsActivity extends SherlockFragmentActivity {
 
@@ -62,6 +69,7 @@ public class DetailsActivity extends SherlockFragmentActivity {
 	private EditText etDate;
 	private EditText etUntil;
 	private Spinner spDirection;
+	private Spinner spCategory;
 	private ToggleButton btReturned;
 	private QuickContactBadge qcbPerson;
 	private TextView tvPerson;
@@ -72,6 +80,7 @@ public class DetailsActivity extends SherlockFragmentActivity {
 	// private TextView tvLoading;
 
 	private DialogFragment dpDialog;
+	private Cursor categoryCursor;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -98,6 +107,7 @@ public class DetailsActivity extends SherlockFragmentActivity {
 			etDate = (EditText) findViewById(R.id.etDate);
 			etUntil = (EditText) findViewById(R.id.etUntil);
 			spDirection = (Spinner) findViewById(R.id.spDirection);
+			spCategory = (Spinner) findViewById(R.id.spCategory);
 			btReturned = (ToggleButton) findViewById(R.id.btReturned);
 			qcbPerson = (QuickContactBadge) findViewById(R.id.qcbPerson);
 			tvPerson = (TextView) findViewById(R.id.tvPerson);
@@ -216,6 +226,26 @@ public class DetailsActivity extends SherlockFragmentActivity {
 					changed = true;
 				}
 			});
+
+			Cursor cursor = getContentResolver().query(
+					LendlistContentProvider.CATEGORY_URI,
+					Database.COLUMNS_CATEGORIES, null, null, null);
+			startManagingCursor(cursor);
+			MatrixCursor extras = new MatrixCursor(new String[] { "_id",
+					"name", "count" });
+			extras.addRow(new String[] { "0", "", "" });
+			Cursor[] cursors = { extras, cursor };
+			categoryCursor = new MergeCursor(cursors);
+
+			String[] from = new String[] { "name" };
+			int[] to = new int[] { android.R.id.text1 };
+			SimpleCursorAdapter mAdapter = new SimpleCursorAdapter(this,
+					android.R.layout.simple_spinner_dropdown_item,
+					categoryCursor, from, to, 0);
+			mAdapter.setViewResource(R.layout.simple_spinner_item);
+			spCategory.setAdapter(mAdapter);
+			selectSpinnerItemByValue(spCategory, item.getCategory());
+
 			//
 			// llPhotos = (LinearLayout) findViewById(R.id.llPhotos);
 			//
@@ -246,6 +276,16 @@ public class DetailsActivity extends SherlockFragmentActivity {
 
 			// loadphotos();
 
+		}
+	}
+
+	public static void selectSpinnerItemByValue(Spinner spnr, long value) {
+		SimpleCursorAdapter adapter = (SimpleCursorAdapter) spnr.getAdapter();
+		for (int position = 0; position < adapter.getCount(); position++) {
+			if (adapter.getItemId(position) == value) {
+				spnr.setSelection(position);
+				return;
+			}
 		}
 	}
 
@@ -526,6 +566,7 @@ public class DetailsActivity extends SherlockFragmentActivity {
 		alert.show();
 	}
 
+	@SuppressLint("ValidFragment")
 	public class DatePickerFragment extends DialogFragment implements
 			DatePickerDialog.OnDateSetListener {
 		@Override
@@ -556,6 +597,7 @@ public class DetailsActivity extends SherlockFragmentActivity {
 			changed = true;
 		}
 
+		@SuppressLint("ValidFragment")
 		protected Date getDate() throws ParseException {
 			return new SimpleDateFormat(getString(R.string.date_format))
 					.parse(etDate.getText().toString());
@@ -596,6 +638,8 @@ public class DetailsActivity extends SherlockFragmentActivity {
 				.putString("contact_lookup", item.getContact_lookup());
 		savedInstanceState.putString("direction", (spDirection
 				.getSelectedItemPosition() == 0 ? "borrowed" : "lent"));
+		savedInstanceState.putInt("category",
+				(spCategory.getSelectedItemPosition()));
 		savedInstanceState.putBoolean("returned", btReturned.isChecked());
 	}
 
@@ -635,6 +679,7 @@ public class DetailsActivity extends SherlockFragmentActivity {
 				spDirection.setSelection(0);
 			}
 		}
+		spCategory.setSelection(savedInstanceState.getInt("category", 0));
 		if (savedInstanceState.getBoolean("returned")) {
 			btReturned.setChecked(true);
 		}
@@ -673,6 +718,11 @@ public class DetailsActivity extends SherlockFragmentActivity {
 		if (btReturned.isChecked() != item.isReturned()) {
 			item.setReturned(btReturned.isChecked());
 			changed = true;
+		}
+
+		if (spCategory.getSelectedItemPosition() != 0) {
+			categoryCursor.moveToPosition(spCategory.getSelectedItemPosition());
+			item.setCategory(categoryCursor.getLong(0));
 		}
 
 		DataSource.updateItem(this, item);

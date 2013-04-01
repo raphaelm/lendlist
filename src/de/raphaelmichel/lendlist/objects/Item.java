@@ -30,7 +30,10 @@ public class Item {
 
 	@Element(required = false)
 	private Date date = new Date();
-	
+
+	@Attribute(required = false)
+	private long category;
+
 	@Attribute(required = false)
 	private boolean notified = false;
 
@@ -115,6 +118,14 @@ public class Item {
 
 	public void setNotified(boolean notified) {
 		this.notified = notified;
+	}
+
+	public long getCategory() {
+		return category;
+	}
+
+	public void setCategory(long category) {
+		this.category = category;
 	}
 
 	@Override

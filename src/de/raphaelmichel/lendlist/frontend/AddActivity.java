@@ -5,15 +5,19 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.MatrixCursor;
+import android.database.MergeCursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.NavUtils;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
@@ -22,6 +26,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import org.holoeverywhere.widget.Spinner;
 import org.holoeverywhere.widget.Toast;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
@@ -30,6 +35,8 @@ import com.actionbarsherlock.view.MenuItem;
 import de.raphaelmichel.lendlist.R;
 import de.raphaelmichel.lendlist.objects.Item;
 import de.raphaelmichel.lendlist.storage.DataSource;
+import de.raphaelmichel.lendlist.storage.Database;
+import de.raphaelmichel.lendlist.storage.LendlistContentProvider;
 
 public class AddActivity extends SherlockFragmentActivity {
 
@@ -44,8 +51,11 @@ public class AddActivity extends SherlockFragmentActivity {
 	private TextView tvLent;
 	private TextView tvTo;
 	private ImageButton ibContact;
+	private Spinner spCategory;
 
 	private Item item = new Item();
+
+	private Cursor categoryCursor;
 
 	@Override
 	public void onSaveInstanceState(Bundle savedInstanceState) {
@@ -57,6 +67,8 @@ public class AddActivity extends SherlockFragmentActivity {
 		savedInstanceState
 				.putString("contact_lookup", item.getContact_lookup());
 		savedInstanceState.putString("direction", direction);
+		savedInstanceState.putInt("category",
+				(spCategory.getSelectedItemPosition()));
 	}
 
 	public static String getS(Bundle b, String k) {
@@ -124,6 +136,7 @@ public class AddActivity extends SherlockFragmentActivity {
 				direction = "lent";
 			}
 		}
+		spCategory.setSelection(savedInstanceState.getInt("category", 0));
 	}
 
 	@Override
@@ -135,6 +148,7 @@ public class AddActivity extends SherlockFragmentActivity {
 
 		etThing = (EditText) findViewById(R.id.etThing);
 		etPerson = (EditText) findViewById(R.id.etPerson);
+		spCategory = (Spinner) findViewById(R.id.spCategory);
 
 		tvBorrowed = (TextView) findViewById(R.id.tvBorrowed);
 		tvLent = (TextView) findViewById(R.id.tvLent);
@@ -236,10 +250,29 @@ public class AddActivity extends SherlockFragmentActivity {
 			}
 		});
 
+		Cursor cursor = getContentResolver().query(
+				LendlistContentProvider.CATEGORY_URI,
+				Database.COLUMNS_CATEGORIES, null, null, null);
+		startManagingCursor(cursor);
+		MatrixCursor extras = new MatrixCursor(new String[] { "_id", "name",
+				"count" });
+		extras.addRow(new String[] { "0", "", "" });
+		Cursor[] cursors = { extras, cursor };
+		categoryCursor = new MergeCursor(cursors);
+
+		String[] from = new String[] { "name" };
+		int[] to = new int[] { android.R.id.text1 };
+		SimpleCursorAdapter mAdapter = new SimpleCursorAdapter(this,
+				android.R.layout.simple_spinner_dropdown_item, categoryCursor,
+				from, to, 0);
+		mAdapter.setViewResource(R.layout.simple_spinner_item);
+		spCategory.setAdapter(mAdapter);
+
 		if (savedInstanceState != null)
 			onRestoreInstanceState(savedInstanceState);
 	}
 
+	@SuppressLint("ValidFragment")
 	public class DatePickerFragment extends DialogFragment implements
 			DatePickerDialog.OnDateSetListener {
 		@Override
@@ -290,10 +323,14 @@ public class AddActivity extends SherlockFragmentActivity {
 		}
 		item.setDate(new Date());
 
+		if (spCategory.getSelectedItemPosition() != 0) {
+			categoryCursor.moveToPosition(spCategory.getSelectedItemPosition());
+			item.setCategory(categoryCursor.getLong(0));
+		}
+
 		DataSource.addItem(this, item);
-		
-		Toast.makeText(this, R.string.add_success,
-				Toast.LENGTH_SHORT).show();
+
+		Toast.makeText(this, R.string.add_success, Toast.LENGTH_SHORT).show();
 	}
 
 	@Override

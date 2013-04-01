@@ -12,6 +12,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import de.raphaelmichel.lendlist.MutableTriplet;
+import de.raphaelmichel.lendlist.objects.Category;
 import de.raphaelmichel.lendlist.objects.Item;
 import de.raphaelmichel.lendlist.objects.Person;
 
@@ -38,8 +39,19 @@ public class DataSource {
 				: 0));
 		values.put("returned", item.isReturned());
 		values.put("notified", item.isNotified());
+		values.put("category", item.getCategory());
 		context.getContentResolver().insert(LendlistContentProvider.OBJECT_URI,
 				values);
+	}
+
+	public static void addCategory(Context context, Category cat) {
+		ContentValues values = new ContentValues();
+		if (cat.getId() > 0) {
+			values.put("id", cat.getId());
+		}
+		values.put("name", cat.getName());
+		context.getContentResolver().insert(
+				LendlistContentProvider.CATEGORY_URI, values);
 	}
 
 	public static void markNotified(Context context, long id) {
@@ -63,9 +75,19 @@ public class DataSource {
 				: 0));
 		values.put("returned", item.isReturned());
 		values.put("notified", item.isNotified());
+		values.put("category", item.getCategory());
 		context.getContentResolver().update(
 				ContentUris.withAppendedId(LendlistContentProvider.OBJECT_URI,
 						item.getId()), values, null, null);
+	}
+
+	public static void updateCategory(Context context, Category cat) {
+		ContentValues values = new ContentValues();
+		values.put("name", cat.getName());
+		context.getContentResolver().update(
+				ContentUris.withAppendedId(
+						LendlistContentProvider.CATEGORY_URI, cat.getId()),
+				values, null, null);
 	}
 
 	public static void deleteAll(Context context) {
@@ -77,6 +99,12 @@ public class DataSource {
 		context.getContentResolver().delete(
 				ContentUris.withAppendedId(LendlistContentProvider.OBJECT_URI,
 						id), null, null);
+	}
+
+	public static void deleteCategory(Context context, long id) {
+		context.getContentResolver().delete(
+				ContentUris.withAppendedId(
+						LendlistContentProvider.CATEGORY_URI, id), null, null);
 	}
 
 	public static void deletePhoto(Context context, long id) {
@@ -133,6 +161,26 @@ public class DataSource {
 		return items;
 	}
 
+	public static List<Category> getAllCategories(Context context) {
+		// direction is ignored if filter is != null!
+		List<Category> items = new ArrayList<Category>();
+		Cursor cursor = null;
+		ContentResolver resolver = context.getContentResolver();
+
+		cursor = resolver.query(LendlistContentProvider.CATEGORY_URI,
+				Database.COLUMNS_CATEGORIES, null, null, null);
+
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast()) {
+			Category cat = cursorToCategory(cursor);
+			items.add(cat);
+			cursor.moveToNext();
+		}
+		// Make sure to close the cursor
+		cursor.close();
+		return items;
+	}
+
 	public static List<Person> getPersonList(Context context, String selection,
 			String[] selectionArgs) {
 		List<Person> items = new ArrayList<Person>();
@@ -175,6 +223,23 @@ public class DataSource {
 		return item;
 	}
 
+	public static Category getCategory(Context context, long id) {
+		Cursor cursor = context.getContentResolver().query(
+				ContentUris.withAppendedId(
+						LendlistContentProvider.CATEGORY_URI, id),
+				Database.COLUMNS_CATEGORIES, null, null, null);
+
+		Category cat = null;
+
+		cursor.moveToFirst();
+		if (!cursor.isAfterLast()) {
+			cat = cursorToCategory(cursor);
+		}
+		// Make sure to close the cursor
+		cursor.close();
+		return cat;
+	}
+
 	public static Item cursorToItem(Cursor cursor) {
 		Item item = new Item();
 		item.setId(cursor.getLong(0));
@@ -188,6 +253,20 @@ public class DataSource {
 		item.setReturned(cursor.getLong(7) == 1);
 		item.setContact_lookup(cursor.getString(8));
 		item.setNotified(cursor.getLong(9) == 1);
+		item.setCategory(cursor.getLong(10));
 		return item;
+	}
+
+	public static Category cursorToCategory(Cursor cursor) {
+		Category cat = new Category();
+		cat.setId(cursor.getLong(0));
+		cat.setName(cursor.getString(1));
+		cat.setCount(cursor.getInt(2));
+		return cat;
+	}
+
+	public static void deleteAllCategories(Context context) {
+		context.getContentResolver().delete(
+				LendlistContentProvider.CATEGORY_URI, null, null);
 	}
 }

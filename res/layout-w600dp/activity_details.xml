@@ -50,6 +50,11 @@
                     android:textOn="@string/edit_not_returned" />
             </LinearLayout>
 
+            <org.holoeverywhere.widget.Spinner
+                android:id="@+id/spCategory"
+                android:layout_width="fill_parent"
+                android:layout_height="48dp" />
+
             <TextView
                 android:id="@+id/tvHeaderPerson"
                 android:layout_width="fill_parent"

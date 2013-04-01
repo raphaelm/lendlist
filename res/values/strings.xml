@@ -71,10 +71,10 @@
     <string name="import_sd_btn">Import (choose file)</string>
     <string name="import_sd_text">Using this function you can import one of the backup files you created into the application to restore your data. Attention: Make a new backup first, because any changes newer than the backup you are going to restore will be LOST!</string>
     <string name="export_success">Export was successful.</string>
-    <string name="export_failed">Export failed.</string> 
-    <string name="export_failed_sd">Export failed. The storage (SD card) is not writable!</string> 
-    <string name="import_success">Import was successful.</string> 
-    <string name="import_failed">Import failed.</string> 
+    <string name="export_failed">Export failed.</string>
+    <string name="export_failed_sd">Export failed. The storage (SD card) is not writable!</string>
+    <string name="import_success">Import was successful.</string>
+    <string name="import_failed">Import failed.</string>
     <string name="import_confirm">Really overwrite current data with backup?</string>
     <string name="import_choose">Choose file</string>
     <string name="photo_heading">PHOTOS</string>
@@ -89,9 +89,23 @@
     <string name="notify_days">Notify X days before due date</string>
     <string name="notify_vibrate">Vibrate</string>
     <string name="notify_ringtone">Sound</string>
-    
+
     <plurals name="notification_text">
         <item quantity="one">You have to return an item soon.</item>
         <item quantity="other">You have to return %d items soon.</item>
     </plurals>
+
+    <string name="categories">Categories</string>
+    <string name="category_default_0">Books</string>
+    <string name="category_default_1">DVDs</string>
+    <string name="category_default_2">Money</string>
+    <string name="add_category">Add category</string>
+    <string name="title_activity_category_lookup">Category</string>
+    <string name="itemlist_dir_lent_to">to %s</string>
+    <string name="itemlist_dir_borrowed_from">from %s</string>
+    <string name="category_rename">Rename category</string>
+    <string name="category_delete">Remove category</string>
+    <string name="category_delete_confirm">Do you really want to delete this category?</string>
+    <string name="category_delete_success">Deleted.</string>
+
 </resources>

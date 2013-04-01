@@ -65,7 +65,9 @@ public class ItemsFragment extends SherlockFragment implements
 
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		inflater.inflate(R.menu.fragment_main, menu);
+		if (menu.findItem(R.id.action_add) == null
+				&& getActivity() instanceof MainActivity)
+			inflater.inflate(R.menu.fragment_main, menu);
 		super.onCreateOptionsMenu(menu, inflater);
 	}
 
@@ -78,6 +80,8 @@ public class ItemsFragment extends SherlockFragment implements
 			filterArgs = savedInstanceState.getStringArray("filterArgs");
 			orderBy = savedInstanceState.getString("orderBy");
 		}
+
+		setHasOptionsMenu(true);
 
 		getLoaderManager().initLoader(0, null, this);
 		adapter = new ItemListAdapter();
@@ -131,13 +135,28 @@ public class ItemsFragment extends SherlockFragment implements
 			tvThing.setText(item.getThing());
 			TextView tvPerson = (TextView) view.findViewById(R.id.tvPerson);
 
-			if (getActivity() instanceof PersonLookupActivity) {
+			if (getActivity() instanceof PersonLookupActivity
+					|| (getActivity() instanceof CategoryLookupActivity && item
+							.getPerson() == null)) {
 				if (item.getDirection().equals("lent")) {
 					tvPerson.setText(R.string.itemlist_dir_lent);
 					tvPerson.setTextColor(getResources().getColor(
 							R.color.itemlist_dir_lent));
 				} else {
 					tvPerson.setText(R.string.itemlist_dir_borrowed);
+					tvPerson.setTextColor(getResources().getColor(
+							R.color.itemlist_dir_borrowed));
+				}
+			} else if (getActivity() instanceof CategoryLookupActivity) {
+				if (item.getDirection().equals("lent")) {
+					tvPerson.setText(getString(R.string.itemlist_dir_lent_to,
+							item.getPerson()));
+					tvPerson.setTextColor(getResources().getColor(
+							R.color.itemlist_dir_lent));
+				} else {
+					tvPerson.setText(getString(
+							R.string.itemlist_dir_borrowed_from,
+							item.getPerson()));
 					tvPerson.setTextColor(getResources().getColor(
 							R.color.itemlist_dir_borrowed));
 				}

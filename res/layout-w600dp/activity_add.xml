@@ -63,6 +63,11 @@
                     android:textColor="@color/dirsel_lent_inactive" />
             </LinearLayout>
 
+            <org.holoeverywhere.widget.Spinner
+                android:id="@+id/spCategory"
+                android:layout_width="fill_parent"
+                android:layout_height="48dp" />
+
             <TextView
                 android:id="@+id/tvTo"
                 android:layout_width="fill_parent"

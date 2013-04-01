@@ -27,9 +27,11 @@ public class MainActivity extends SherlockFragmentActivity {
 
 	private static int FRAGMENT_TYPE_ITEMS = 0;
 	private static int FRAGMENT_TYPE_PERSONS = 1;
+	private static int FRAGMENT_TYPE_CATEGORIES = 2;
 	private static String[] DIRECTIONS = { "borrowed", "lent" };
 
 	private static int[][] FRAGMENTS = new int[][] {
+			new int[] { R.string.categories, 0, FRAGMENT_TYPE_CATEGORIES },
 			new int[] { R.string.borrowed, 0, FRAGMENT_TYPE_ITEMS },
 			new int[] { R.string.lent, 1, FRAGMENT_TYPE_ITEMS },
 			new int[] { R.string.persons, 0, FRAGMENT_TYPE_PERSONS } };
@@ -70,12 +72,14 @@ public class MainActivity extends SherlockFragmentActivity {
 	public void installSidebyside() {
 		FragmentManager fm = getSupportFragmentManager();
 
+		CategoriesFragment ifCategories = (CategoriesFragment) fm
+				.findFragmentByTag("mainpager:0"); // TODO: ON TABLETS
 		ItemsFragment ifBorrowed = (ItemsFragment) fm
-				.findFragmentByTag("mainpager:0");
-		ItemsFragment ifLent = (ItemsFragment) fm
 				.findFragmentByTag("mainpager:1");
-		PersonsFragment ifPersons = (PersonsFragment) fm
+		ItemsFragment ifLent = (ItemsFragment) fm
 				.findFragmentByTag("mainpager:2");
+		PersonsFragment ifPersons = (PersonsFragment) fm
+				.findFragmentByTag("mainpager:3");
 
 		String filter = "direction = 'borrowed'";
 		if (!sp.getBoolean("show_returned", false)) {
@@ -105,11 +109,11 @@ public class MainActivity extends SherlockFragmentActivity {
 		mViewPager.setAdapter(fragmentAdapter);
 		if (getIntent().getExtras() != null) {
 			mViewPager.setCurrentItem(getIntent().getExtras().getInt(
-					"main_tab", sp.getInt("main_tab", 0)));
+					"main_tab", sp.getInt("main_tab", 1)));
 		} else {
-			mViewPager.setCurrentItem(sp.getInt("main_tab", 0));
+			mViewPager.setCurrentItem(sp.getInt("main_tab", 1));
 		}
-		mViewPager.setOffscreenPageLimit(2);
+		mViewPager.setOffscreenPageLimit(3);
 		mViewPager.setOnPageChangeListener(new SavePageListener());
 	}
 
@@ -289,6 +293,14 @@ public class MainActivity extends SherlockFragmentActivity {
 					filter = "returned = 0";
 				}
 				fragments[position] = PersonsFragment.newInstance(filter,
+						filterArgs);
+			} else if (FRAGMENTS[position][2] == FRAGMENT_TYPE_CATEGORIES) {
+				String filter = null;
+				String[] filterArgs = null;
+				if (!sp.getBoolean("show_returned", false)) {
+					filter = "returned = 0";
+				}
+				fragments[position] = CategoriesFragment.newInstance(filter,
 						filterArgs);
 			}
 			getSupportFragmentManager().beginTransaction()

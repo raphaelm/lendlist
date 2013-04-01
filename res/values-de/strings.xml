@@ -95,4 +95,17 @@
         <item quantity="other">%d Gegenstände müssen bald zurückgegeben werden.</item>
     </plurals>
 
+    <string name="categories">Kategorien</string>
+    <string name="category_default_0">Bücher</string>
+    <string name="category_default_1">DVDs</string>
+    <string name="category_default_2">Geld</string>
+    <string name="add_category">Neue Kategorie</string>
+    <string name="title_activity_category_lookup">Kategorie</string>
+    <string name="itemlist_dir_lent_to">an %s</string>
+    <string name="itemlist_dir_borrowed_from">von %s</string>
+    <string name="category_rename">Kategorie umbenennen</string>
+    <string name="category_delete">Kategorie entfernen</string>
+    <string name="category_delete_confirm">Soll diese Kategorie wirklich gelöscht werden?</string>
+    <string name="category_delete_success">Gelöscht.</string>
+
 </resources>

@@ -2,6 +2,8 @@ package de.raphaelmichel.lendlist.storage;
 
 import java.util.List;
 
+import de.raphaelmichel.lendlist.objects.Category;
+
 import android.content.ContentProvider;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -15,14 +17,16 @@ public class LendlistContentProvider extends ContentProvider {
 	private static final String OBJECT_TYPE = "object";
 	private static final String PERSON_TYPE = "person";
 	private static final String PHOTO_TYPE = "photo";
+	private static final String CATEGORY_TYPE = "category";
 
 	private static final String BASE_URI = "content://" + AUTHORITY + "/";
 	public static final Uri OBJECT_URI = Uri.parse(BASE_URI + OBJECT_TYPE);
 	public static final Uri PERSON_URI = Uri.parse(BASE_URI + PERSON_TYPE);
+	public static final Uri CATEGORY_URI = Uri.parse(BASE_URI + CATEGORY_TYPE);
 	public static final Uri PHOTO_URI = Uri.parse(BASE_URI + PHOTO_TYPE);
 
 	private static enum Mime {
-		OBJECT_ITEM, OBJECT_DIR, PERSON_DIR, PHOTO_DIR, PHOTO_ITEM
+		OBJECT_ITEM, OBJECT_DIR, PERSON_DIR, PHOTO_DIR, PHOTO_ITEM, CATEGORY_DIR, CATEGORY_ITEM
 	}
 
 	@Override
@@ -36,16 +40,26 @@ public class LendlistContentProvider extends ContentProvider {
 			+ OBJECT_TYPE;
 	private static final String PHOTO_MIME_POSTFIX = "/vnd." + AUTHORITY + "."
 			+ PHOTO_TYPE;
+	private static final String CATEGORY_MIME_POSTFIX = "/vnd." + AUTHORITY
+			+ "." + CATEGORY_TYPE;
+
 	private static final String OBJECT_DIR_MIME = MIME_PREFIX + "dir"
 			+ OBJECT_MIME_POSTFIX;
 	private static final String OBJECT_ITEM_MIME = MIME_PREFIX + "item"
 			+ OBJECT_MIME_POSTFIX;
+
 	private static final String PERSON_DIR_MIME = MIME_PREFIX + "dir" + "/vnd."
 			+ AUTHORITY + "." + PERSON_TYPE;
+
 	private static final String PHOTO_ITEM_MIME = MIME_PREFIX + "item"
 			+ PHOTO_MIME_POSTFIX;
 	private static final String PHOTO_DIR_MIME = MIME_PREFIX + "dir" + "/vnd."
 			+ AUTHORITY + "." + PHOTO_TYPE;
+
+	private static final String CATEGORY_ITEM_MIME = MIME_PREFIX + "item"
+			+ CATEGORY_MIME_POSTFIX;
+	private static final String CATEGORY_DIR_MIME = MIME_PREFIX + "dir"
+			+ CATEGORY_MIME_POSTFIX;
 
 	private static Mime getTypeMime(Uri uri) {
 		if (!AUTHORITY.equals(uri.getAuthority())) {
@@ -75,6 +89,15 @@ public class LendlistContentProvider extends ContentProvider {
 			default:
 				return null;
 			}
+		} else if (CATEGORY_TYPE.equals(type)) {
+			switch (segments.size()) {
+			case 1:
+				return Mime.CATEGORY_DIR;
+			case 2:
+				return Mime.CATEGORY_ITEM;
+			default:
+				return null;
+			}
 		} else if (PERSON_TYPE.equals(type)) {
 			if (segments.size() == 1) {
 				return Mime.PERSON_DIR;
@@ -99,6 +122,10 @@ public class LendlistContentProvider extends ContentProvider {
 			return PHOTO_ITEM_MIME;
 		case PERSON_DIR:
 			return PERSON_DIR_MIME;
+		case CATEGORY_DIR:
+			return CATEGORY_DIR_MIME;
+		case CATEGORY_ITEM:
+			return CATEGORY_ITEM_MIME;
 		default:
 			return null;
 		}
@@ -133,6 +160,31 @@ public class LendlistContentProvider extends ContentProvider {
 					Database.OBJECT_WHERE_ID, selectionForUri(uri));
 			notifyPersonsChanged = true;
 			break;
+		case CATEGORY_DIR:
+
+			Cursor cursor = query(LendlistContentProvider.CATEGORY_URI,
+					Database.COLUMNS_CATEGORIES, selection, selectionArgs, null);
+			cursor.moveToFirst();
+			while (!cursor.isAfterLast()) {
+				ContentValues values = new ContentValues();
+				values.put("category", 0);
+				update(OBJECT_URI, values, Database.OBJECT_WHERE_CAT,
+						new String[] { String.valueOf(cursor.getLong(0)) });
+				cursor.moveToNext();
+			}
+
+			rowsAffected = deleteInDatabase(Database.CATEGORY_TABLE, selection,
+					selectionArgs);
+			break;
+		case CATEGORY_ITEM:
+			rowsAffected = deleteInDatabase(Database.CATEGORY_TABLE,
+					Database.CATEGORY_WHERE_ID, selectionForUri(uri));
+
+			ContentValues values = new ContentValues();
+			values.put("category", 0);
+			update(OBJECT_URI, values, Database.OBJECT_WHERE_CAT,
+					selectionForUri(uri));
+			break;
 		default:
 			rowsAffected = 0;
 			notifyPersonsChanged = false;
@@ -143,6 +195,7 @@ public class LendlistContentProvider extends ContentProvider {
 			notifyUri(uri);
 			if (notifyPersonsChanged) {
 				notifyUri(PERSON_URI);
+				notifyUri(CATEGORY_URI);
 			}
 		}
 		return rowsAffected;
@@ -162,11 +215,18 @@ public class LendlistContentProvider extends ContentProvider {
 			id = insertIntoDatabase(Database.OBJECT_TABLE, values);
 			itemUri = ContentUris.withAppendedId(OBJECT_URI, id);
 			notifyUri(PERSON_URI);
+			notifyUri(CATEGORY_URI);
 			break;
 		case PHOTO_DIR:
 			id = insertIntoDatabase(Database.PHOTO_TABLE, values);
 			itemUri = ContentUris.withAppendedId(PHOTO_URI, id);
 			notifyUri(PHOTO_URI);
+			break;
+		case CATEGORY_DIR:
+			id = insertIntoDatabase(Database.CATEGORY_TABLE, values);
+			itemUri = ContentUris.withAppendedId(CATEGORY_URI, id);
+			notifyUri(CATEGORY_URI);
+			notifyUri(OBJECT_URI);
 			break;
 		default:
 			itemUri = null;
@@ -213,6 +273,15 @@ public class LendlistContentProvider extends ContentProvider {
 					selection, selectionArgs, "person", "person != ''",
 					sortOrder);
 			break;
+		case CATEGORY_DIR:
+			cursor = queryDatabase(Database.CATEGORY_TABLE, projection,
+					selection, selectionArgs, null, null, sortOrder);
+			break;
+		case CATEGORY_ITEM:
+			cursor = queryDatabase(Database.CATEGORY_TABLE, projection,
+					Database.CATEGORY_WHERE_ID, selectionForUri(uri), null,
+					null, sortOrder);
+			break;
 		default:
 			return null;
 		}
@@ -250,6 +319,18 @@ public class LendlistContentProvider extends ContentProvider {
 					Database.OBJECT_WHERE_ID, selectionForUri(uri));
 			notifyPersonsChanged = true;
 			break;
+		case CATEGORY_DIR:
+			rowsAffected = updateInDatabase(Database.CATEGORY_TABLE, values,
+					selection, selectionArgs);
+			notifyUri(CATEGORY_URI);
+			notifyUri(OBJECT_URI);
+			break;
+		case CATEGORY_ITEM:
+			rowsAffected = updateInDatabase(Database.CATEGORY_TABLE, values,
+					Database.CATEGORY_WHERE_ID, selectionForUri(uri));
+			notifyUri(CATEGORY_URI);
+			notifyUri(OBJECT_URI);
+			break;
 		default:
 			rowsAffected = 0;
 			notifyPersonsChanged = false;
@@ -260,6 +341,7 @@ public class LendlistContentProvider extends ContentProvider {
 			notifyUri(uri);
 			if (notifyPersonsChanged) {
 				notifyUri(PERSON_URI);
+				notifyUri(CATEGORY_URI);
 			}
 		}
 		return rowsAffected;
