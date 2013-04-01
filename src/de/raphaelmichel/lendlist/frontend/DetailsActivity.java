@@ -34,9 +34,9 @@ import android.widget.QuickContactBadge;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import com.WazaBe.HoloEverywhere.app.AlertDialog;
-import com.WazaBe.HoloEverywhere.widget.Spinner;
-import com.WazaBe.HoloEverywhere.widget.Toast;
+import org.holoeverywhere.app.AlertDialog;
+import org.holoeverywhere.widget.Spinner;
+import org.holoeverywhere.widget.Toast;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;

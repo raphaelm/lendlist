@@ -15,7 +15,7 @@
         android:backupAgent=".backup.AndroidBackupAgent"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/Holo.Theme.Sherlock.Light" >
+        android:theme="@style/Holo.Theme.Light" >
         <activity
             android:name=".frontend.MainActivity"
             android:label="@string/title_activity_main" >
