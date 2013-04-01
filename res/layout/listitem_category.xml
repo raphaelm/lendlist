@@ -22,6 +22,7 @@
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:layout_toLeftOf="@+id/tvCount"
+        android:layout_marginLeft="8dp"
         android:ellipsize="end"
         android:gravity="center_vertical"
         android:singleLine="true"
