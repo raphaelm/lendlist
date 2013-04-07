@@ -136,6 +136,9 @@ public class MainActivity extends SherlockFragmentActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getSupportMenuInflater().inflate(R.menu.activity_main, menu);
 
+		if (sp == null)
+			sp = PreferenceManager.getDefaultSharedPreferences(this);
+
 		if (sp.getBoolean("show_returned", false)) {
 			menu.findItem(R.id.action_filter).setTitle(R.string.returned_hide);
 		}
