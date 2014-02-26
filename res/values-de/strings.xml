@@ -36,7 +36,7 @@
     <string name="error_head">Upps!</string>
     <string name="error_unkown_item">Dieser Eintrag existiert nicht</string>
     <string name="persons">Personen</string>
-    <string name="delete_confirm">Soll der Eintrag wrklich gelöscht werden?</string>
+    <string name="delete_confirm">Soll der Eintrag wirklich gelöscht werden?</string>
     <string name="delete_success">Gelöscht.</string>
     <string name="add_success">Eintrag erstellt.</string>
     <string name="save_success">Gespeichert.</string>
