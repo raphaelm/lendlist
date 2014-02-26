@@ -100,6 +100,8 @@ public class PersonsFragment extends Fragment implements
 					Uri contactUri = ContactsContract.Contacts.getLookupUri(
 							person.getId(), person.getLookup());
 					i.putExtra("uri", contactUri.toString());
+					i.putExtra("person_id", person.getId());
+					i.putExtra("person_lookup", person.getLookup());
 				}
 				startActivity(i);
 			}

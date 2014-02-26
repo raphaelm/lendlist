@@ -265,6 +265,20 @@ public class AddActivity extends FragmentActivity {
 				from, to, 0);
 		mAdapter.setViewResource(R.layout.simple_spinner_item);
 		spCategory.setAdapter(mAdapter);
+		
+		if (getIntent().getLongExtra("category", 0) != 0) {
+			selectSpinnerItemByValue(spCategory, getIntent().getLongExtra("category", 0));
+		}
+		if(getIntent().hasExtra("name")){
+			etPerson.setText(getIntent().getStringExtra("name"));
+			item.setPerson(getIntent().getStringExtra("name"));
+			if(getIntent().hasExtra("person_lookup")){
+				item.setContact_id(getIntent().getLongExtra("person_id", 0));
+				item.setContact_lookup(getIntent().getStringExtra("person_lookup"));
+				etPerson.setEnabled(false);
+				ibContact.setImageResource(R.drawable.ic_action_cancel);
+			}
+		}
 
 		if (savedInstanceState != null)
 			onRestoreInstanceState(savedInstanceState);
@@ -356,6 +370,16 @@ public class AddActivity extends FragmentActivity {
 			save();
 
 		super.onBackPressed();
+	}
+
+	public static void selectSpinnerItemByValue(Spinner spnr, long value) {
+		SimpleCursorAdapter adapter = (SimpleCursorAdapter) spnr.getAdapter();
+		for (int position = 0; position < adapter.getCount(); position++) {
+			if (adapter.getItemId(position) == value) {
+				spnr.setSelection(position);
+				return;
+			}
+		}
 	}
 
 }

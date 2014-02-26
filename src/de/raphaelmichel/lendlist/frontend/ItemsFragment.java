@@ -12,6 +12,7 @@ import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -26,9 +27,9 @@ import de.raphaelmichel.lendlist.storage.DataSource;
 import de.raphaelmichel.lendlist.storage.Database;
 import de.raphaelmichel.lendlist.storage.LendlistContentProvider;
 
-public class ItemsFragment extends Fragment implements
-		LoaderCallbacks<Cursor> {
+public class ItemsFragment extends Fragment implements LoaderCallbacks<Cursor> {
 
+	private static int REQUEST_CODE_ADD = 1;
 	private static int REQUEST_CODE_DETAILS = 2;
 
 	public static final String DEFAULT_ORDER = "date DESC";
@@ -63,10 +64,32 @@ public class ItemsFragment extends Fragment implements
 
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		if (menu.findItem(R.id.action_add) == null
-				&& getActivity() instanceof MainActivity)
+		if (menu.findItem(R.id.action_add) == null)
 			inflater.inflate(R.menu.fragment_main, menu);
 		super.onCreateOptionsMenu(menu, inflater);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == R.id.action_add
+				&& !(getActivity() instanceof MainActivity)) {
+			Intent i = new Intent(getActivity(), AddActivity.class);
+			if (getActivity() instanceof CategoryLookupActivity)
+				i.putExtra("category", Long.parseLong(filterArgs[0]));
+			else if (getActivity() instanceof PersonLookupActivity) {
+				i.putExtra("name", ((PersonLookupActivity) getActivity())
+						.getIntent().getStringExtra("name"));
+				if (getActivity().getIntent().hasExtra("person_lookup")) {
+					i.putExtra("person_id", getActivity().getIntent()
+							.getLongExtra("person_id", 0));
+					i.putExtra("person_lookup", getActivity().getIntent()
+							.getStringExtra("person_lookup"));
+				}
+			}
+			startActivityForResult(i, REQUEST_CODE_ADD);
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	@Override
