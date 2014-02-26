@@ -4,22 +4,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-
 import de.raphaelmichel.lendlist.R;
 import de.raphaelmichel.lendlist.library.RelativeDateBuilder;
 import de.raphaelmichel.lendlist.library.RelativeDateBuilder.RelativeDate;
@@ -28,7 +26,7 @@ import de.raphaelmichel.lendlist.storage.DataSource;
 import de.raphaelmichel.lendlist.storage.Database;
 import de.raphaelmichel.lendlist.storage.LendlistContentProvider;
 
-public class ItemsFragment extends SherlockFragment implements
+public class ItemsFragment extends Fragment implements
 		LoaderCallbacks<Cursor> {
 
 	private static int REQUEST_CODE_DETAILS = 2;

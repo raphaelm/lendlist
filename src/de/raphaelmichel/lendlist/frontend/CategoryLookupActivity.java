@@ -1,25 +1,21 @@
 package de.raphaelmichel.lendlist.frontend;
 
-import org.holoeverywhere.app.AlertDialog;
-import org.holoeverywhere.widget.Toast;
 
+import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.EditText;
-import android.widget.QuickContactBadge;
-import android.widget.TextView;
-
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-
+import android.widget.Toast;
 import de.raphaelmichel.lendlist.R;
 import de.raphaelmichel.lendlist.objects.Category;
 import de.raphaelmichel.lendlist.storage.DataSource;
 
-public class CategoryLookupActivity extends SherlockFragmentActivity {
+public class CategoryLookupActivity extends FragmentActivity {
 
 	private Category cat;
 
@@ -27,7 +23,7 @@ public class CategoryLookupActivity extends SherlockFragmentActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_category_lookup);
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 		ItemsFragment frItems = ((ItemsFragment) getSupportFragmentManager()
 				.findFragmentById(R.id.frMain));
 		frItems.setFilter("category = ?", new String[] { ""
@@ -42,7 +38,7 @@ public class CategoryLookupActivity extends SherlockFragmentActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getSupportMenuInflater().inflate(R.menu.activity_category_lookup, menu);
+		getMenuInflater().inflate(R.menu.activity_category_lookup, menu);
 		return true;
 	}
 

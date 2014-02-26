@@ -3,24 +3,22 @@ package de.raphaelmichel.lendlist.frontend;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.QuickContactBadge;
 import android.widget.TextView;
-
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-
 import de.raphaelmichel.lendlist.R;
 import de.raphaelmichel.lendlist.library.ContactsHelper;
 
-public class PersonLookupActivity extends SherlockFragmentActivity {
+public class PersonLookupActivity extends FragmentActivity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_person_lookup);
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 		ItemsFragment frItems = ((ItemsFragment) getSupportFragmentManager()
 				.findFragmentById(R.id.frMain));
 		frItems.setFilter("person = ?", new String[] { ""
@@ -44,7 +42,7 @@ public class PersonLookupActivity extends SherlockFragmentActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getSupportMenuInflater().inflate(R.menu.activity_person_lookup, menu);
+		getMenuInflater().inflate(R.menu.activity_person_lookup, menu);
 		return true;
 	}
 

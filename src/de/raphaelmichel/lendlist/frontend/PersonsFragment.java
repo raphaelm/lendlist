@@ -10,11 +10,14 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -22,17 +25,12 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-
 import de.raphaelmichel.lendlist.R;
 import de.raphaelmichel.lendlist.library.ContactsHelper;
 import de.raphaelmichel.lendlist.objects.Person;
 import de.raphaelmichel.lendlist.storage.LendlistContentProvider;
 
-public class PersonsFragment extends SherlockFragment implements
+public class PersonsFragment extends Fragment implements
 		LoaderCallbacks<Cursor> {
 
 	public static final String SORT_ORDER = "person ASC";

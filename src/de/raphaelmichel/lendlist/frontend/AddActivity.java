@@ -16,29 +16,27 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
-import android.support.v4.widget.SimpleCursorAdapter;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.SimpleCursorAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
-
-import org.holoeverywhere.widget.Spinner;
-import org.holoeverywhere.widget.Toast;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-
+import android.widget.Toast;
 import de.raphaelmichel.lendlist.R;
 import de.raphaelmichel.lendlist.objects.Item;
 import de.raphaelmichel.lendlist.storage.DataSource;
 import de.raphaelmichel.lendlist.storage.Database;
 import de.raphaelmichel.lendlist.storage.LendlistContentProvider;
 
-public class AddActivity extends SherlockFragmentActivity {
+public class AddActivity extends FragmentActivity {
 
 	private static final int REQUEST_CODE_CONTACT = 3;
 
@@ -144,7 +142,7 @@ public class AddActivity extends SherlockFragmentActivity {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_add);
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 
 		etThing = (EditText) findViewById(R.id.etThing);
 		etPerson = (EditText) findViewById(R.id.etPerson);
@@ -307,7 +305,7 @@ public class AddActivity extends SherlockFragmentActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getSupportMenuInflater().inflate(R.menu.activity_add, menu);
+		getMenuInflater().inflate(R.menu.activity_add, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 

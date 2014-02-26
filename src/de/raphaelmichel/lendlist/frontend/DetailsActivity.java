@@ -9,6 +9,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -22,8 +23,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
@@ -35,25 +39,18 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.QuickContactBadge;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
-
-import org.holoeverywhere.app.AlertDialog;
-import org.holoeverywhere.widget.Spinner;
-import org.holoeverywhere.widget.Toast;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-
 import de.raphaelmichel.lendlist.R;
 import de.raphaelmichel.lendlist.library.ContactsHelper;
-import de.raphaelmichel.lendlist.objects.Category;
 import de.raphaelmichel.lendlist.objects.Item;
 import de.raphaelmichel.lendlist.storage.DataSource;
 import de.raphaelmichel.lendlist.storage.Database;
 import de.raphaelmichel.lendlist.storage.LendlistContentProvider;
 
-public class DetailsActivity extends SherlockFragmentActivity {
+public class DetailsActivity extends FragmentActivity {
 
 	private static final int REQUEST_CODE_CONTACT = 3;
 	// private static final int REQUEST_CODE_CAMERA = 4;
@@ -85,7 +82,7 @@ public class DetailsActivity extends SherlockFragmentActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 
 		item = DataSource.getItem(this, getIntent().getLongExtra("id", 0));
 
@@ -622,7 +619,7 @@ public class DetailsActivity extends SherlockFragmentActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getSupportMenuInflater().inflate(R.menu.activity_details, menu);
+		getMenuInflater().inflate(R.menu.activity_details, menu);
 		return true;
 	}
 

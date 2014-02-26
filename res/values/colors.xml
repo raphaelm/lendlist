@@ -6,7 +6,6 @@
     <color name="itemlist_date_neutral">#666666</color>
     <color name="itemlist_date_soon">#CC8800</color>
     <color name="itemlist_returned">#009900</color>
-    <color name="itemlist_meta">#666666</color>
     <color name="itemlist_dir_lent">#5F911D</color>
     <color name="itemlist_dir_borrowed">#911D1D</color>
     <color name="emphasis">#31b6e7</color>

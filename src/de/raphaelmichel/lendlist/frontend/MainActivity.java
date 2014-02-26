@@ -1,27 +1,25 @@
 package de.raphaelmichel.lendlist.frontend;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.ViewGroup;
-
-import org.holoeverywhere.app.AlertDialog;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-
 import de.raphaelmichel.lendlist.R;
 import de.raphaelmichel.lendlist.storage.DataSource;
 
-public class MainActivity extends SherlockFragmentActivity {
+public class MainActivity extends FragmentActivity {
 
 	private static int REQUEST_CODE_ADD = 1;
 
@@ -134,7 +132,7 @@ public class MainActivity extends SherlockFragmentActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getSupportMenuInflater().inflate(R.menu.activity_main, menu);
+		getMenuInflater().inflate(R.menu.activity_main, menu);
 
 		if (sp == null)
 			sp = PreferenceManager.getDefaultSharedPreferences(this);
@@ -306,8 +304,8 @@ public class MainActivity extends SherlockFragmentActivity {
 				fragments[position] = CategoriesFragment.newInstance(filter,
 						filterArgs);
 			}
-			getSupportFragmentManager().beginTransaction()
-					.add(fragments[position], "mainpager:" + position).commit();
+			//getSupportFragmentManager().beginTransaction()
+			//		.add(fragments[position], "mainpager:" + position).commit();
 			return fragments[position];
 		}
 

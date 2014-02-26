@@ -2,18 +2,15 @@ package de.raphaelmichel.lendlist.frontend;
 
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
-
-import com.actionbarsherlock.app.SherlockPreferenceActivity;
-import com.actionbarsherlock.view.MenuItem;
-
+import android.view.MenuItem;
 import de.raphaelmichel.lendlist.R;
 
-public class PreferenceActivity extends SherlockPreferenceActivity {
+public class PreferenceActivity extends android.preference.PreferenceActivity {
 	@SuppressWarnings("deprecation")
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 
 		addPreferencesFromResource(R.xml.main_preferences);
 	}

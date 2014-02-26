@@ -3,30 +3,28 @@ package de.raphaelmichel.lendlist.frontend;
 import java.io.File;
 import java.io.FilenameFilter;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.NavUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-
-import org.holoeverywhere.app.AlertDialog;
-import org.holoeverywhere.widget.Toast;
-import com.actionbarsherlock.app.SherlockActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-
+import android.widget.Toast;
 import de.raphaelmichel.lendlist.R;
 import de.raphaelmichel.lendlist.backup.BackupHelper;
 
-public class ExportActivity extends SherlockActivity {
+public class ExportActivity extends Activity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_export);
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 
 		Button btExportSd = (Button) findViewById(R.id.btExportSd);
 		btExportSd.setOnClickListener(new OnClickListener() {
@@ -163,7 +161,7 @@ public class ExportActivity extends SherlockActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getSupportMenuInflater().inflate(R.menu.activity_export, menu);
+		getMenuInflater().inflate(R.menu.activity_export, menu);
 		return true;
 	}
 

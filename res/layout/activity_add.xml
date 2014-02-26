@@ -54,7 +54,7 @@
                 android:textColor="@color/dirsel_lent_inactive" />
         </LinearLayout>
 
-        <org.holoeverywhere.widget.Spinner
+        <Spinner
             android:id="@+id/spCategory"
             android:layout_width="fill_parent"
             android:layout_height="48dp"

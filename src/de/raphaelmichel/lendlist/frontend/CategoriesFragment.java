@@ -1,19 +1,20 @@
 package de.raphaelmichel.lendlist.frontend;
 
-import org.holoeverywhere.app.AlertDialog;
-import org.holoeverywhere.widget.Toast;
-
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.DialogInterface.OnClickListener;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -21,19 +22,13 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
-
 import de.raphaelmichel.lendlist.R;
 import de.raphaelmichel.lendlist.objects.Category;
 import de.raphaelmichel.lendlist.storage.DataSource;
 import de.raphaelmichel.lendlist.storage.Database;
 import de.raphaelmichel.lendlist.storage.LendlistContentProvider;
 
-public class CategoriesFragment extends SherlockFragment implements
+public class CategoriesFragment extends Fragment implements
 		LoaderCallbacks<Cursor> {
 
 	public static final String SORT_ORDER = "name ASC";
