@@ -1,0 +1,10 @@
+Vergiss nie wieder, wem du was und wer was von dir ausgeliehen hat!
+Funktionen:
+* Abspeichern von verliehenen und ausgeliehenen Gegenständen
+* Einbindung der Android-Kontakte
+* Export der Rückgabetermine in den Android-Kalender
+* Benachrichtigung über näherrückende Rückgabetermine
+* Backup/Export der Daten
+Wir freuen uns über Feedback an raphael@geeksfactory.de :-)
+Diese App ist freie Software. Quellcode: https://github.com/raphaelm/lendlist
+Keywords: Ausleihen, Verleihen, Leihliste, Ausleihliste, Verleihliste, verliehen, ausgeliehen, leihen

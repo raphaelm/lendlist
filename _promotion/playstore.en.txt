@@ -1,0 +1,10 @@
+Never again forget what you borrowed from someone and keep track of what your friends borrowed from you.
+Features:
+* Jot down what you lent/borrowed
+* Connect with your contacts
+* Export due dates to calendar
+* Reminder when items are due to return
+* Backup/Export data
+Feel free to contact raphael@geeksfactory.de and give feedback :)
+This app is free and open source software, if you are interested in the source code, take a look on https://github.com/raphaelm/lendlist
+Keywords: lendlist, lend list, lending list, lending register, borrow, lean, lend, lent
