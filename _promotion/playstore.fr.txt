@@ -1,0 +1,10 @@
+N'oubliez plus jamais ce que vous avez emprunté à quelqu'un et conservez une trace de ce que vous avez prêté à vos amis.
+Caractéristiques :
+* Notez ce que vous avez prêté / emprunté
+* Connectez-vous avec vos contacts
+* Exportez les dates de retour sur votre calendrier
+* Soyez averti quand les objets doivent être rendus
+* Sauvegarde / exportation des données
+N'hésitez pas à contacter raphael@geeksfactory.de et donnez votre avis :)
+Cette application est gratuite et open source, si vous êtes intéressé par le code source, regardez sur https://github.com/raphaelm/lendlist
+Mots-clés : lendlist, lend list, lending list, lending register, borrow, lean, lend, lent
