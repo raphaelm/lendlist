@@ -10,7 +10,6 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.Menu;
@@ -261,6 +260,7 @@ public class MainActivity extends FragmentActivity {
 			return getString(FRAGMENTS[position][0]);
 		}
 
+
 		@Override
 		public void destroyItem(ViewGroup container, int position, Object object) {
 			super.destroyItem(container, position, object);
@@ -304,8 +304,6 @@ public class MainActivity extends FragmentActivity {
 				fragments[position] = CategoriesFragment.newInstance(filter,
 						filterArgs);
 			}
-			//getSupportFragmentManager().beginTransaction()
-			//		.add(fragments[position], "mainpager:" + position).commit();
 			return fragments[position];
 		}
 
