@@ -789,6 +789,7 @@ public class DetailsActivity extends FragmentActivity {
 						+ (cal.get(Calendar.ZONE_OFFSET) + cal
 								.get(Calendar.DST_OFFSET));
 				intent.putExtra("beginTime", time);
+				intent.putExtra("endTime", time+1000);
 				intent.putExtra("allDay", true);
 				intent.putExtra(
 						"title",
