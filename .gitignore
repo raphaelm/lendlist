@@ -2,7 +2,6 @@ bin/
 gen/
 proguard*
 local.properties
-_promotion
 .gradle
 local.properties
 .idea/workspace.xml
