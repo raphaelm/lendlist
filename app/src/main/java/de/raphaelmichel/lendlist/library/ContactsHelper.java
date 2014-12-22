@@ -22,7 +22,7 @@ public final class ContactsHelper {
 					new String[] { ContactsContract.Contacts._ID }, null, null,
 					null);
 			try {
-				if (c == null || c.moveToFirst() == false) {
+				if (c == null || !c.moveToFirst()) {
 					return null;
 				}
 				contactId = c.getLong(0);

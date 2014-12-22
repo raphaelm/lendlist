@@ -2,8 +2,6 @@ package de.raphaelmichel.lendlist.storage;
 
 import java.util.List;
 
-import de.raphaelmichel.lendlist.objects.Category;
-
 import android.content.ContentProvider;
 import android.content.ContentUris;
 import android.content.ContentValues;

@@ -43,7 +43,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 		if (sp.getBoolean("notify_enabled", false)) {
 
 			// direction is ignored if filter is != null!
-			Cursor cursor = null;
+			Cursor cursor;
 			ContentResolver resolver = context.getContentResolver();
 
 			cursor = resolver.query(
@@ -88,7 +88,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 			nb.setNumber(num);
 			nb.setSound(null);
 
-			PendingIntent openPendingIntent = null;
+			PendingIntent openPendingIntent;
 			if (num == 1) {
 				Intent openIntent = new Intent(context, DetailsActivity.class);
 				openIntent.putExtra("id", firstItem.getId());

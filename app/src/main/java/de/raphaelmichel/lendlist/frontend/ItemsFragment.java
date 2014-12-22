@@ -77,7 +77,7 @@ public class ItemsFragment extends Fragment implements LoaderCallbacks<Cursor> {
 			if (getActivity() instanceof CategoryLookupActivity)
 				i.putExtra("category", Long.parseLong(filterArgs[0]));
 			else if (getActivity() instanceof PersonLookupActivity) {
-				i.putExtra("name", ((PersonLookupActivity) getActivity())
+				i.putExtra("name", getActivity()
 						.getIntent().getStringExtra("name"));
 				if (getActivity().getIntent().hasExtra("person_lookup")) {
 					i.putExtra("person_id", getActivity().getIntent()

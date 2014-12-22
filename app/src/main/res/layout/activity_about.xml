@@ -17,8 +17,7 @@
         android:id="@+id/tvVersion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="15dip"
-        android:text="asd" />
+        android:layout_marginBottom="15dip" />
 
     <ScrollView
         android:id="@+id/svAbout"
