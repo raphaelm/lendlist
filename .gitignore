@@ -1,6 +1,11 @@
 bin/
 gen/
-.gitignore
 proguard*
 local.properties
-
+_promotion
+.gradle
+local.properties
+.idea/workspace.xml
+.idea/libraries
+.DS_Store
+build/
