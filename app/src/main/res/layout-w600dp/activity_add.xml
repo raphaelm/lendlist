@@ -101,7 +101,7 @@
                     android:id="@+id/ibContact"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:src="@drawable/ic_action_contact" />
+                    android:src="@drawable/ic_action_person_dark" />
             </LinearLayout>
 
             <TextView

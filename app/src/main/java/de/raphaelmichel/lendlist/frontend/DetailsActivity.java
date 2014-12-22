@@ -26,6 +26,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -50,7 +51,7 @@ import de.raphaelmichel.lendlist.storage.DataSource;
 import de.raphaelmichel.lendlist.storage.Database;
 import de.raphaelmichel.lendlist.storage.LendlistContentProvider;
 
-public class DetailsActivity extends FragmentActivity {
+public class DetailsActivity extends ActionBarActivity {
 
 	private static final int REQUEST_CODE_CONTACT = 3;
 	// private static final int REQUEST_CODE_CAMERA = 4;
@@ -82,7 +83,7 @@ public class DetailsActivity extends FragmentActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		getActionBar().setDisplayHomeAsUpEnabled(true);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 		item = DataSource.getItem(this, getIntent().getLongExtra("id", 0));
 

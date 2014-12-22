@@ -24,4 +24,7 @@
 	<color name="lent_pressed_text">#000000</color>
 	<color name="emptyspace">#EEEEEE</color>
 	<color name="usedspace">#FEFEFE</color>
+    <color name="primary">#1681AA</color>
+    <color name="primary_dark">#136685</color>
+    <color name="primary_accent">#E9A620</color>
 </resources>

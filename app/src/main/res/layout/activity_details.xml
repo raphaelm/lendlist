@@ -86,7 +86,7 @@
                 android:layout_height="match_parent"
                 android:contentDescription="@string/person_heading"
                 android:minHeight="32dp"
-                android:src="@drawable/ic_action_edit" />
+                android:src="@drawable/ic_action_edit_dark" />
         </LinearLayout>
 
         <TextView
@@ -134,7 +134,7 @@
                 android:id="@+id/ibRemoveUntil"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_action_cancel" />
+                android:src="@drawable/ic_action_cancel_dark" />
         </LinearLayout>
 
         <TextView
@@ -164,7 +164,7 @@
             android:id="@+id/ibAddPhoto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_action_add"
+            android:src="@drawable/ic_action_new"
             android:visibility="gone" />
     </LinearLayout>
 

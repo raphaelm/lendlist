@@ -18,6 +18,7 @@ import android.provider.ContactsContract;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,7 +37,7 @@ import de.raphaelmichel.lendlist.storage.DataSource;
 import de.raphaelmichel.lendlist.storage.Database;
 import de.raphaelmichel.lendlist.storage.LendlistContentProvider;
 
-public class AddActivity extends FragmentActivity {
+public class AddActivity extends ActionBarActivity {
 
 	private static final int REQUEST_CODE_CONTACT = 3;
 
@@ -142,7 +143,7 @@ public class AddActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_add);
-		getActionBar().setDisplayHomeAsUpEnabled(true);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 		etThing = (EditText) findViewById(R.id.etThing);
 		etPerson = (EditText) findViewById(R.id.etPerson);
@@ -239,7 +240,7 @@ public class AddActivity extends FragmentActivity {
 					item.setContact_lookup(null);
 					etPerson.setText("");
 					etPerson.setEnabled(true);
-					ibContact.setImageResource(R.drawable.ic_action_contact);
+					ibContact.setImageResource(R.drawable.ic_action_person);
 				} else {
 					Intent intent = new Intent(Intent.ACTION_PICK,
 							ContactsContract.Contacts.CONTENT_URI);

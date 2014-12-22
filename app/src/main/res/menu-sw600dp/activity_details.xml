@@ -1,29 +1,29 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/action_calendar"
-        android:icon="@drawable/ic_action_calendar"
+        android:icon="@drawable/ic_action_event"
         android:orderInCategory="1"
-        android:showAsAction="ifRoom|withText"
-        android:title="@string/add_to_calendar"/>
+        app:showAsAction="ifRoom|withText"
+        android:title="@string/add_to_calendar" />
     <item
         android:id="@+id/action_cancel"
         android:icon="@drawable/ic_action_cancel"
         android:orderInCategory="2"
-        android:showAsAction="ifRoom|withText"
-        android:title="@string/cancel"/>
+        app:showAsAction="ifRoom|withText"
+        android:title="@string/cancel" />
     <item
         android:id="@+id/action_delete"
-        android:icon="@drawable/ic_action_delete"
+        android:icon="@drawable/ic_action_discard"
         android:orderInCategory="3"
-        android:showAsAction="ifRoom|withText"
-        android:title="@string/delete"/>
+        app:showAsAction="ifRoom|withText"
+        android:title="@string/delete" />
     <item
         android:id="@+id/action_accept"
         android:icon="@drawable/ic_action_accept"
         android:orderInCategory="4"
-        android:showAsAction="always|withText"
-        android:title="@string/accept">
-    </item>
+        app:showAsAction="always|withText"
+        android:title="@string/accept"></item>
 
 </menu>

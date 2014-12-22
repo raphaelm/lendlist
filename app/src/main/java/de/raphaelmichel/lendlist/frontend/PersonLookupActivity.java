@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.QuickContactBadge;
@@ -12,13 +13,13 @@ import android.widget.TextView;
 import de.raphaelmichel.lendlist.R;
 import de.raphaelmichel.lendlist.library.ContactsHelper;
 
-public class PersonLookupActivity extends FragmentActivity {
+public class PersonLookupActivity extends ActionBarActivity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_person_lookup);
-		getActionBar().setDisplayHomeAsUpEnabled(true);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		ItemsFragment frItems = ((ItemsFragment) getSupportFragmentManager()
 				.findFragmentById(R.id.frMain));
 		frItems.setFilter("person = ?", new String[] { ""

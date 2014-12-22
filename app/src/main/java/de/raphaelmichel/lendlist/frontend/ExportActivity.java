@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,13 +19,13 @@ import android.widget.Toast;
 import de.raphaelmichel.lendlist.R;
 import de.raphaelmichel.lendlist.backup.BackupHelper;
 
-public class ExportActivity extends Activity {
+public class ExportActivity extends ActionBarActivity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_export);
-		getActionBar().setDisplayHomeAsUpEnabled(true);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 		Button btExportSd = (Button) findViewById(R.id.btExportSd);
 		btExportSd.setOnClickListener(new OnClickListener() {

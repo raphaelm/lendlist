@@ -7,6 +7,7 @@ import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -15,7 +16,7 @@ import de.raphaelmichel.lendlist.R;
 import de.raphaelmichel.lendlist.objects.Category;
 import de.raphaelmichel.lendlist.storage.DataSource;
 
-public class CategoryLookupActivity extends FragmentActivity {
+public class CategoryLookupActivity extends ActionBarActivity {
 
 	private Category cat;
 
@@ -23,7 +24,7 @@ public class CategoryLookupActivity extends FragmentActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_category_lookup);
-		getActionBar().setDisplayHomeAsUpEnabled(true);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		ItemsFragment frItems = ((ItemsFragment) getSupportFragmentManager()
 				.findFragmentById(R.id.frMain));
 		frItems.setFilter("category = ?", new String[] { ""

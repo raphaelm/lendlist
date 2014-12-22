@@ -1,38 +1,35 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/action_order"
-        android:icon="@drawable/ic_menu_sort_alphabetically"
+        android:icon="@drawable/ic_action_sort_by_size"
         android:orderInCategory="9"
-        android:showAsAction="never"
-        android:title="@string/order">
-    </item>
+        app:showAsAction="never"
+        android:title="@string/order"></item>
     <item
         android:id="@+id/action_filter"
-        android:icon="@drawable/ic_menu_view"
+        android:icon="@drawable/ic_action_collection"
         android:orderInCategory="10"
-        android:showAsAction="never"
-        android:title="@string/returned_show">
-    </item>
+        app:showAsAction="never"
+        android:title="@string/returned_show"></item>
     <item
         android:id="@+id/menu_export"
-        android:icon="@drawable/ic_menu_save"
+        android:icon="@drawable/ic_action_save"
         android:orderInCategory="90"
-        android:showAsAction="never"
-        android:title="@string/export">
-    </item>
+        app:showAsAction="never"
+        android:title="@string/export"></item>
     <item
         android:id="@+id/menu_settings"
-        android:icon="@drawable/ic_menu_preferences"
+        android:icon="@drawable/ic_action_settings"
         android:orderInCategory="100"
-        android:showAsAction="never"
-        android:title="@string/menu_settings">
-    </item>
+        app:showAsAction="never"
+        android:title="@string/menu_settings"></item>
     <item
         android:id="@+id/menu_about"
-        android:icon="@drawable/ic_menu_info_details"
+        android:icon="@drawable/ic_action_about"
         android:orderInCategory="110"
-        android:showAsAction="never"
-        android:title="@string/about"/>
+        app:showAsAction="never"
+        android:title="@string/about" />
 
 </menu>
