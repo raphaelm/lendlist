@@ -3,6 +3,8 @@ lendlist
 =======
 Never again forget what you borrowed from someone and keep track of what your friends borrowed from you.
 
+*Project status: This project is not actively maintained. The app works, but I'm currently not working on any new features etc. However, I'll happily accept pull requests with bugfixes or features.*
+
 
 Authors
 -------
